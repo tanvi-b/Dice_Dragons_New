@@ -3,7 +3,7 @@ import java.io.Serializable;
 public class CommandFromServer implements Serializable {
     private int command;
     private String data = "";
-    private String playerName = "";
+    private String player = "";
 
     // Command list
     public static final int PLAY = 0;
@@ -12,10 +12,10 @@ public class CommandFromServer implements Serializable {
 
     public static final int ADD_HERO = 3;
 
-    public CommandFromServer(int command, String data, String playerName) {
+    public CommandFromServer(int command, String data, String player) {
         this.command = command;
         this.data = data;
-        this.playerName = playerName;
+        this.player = player;
     }
 
     public int getCommand() {
@@ -26,7 +26,7 @@ public class CommandFromServer implements Serializable {
         return data;
     }
 
-    public String getPlayerName() {
-        return playerName;
+    public String getPlayer() {
+        return player;
     }
 }

@@ -26,15 +26,15 @@ public class ServerListener implements Runnable {
                 }
 
                 if(cfc.getCommand() == CommandFromClient.ADD_HERO){
-                    sendCommand(new CommandFromServer(CommandFromServer.ADD_HERO, null, cfc.getPlayerName()));
+                    sendCommand(new CommandFromServer(CommandFromServer.ADD_HERO, null, cfc.getPlayer()));
                 }
 
                 if(cfc.getCommand() == CommandFromClient.CONNECT){
-                    sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, cfc.getPlayerName()));
+                    sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, cfc.getPlayer()));
                 }
 
                 if(cfc.getCommand() == CommandFromClient.DISCONNECT){
-                    sendCommand(new CommandFromServer(CommandFromServer.DISCONNECT, null, cfc.getPlayerName()));
+                    sendCommand(new CommandFromServer(CommandFromServer.DISCONNECT, null, cfc.getPlayer()));
                 }
 
             }

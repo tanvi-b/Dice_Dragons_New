@@ -7,7 +7,7 @@ public class CommandFromClient implements Serializable
     //Text data for the command
     private String data = "";
 
-    private String playerName = "";
+    private String player = "";
 
     public static final int PLAY=0;
     public static final int CONNECT = 1;
@@ -15,10 +15,10 @@ public class CommandFromClient implements Serializable
 
     public static final int ADD_HERO = 3;
 
-    public CommandFromClient(int command, String data, String playerName) {
+    public CommandFromClient(int command, String data, String player) {
         this.command = command;
         this.data = data;
-        this.playerName = playerName;
+        this.player = player;
     }
 
     public int getCommand() {return command;}
@@ -27,7 +27,7 @@ public class CommandFromClient implements Serializable
         return data;
     }
 
-    public String getPlayerName(){
-        return playerName;
+    public String getPlayer(){
+        return player;
     }
 }
