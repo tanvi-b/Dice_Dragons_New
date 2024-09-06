@@ -1,4 +1,4 @@
-public class ClientListener {
+public class ClientListener implements Runnable {
   private Socket socket; 
   private ObjectInputStream inputStream; 
   private ObjectOutputStream outputStream;
