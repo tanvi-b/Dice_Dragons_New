@@ -17,7 +17,8 @@ public class ClientListener implements Runnable {
 
                 // Process the received message
                 if(cfs.getCommand() == CommandFromServer.PLAY) {
-                   
+                   //inside code will follow this syntax
+                  // game.method(cfs.getVariable()); 
                 }
                 if(cfs.getCommand() == CommandFromServer.ADD_HERO){
                     
