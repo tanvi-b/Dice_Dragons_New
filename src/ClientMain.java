@@ -13,14 +13,6 @@ public class ClientMain {
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Enter your name: ");
-            name = scanner.nextLine();
-
-            System.out.println("Enter your IP address: ");
-            String ip = scanner.nextLine();
-
-            System.out.println("You are connected as " + name);
             Game gameC = new Game(os, name);
 
             ClientListener cl = new ClientListener (is, os, gameC);
