@@ -1,5 +1,10 @@
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+
 public class ClientListener implements Runnable {
-  private Socket socket; 
+  private Socket socket;
   private ObjectInputStream inputStream; 
   private ObjectOutputStream outputStream;
   private Game game; 
