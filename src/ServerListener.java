@@ -23,30 +23,28 @@ public class ServerListener implements Runnable {
             while (true) {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
 
+                if(cfc.getCommand() == CommandFromClient.JOIN){
+                    sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+                }
+
                 if (cfc.getCommand() == CommandFromClient.HOST) {
                     Random random = new Random();
                     int accessCode = 100000 + random.nextInt(900000);
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
-                    //generate random 6-digit number and pass as data
                 }
 
-                if(cfc.getCommand() == CommandFromClient.JOIN){
-                    sendCommand(new CommandFromServer(CommandFromServer.PLAY, null, null));
+                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
+                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
                 }
 
-                if(cfc.getCommand() == CommandFromClient.CONNECT){
-                    sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, cfc.getPlayer()));
-                }
-
-                if(cfc.getCommand() == CommandFromClient.DISCONNECT){
-                    sendCommand(new CommandFromServer(CommandFromServer.DISCONNECT, null, cfc.getPlayer()));
+                if(cfc.getCommand() == CommandFromClient.CHAT){
+                    sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer()));
                 }
 
             }
         }
         catch(Exception e){
             e.printStackTrace();
-            sendCommand(new CommandFromServer(CommandFromServer.DISCONNECT, null, null));
         }
 
     }
@@ -54,6 +52,17 @@ public class ServerListener implements Runnable {
     private boolean validPlayer ()
     {
         return false;
+    }
+
+    private void sendCommand (CommandFromServer cfs)
+    {
+        //sends to one specific client
+        try {
+            os.writeObject(cfs);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 //    public void sendCommand(CommandFromServer cfs)
@@ -69,14 +78,4 @@ public class ServerListener implements Runnable {
 //        }
 //    }
 
-    private void sendCommand (CommandFromServer cfs)
-    {
-        //sends to one specific client
-        try {
-            os.writeObject(cfs);
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

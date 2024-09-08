@@ -21,16 +21,22 @@ public class ClientListener implements Runnable {
                 CommandFromServer cfs = (CommandFromServer) inputStream.readObject();
 
                 // Process the received message
-                if(cfs.getCommand() == CommandFromServer.PLAY) {
+                if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
                    //inside code will follow this syntax
                   // game.method(cfs.getVariable()); 
                 }
-                if(cfs.getCommand() == CommandFromServer.ADD_HERO){
+                if(cfs.getCommand() == CommandFromServer.CONNECT){
                     
                 }
-                if(cfs.getCommand() == CommandFromServer.DISCONNECT){
+                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
+                {
                     
                 }
+                if(cfs.getCommand() == CommandFromServer.CHAT)
+                {
+
+                }
+
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
