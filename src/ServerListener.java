@@ -23,7 +23,6 @@ public class ServerListener implements Runnable {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
-
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, "000000", null));
                     //generate random 6-digit number and pass as data
                 }
