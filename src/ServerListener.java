@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
@@ -23,7 +24,9 @@ public class ServerListener implements Runnable {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, "000000", null));
+                    Random random = new Random();
+                    int accessCode = 100000 + random.nextInt(900000);
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
                     //generate random 6-digit number and pass as data
                 }
 
