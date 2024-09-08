@@ -11,19 +11,19 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
 
 public class Game extends JFrame {
-    private JPanel introScreen;
-    private JPanel joinScreen;
-    private JPanel hostScreen;
-    private JPanel customHeroScreen;
-    private JPanel playingScreen;
+    String accessCode;
+    ArrayList<Hero> heroes;
+    ArrayList<Dragon> dragons;
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
-    private BufferedImage loginScreenTop, loginScreenBottom;
+    private Font customFont;
+    private BufferedImage loginScreenTop, loginScreenBottom, intro, loginScreen;
 
     public Game()
     {
@@ -34,47 +34,62 @@ public class Game extends JFrame {
         {
             loginScreenTop = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreenTop.png"));
             loginScreenBottom = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreenBottom.png"));
+            intro  = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/introScreen.jpg"));
+            loginScreen = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreen.png"));
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
 
-        introScreen = new JPanel() {
+        JPanel introScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(loginScreenTop, 0, 0, 1400, 500, this);
-                g.drawImage(loginScreenBottom, 0, 500, 1400, 500, this);
+                g.drawImage(intro, 0, 0, 1200, 1000, this);
             }
         };
         introScreen.setLayout(null);
-        joinScreen = new JPanel() {
+        JPanel joinScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.drawImage(loginScreenBottom, 0, 0, 1400, 1000, this);
+                g.drawImage(loginScreen, 0, 0, 1200, 1000, this);
             }
         };
         joinScreen.setLayout(null);
-        hostScreen = new JPanel() {
+        JPanel hostScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(loginScreen, 0, 0, 1200, 1000, this);
+            }
+        };
+        hostScreen.setLayout(null);
+        JPanel customHeroScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginScreenBottom, 0, 0, 1400, 1000, this);
             }
         };
-        hostScreen.setLayout(null);
-        customHeroScreen = new JPanel();
         customHeroScreen.setLayout(null);
-        playingScreen = new JPanel();
+        JPanel playingScreen = new JPanel();
         playingScreen.setLayout(null);
 
-    //intro screen
+        //intro screen
+        try {
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/tanvibhattad/Downloads/Almendra/Almendra-Regular.ttf")).deriveFont(42f);
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont);
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+        }
+
         JButton joinGame = new JButton ("Join Game");
-        joinGame.setForeground(new Color(204, 185, 45));
-        joinGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
-        joinGame.setBounds(100, 575, 500, 100);
+        joinGame.setForeground(Color.black);
+        joinGame.setFont(customFont);
+        joinGame.setBounds(10, 600, 425, 50);
         joinGame.setBorderPainted(false);
         buttonFormatting(joinGame);
         joinGame.addActionListener(new ActionListener() {
@@ -89,9 +104,9 @@ public class Game extends JFrame {
         });
 
         JButton hostGame = new JButton ("Host Game");
-        hostGame.setForeground(new Color(204, 185, 45));
-        hostGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
-        hostGame.setBounds(750, 575, 500, 100);
+        hostGame.setForeground(Color.black);
+        hostGame.setFont(customFont);
+        hostGame.setBounds(10, 675, 425, 50);
         hostGame.setBorderPainted(false);
         buttonFormatting(hostGame);
         hostGame.addActionListener(new ActionListener() {
@@ -105,39 +120,39 @@ public class Game extends JFrame {
             }
         });
 
-    //join screen
+        //join screen
         JLabel message = new JLabel("Ask the host for the access code. It is on the top-right of their screen.");
         message.setForeground(new Color(204, 185, 45));
-        message.setFont(new Font("Times New Roman", Font.PLAIN, 45));
+        message.setFont(customFont.deriveFont(40f));
         message.setBounds(50, 30, 1300, 100);
 
         JLabel accessCode = new JLabel("Enter access code:");
         accessCode.setForeground(new Color(204, 185, 45));
-        accessCode.setFont(new Font("Times New Roman", Font.PLAIN, 55));
-        accessCode.setBounds(100, 200, 500, 100);
+        accessCode.setFont(customFont.deriveFont(55f));
+        accessCode.setBounds(80, 200, 500, 100);
         accessCode.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JLabel characterName = new JLabel ("Enter character name:");
         characterName.setForeground(new Color(204, 185, 45));
-        characterName.setFont(new Font("Times New Roman", Font.PLAIN, 55));
-        characterName.setBounds(100, 350, 500, 100);
+        characterName.setFont(customFont.deriveFont(55f));
+        characterName.setBounds(80, 350, 500, 100);
         characterName.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JLabel heroClass = new JLabel("Choose your hero class:");
         heroClass.setForeground(new Color(204, 185, 45));
-        heroClass.setFont(new Font("Times New Roman", Font.PLAIN, 50));
-        heroClass.setBounds(100, 500, 500, 100);
+        heroClass.setFont(customFont.deriveFont(50f));
+        heroClass.setBounds(80, 500, 500, 100);
         heroClass.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JTextField accessCodeText = new JTextField();
         accessCodeText.setFont(new Font("Arial", Font.PLAIN, 20));
-        accessCodeText.setBounds(700, 200, 350, 75);
+        accessCodeText.setBounds(600, 200, 350, 75);
         accessCodeText.setEditable(true);
         accessCodeText.setText("");
 
         JTextField characterNameText = new JTextField();
         characterNameText.setFont(new Font("Arial", Font.PLAIN, 20));
-        characterNameText.setBounds(700, 350, 350, 75);
+        characterNameText.setBounds(600, 350, 350, 75);
         characterNameText.setEditable(true);
         characterNameText.setText("");
 
@@ -154,12 +169,12 @@ public class Game extends JFrame {
             }
         });
         heroClassChoice.setSize(350, 100); //see if you can increase height itself
-        heroClassChoice.setLocation(700, 500);
+        heroClassChoice.setLocation(600, 500);
 
         JButton custom = new JButton ("Custom");
         custom.setForeground(new Color(204, 185, 45));
-        custom.setFont(new Font("Times New Roman", Font.PLAIN, 35));
-        custom.setBounds(1100, 525, 155, 50);
+        custom.setFont(customFont.deriveFont(35f));
+        custom.setBounds(1000, 525, 155, 50);
         custom.setBorder(BorderFactory.createLineBorder(Color.white));
         buttonFormatting(custom);
         custom.addActionListener(new ActionListener() {
@@ -175,8 +190,8 @@ public class Game extends JFrame {
 
         JButton beginGame = new JButton ("Begin Game");
         beginGame.setForeground(new Color(204, 185, 45));
-        beginGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
-        beginGame.setBounds(455, 650, 500, 100);
+        beginGame.setFont(customFont.deriveFont(75f));
+        beginGame.setBounds(400, 650, 500, 100);
         beginGame.setBorderPainted(false);
         buttonFormatting(beginGame);
         beginGame.addActionListener(new ActionListener() {
@@ -192,7 +207,7 @@ public class Game extends JFrame {
 
         JButton back = new JButton ("Back");
         back.setForeground(new Color(204, 185, 45));
-        back.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        back.setFont(customFont.deriveFont(30f));
         back.setBounds(5, 730, 130, 50);
         back.setBorder(BorderFactory.createLineBorder(Color.white));
         buttonFormatting(back);
@@ -207,23 +222,23 @@ public class Game extends JFrame {
             }
         });
 
-    //host screen
+        //host screen
         JLabel numberOfPlayers = new JLabel("Number of players:");
         numberOfPlayers.setForeground(new Color(204, 185, 45));
-        numberOfPlayers.setFont(new Font("Times New Roman", Font.PLAIN, 55));
-        numberOfPlayers.setBounds(100, 200, 500, 100);
+        numberOfPlayers.setFont(customFont.deriveFont(55f));
+        numberOfPlayers.setBounds(80, 200, 500, 100);
         numberOfPlayers.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JLabel characterName1 = new JLabel ("Enter character name:");
         characterName1.setForeground(new Color(204, 185, 45));
-        characterName1.setFont(new Font("Times New Roman", Font.PLAIN, 55));
-        characterName1.setBounds(100, 350, 500, 100);
+        characterName1.setFont(customFont.deriveFont(55f));
+        characterName1.setBounds(80, 350, 500, 100);
         characterName1.setHorizontalAlignment(SwingConstants.RIGHT);
 
         JLabel heroClass1 = new JLabel("Choose your hero class:");
         heroClass1.setForeground(new Color(204, 185, 45));
-        heroClass1.setFont(new Font("Times New Roman", Font.PLAIN, 50));
-        heroClass1.setBounds(100, 500, 500, 100);
+        heroClass1.setFont(customFont.deriveFont(50f));
+        heroClass1.setBounds(80, 500, 500, 100);
         heroClass1.setHorizontalAlignment(SwingConstants.RIGHT);
 
         Integer[] numbers = {1,2,3,4,5};
@@ -235,12 +250,12 @@ public class Game extends JFrame {
                 }
             }
         });
-        numbersOfPlayersChoice.setSize(350, 75); //see if you can increase height itself
-        numbersOfPlayersChoice.setLocation(700, 200);
+        numbersOfPlayersChoice.setSize(350, 100); //see if you can increase height itself
+        numbersOfPlayersChoice.setLocation(600, 200);
 
         JTextField characterNameText1 = new JTextField();
         characterNameText1.setFont(new Font("Arial", Font.PLAIN, 20));
-        characterNameText1.setBounds(700, 350, 350, 75);
+        characterNameText1.setBounds(600, 350, 350, 75);
         characterNameText1.setEditable(true);
         characterNameText1.setText("");
 
@@ -254,12 +269,12 @@ public class Game extends JFrame {
             }
         });
         heroClassChoice1.setSize(350, 100); //see if you can increase height itself
-        heroClassChoice1.setLocation(700, 500);
+        heroClassChoice1.setLocation(600, 500);
 
         JButton custom1 = new JButton ("Custom");
         custom1.setForeground(new Color(204, 185, 45));
-        custom1.setFont(new Font("Times New Roman", Font.PLAIN, 35));
-        custom1.setBounds(1100, 525, 155, 50);
+        custom1.setFont(customFont.deriveFont(35f));
+        custom1.setBounds(1000, 525, 155, 50);
         custom1.setBorder(BorderFactory.createLineBorder(Color.white));
         buttonFormatting(custom1);
         custom1.addActionListener(new ActionListener() {
@@ -275,14 +290,14 @@ public class Game extends JFrame {
 
         JButton createGame = new JButton("Create Game");
         createGame.setForeground(new Color(204, 185, 45));
-        createGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
-        createGame.setBounds(455, 650, 500, 100);
+        createGame.setFont(customFont.deriveFont(75f));
+        createGame.setBounds(400, 650, 500, 100);
         createGame.setBorderPainted(false);
         buttonFormatting(createGame);
 
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
-        back1.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        back1.setFont(customFont.deriveFont(30f));
         back1.setBounds(5, 730, 130, 50);
         back1.setBorder(BorderFactory.createLineBorder(Color.white));
         buttonFormatting(back1);
@@ -297,7 +312,7 @@ public class Game extends JFrame {
             }
         });
 
-    //custom hero screen
+        //custom hero screen
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -328,7 +343,7 @@ public class Game extends JFrame {
 
         getContentPane().add(introScreen);
         setVisible(true);
-        setSize(1400, 1000);
+        setSize(1200, 1000);
         setResizable(false);
     }
 
