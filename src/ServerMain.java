@@ -3,6 +3,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.ArrayList;
 
 public class ServerMain {
 
@@ -11,9 +13,10 @@ public class ServerMain {
             // Create a ServerSocket to listen for client connections
             ServerSocket serverSocket = new ServerSocket(8001);
 
-            System.out.println("Created by Tanvi Bhattad, Prisha Singh, and Nandika Napa - 2024");
+            System.out.println("Created by Tanvi Bhattad and Prisha Singh - 2024");
 
-            while (true) {
+            while (true)
+            {
                 Socket clientSocket = serverSocket.accept();
                 ObjectOutputStream os = new ObjectOutputStream(clientSocket.getOutputStream());
                 ObjectInputStream is = new ObjectInputStream(clientSocket.getInputStream());
@@ -24,10 +27,10 @@ public class ServerMain {
                 Thread thread = new Thread(serverListener);
                 thread.start();
 
-                os.writeObject(new CommandFromServer(CommandFromServer.PLAY,null,null));
-                os.writeObject(new CommandFromServer(CommandFromServer.ADD_HERO, null, null));
-                os.writeObject(new CommandFromServer(CommandFromServer.CONNECT, null, null));
-                os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, null, null));
+//                os.writeObject(new CommandFromServer(CommandFromServer.PLAY,null,null));
+//                os.writeObject(new CommandFromServer(CommandFromServer.ADD_HERO, null, null));
+//                os.writeObject(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+//                os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, null, null));
             }
         } catch (IOException e) {
             e.printStackTrace();
