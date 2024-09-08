@@ -10,7 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -25,7 +27,7 @@ public class Game extends JFrame {
     private JPanel playerRules;
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
-    private BufferedImage loginScreenTop, loginScreenBottom, background;
+    private BufferedImage loginScreenTop, loginScreenBottom, background, dragonSheet, heroClassSheet, weapon;
 
     public Game()
     {
@@ -37,7 +39,7 @@ public class Game extends JFrame {
             loginScreenTop = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\loginScreenTop.png"));
             loginScreenBottom = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\loginScreenBottom.png"));
             background = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\backgroundImage.png"));
-
+            dragonSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\young black dragon.png"));
         }
         catch(Exception e)
         {
@@ -76,6 +78,8 @@ public class Game extends JFrame {
             protected void paintComponent(Graphics g){
                 super.paintComponent(g);
                 g.drawImage(background, 0, 0, 1400, 1000, this);
+                g.drawImage(dragonSheet, 970, 140, 400, 550, this);
+
            }
         };
         playingScreen.setLayout(null);
@@ -157,6 +161,7 @@ public class Game extends JFrame {
         //JComboBox<String> heroClassChoice = new JComboBox<String>((ComboBoxModel<String>) availableHeroClasses);
         String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
+        int selection1 = heroClassChoice.getSelectedIndex();
         heroClassChoice.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -257,6 +262,7 @@ public class Game extends JFrame {
 
         String[] heroClasses1 = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice1 = new JComboBox<String>(heroClasses1);
+        int selection2 = heroClassChoice1.getSelectedIndex();
         heroClassChoice1.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -390,18 +396,73 @@ public class Game extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(20, 620, 360, 300);
 
+        JList<String> messages = new JList<>();
+        JScrollPane chatBox = new JScrollPane(messages);
+        chatBox.setBounds(970,700, 400,200);
+
+        JTextField textMessage = new JTextField();
+        textMessage.setBounds(970, 1000, 300, 50);
+        textMessage.setEditable(true);
+
+
+        JButton send = new JButton();
+        send.setBounds(1300, 1000, 80, 20);
+        send.setText("Send");
+
+
+        send.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                String acc = characterName + ": " + textMessage.getText();
+                ///will need to implement following method
+                //sendMessage(os,name+ ": " + input.getText());
+                textMessage.setText("");
+            }
+        });
+
+
+        //player images and weapons will be decided further through threading
+
+        //attempt to do unique playersheet but not working with draw
+        // will attempt threading first and then come back here
+
+        /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
+
+
+        try {
+            warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
+            wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
+            clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
+            rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
+            rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+        if (selection1 == 0 || selection2 == 0) {
+            g.drawImage(warriorSheet, 100, 100, 200, 300, this);
+        }
+        if (selection1 == 1 || selection2 == 1) {
+            g.drawImage(wizardSheet, 100, 100, 200, 300, this);
+        }
+        if (selection1 == 2 || selection2 == 2) {
+            g.drawImage(clericSheet, 100, 100, 200, 300, this);
+        }
+        if (selection1 == 3 || selection2 == 3) {
+            g.drawImage(rangerSheet, 100, 100, 200, 300, this);
+        }
+        if (selection1 == 4 || selection2 == 4) {
+            g.drawImage(rogueSheet, 100, 100, 200, 300, this);
+        }
+    }
+
+         */
 
 
 
-
-
-
-
-
-
-
-
-    //custom hero screen
+        //custom hero screen
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -437,13 +498,11 @@ public class Game extends JFrame {
         playingScreen.add(pointsScrollBar);
         playingScreen.add(dragonScrollBar);
         playingScreen.add(dragonsText);
-        /*
-        playingScreen.add(playerImage);
         playingScreen.add(chatBox);
-        playingScreen.add(dragonSheet);
-        playingScreen.add(weapons);
+        playingScreen.add(textMessage);
+        playingScreen.add(send);
 
-         */
+
 
         getContentPane().add(introScreen);
         setVisible(true);
