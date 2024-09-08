@@ -21,9 +21,11 @@ public class Game extends JFrame {
     private JPanel hostScreen;
     private JPanel customHeroScreen;
     private JPanel playingScreen;
+    private JPanel dragonGuide;
+    private JPanel playerRules;
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
-    private BufferedImage loginScreenTop, loginScreenBottom;
+    private BufferedImage loginScreenTop, loginScreenBottom, background;
 
     public Game()
     {
@@ -32,8 +34,10 @@ public class Game extends JFrame {
 
         try
         {
-            loginScreenTop = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreenTop.png"));
-            loginScreenBottom = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreenBottom.png"));
+            loginScreenTop = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\loginScreenTop.png"));
+            loginScreenBottom = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\loginScreenBottom.png"));
+            background = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\backgroundImage.png"));
+
         }
         catch(Exception e)
         {
@@ -67,8 +71,15 @@ public class Game extends JFrame {
         hostScreen.setLayout(null);
         customHeroScreen = new JPanel();
         customHeroScreen.setLayout(null);
-        playingScreen = new JPanel();
+        playingScreen = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(background, 0, 0, 1400, 1000, this);
+           }
+        };
         playingScreen.setLayout(null);
+
 
     //intro screen
         JButton joinGame = new JButton ("Join Game");
@@ -280,6 +291,17 @@ public class Game extends JFrame {
         createGame.setBorderPainted(false);
         buttonFormatting(createGame);
 
+        createGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(playingScreen);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
         back1.setFont(new Font("Times New Roman", Font.BOLD, 30));
@@ -296,6 +318,88 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
+
+        ////playing screen
+
+
+        JTextField turn = new JTextField();
+        turn.setForeground(new Color(0, 0, 0));
+        turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
+        turn.setBounds(450, 30, 500, 100);
+        turn.setVisible(true);
+        turn.setText("TURN: ");
+
+        JButton rules = new JButton("Rules");
+        rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        rules.setBounds(1000, 30, 120, 100);
+        rules.setEnabled(true);
+        rules.setBorder(BorderFactory.createLineBorder(Color.black));
+        buttonFormatting(rules);
+
+        rules.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(playerRules);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+
+        JButton guide = new JButton("Dragon Guide");
+        guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        guide.setBounds(1150, 30, 200, 100);
+        guide.setEnabled(true);
+        guide.setBorder(BorderFactory.createLineBorder(Color.black));
+        buttonFormatting(guide);
+
+        guide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(dragonGuide);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+        JTextField pointsText = new JTextField();
+        pointsText.setForeground(new Color(0, 0, 0));
+        pointsText.setFont(new Font("Arial", Font.BOLD, 30));
+        pointsText.setBounds(20, 30, 360, 100);
+        pointsText.setVisible(true);
+        pointsText.setText("        Hero's Updates  ");
+
+        JList<String> heroUpdates = new JList<>();
+
+        JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
+        pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        pointsScrollBar.setBounds(20, 150, 360, 300);
+
+        JTextField dragonsText = new JTextField();
+        dragonsText.setForeground(new Color(0, 0, 0));
+        dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
+        dragonsText.setBounds(20, 490, 360, 100);
+        dragonsText.setVisible(true);
+        dragonsText.setText("      Dragon's Updates  ");
+
+        JList<String> dragonUpdates = new JList<>();
+
+        JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
+        dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        dragonScrollBar.setBounds(20, 620, 360, 300);
+
+
+
+
+
+
+
+
+
+
+
 
     //custom hero screen
 
@@ -325,6 +429,21 @@ public class Game extends JFrame {
         hostScreen.add(custom1);
         hostScreen.add(createGame);
         hostScreen.add(back1);
+
+        playingScreen.add(turn);
+        playingScreen.add(rules);
+        playingScreen.add(guide);
+        playingScreen.add(pointsText);
+        playingScreen.add(pointsScrollBar);
+        playingScreen.add(dragonScrollBar);
+        playingScreen.add(dragonsText);
+        /*
+        playingScreen.add(playerImage);
+        playingScreen.add(chatBox);
+        playingScreen.add(dragonSheet);
+        playingScreen.add(weapons);
+
+         */
 
         getContentPane().add(introScreen);
         setVisible(true);
