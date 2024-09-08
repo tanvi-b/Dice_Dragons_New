@@ -75,11 +75,8 @@ public class Game extends JFrame {
         joinGame.setForeground(new Color(204, 185, 45));
         joinGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
         joinGame.setBounds(100, 575, 500, 100);
-        joinGame.setOpaque(false);
-        joinGame.setContentAreaFilled(false);
         joinGame.setBorderPainted(false);
-        joinGame.setFocusPainted(false);
-        joinGame.setVisible(true);
+        buttonFormatting(joinGame);
         joinGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -95,11 +92,8 @@ public class Game extends JFrame {
         hostGame.setForeground(new Color(204, 185, 45));
         hostGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
         hostGame.setBounds(750, 575, 500, 100);
-        hostGame.setOpaque(false);
-        hostGame.setContentAreaFilled(false);
         hostGame.setBorderPainted(false);
-        hostGame.setFocusPainted(false);
-        hostGame.setVisible(true);
+        buttonFormatting(hostGame);
         hostGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -147,10 +141,10 @@ public class Game extends JFrame {
         characterNameText.setEditable(true);
         characterNameText.setText("");
 
-        //ArrayList<String> availableHeroClasses = new ArrayList<String>();
         //need to change and only show available classes
+        //ArrayList<String> availableHeroClasses = new ArrayList<String>();
         //JComboBox<String> heroClassChoice = new JComboBox<String>((ComboBoxModel<String>) availableHeroClasses);
-        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue", "Custom"};
+        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
         heroClassChoice.addItemListener(new ItemListener() {
             @Override
@@ -162,15 +156,29 @@ public class Game extends JFrame {
         heroClassChoice.setSize(350, 100); //see if you can increase height itself
         heroClassChoice.setLocation(700, 500);
 
+        JButton custom = new JButton ("Custom");
+        custom.setForeground(new Color(204, 185, 45));
+        custom.setFont(new Font("Times New Roman", Font.PLAIN, 35));
+        custom.setBounds(1100, 525, 155, 50);
+        custom.setBorder(BorderFactory.createLineBorder(Color.white));
+        buttonFormatting(custom);
+        custom.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(customHeroScreen);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+
         JButton beginGame = new JButton ("Begin Game");
         beginGame.setForeground(new Color(204, 185, 45));
         beginGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
         beginGame.setBounds(455, 650, 500, 100);
-        beginGame.setOpaque(false);
-        beginGame.setContentAreaFilled(false);
         beginGame.setBorderPainted(false);
-        beginGame.setFocusPainted(false);
-        beginGame.setVisible(true);
+        buttonFormatting(beginGame);
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -186,11 +194,8 @@ public class Game extends JFrame {
         back.setForeground(new Color(204, 185, 45));
         back.setFont(new Font("Times New Roman", Font.BOLD, 30));
         back.setBounds(5, 730, 130, 50);
-        back.setOpaque(false);
-        back.setContentAreaFilled(false);
-        back.setFocusPainted(false);
         back.setBorder(BorderFactory.createLineBorder(Color.white));
-        back.setVisible(true);
+        buttonFormatting(back);
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -239,7 +244,7 @@ public class Game extends JFrame {
         characterNameText1.setEditable(true);
         characterNameText1.setText("");
 
-        String[] heroClasses1 = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue", "Custom"};
+        String[] heroClasses1 = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice1 = new JComboBox<String>(heroClasses1);
         heroClassChoice1.addItemListener(new ItemListener() {
             @Override
@@ -251,25 +256,36 @@ public class Game extends JFrame {
         heroClassChoice1.setSize(350, 100); //see if you can increase height itself
         heroClassChoice1.setLocation(700, 500);
 
+        JButton custom1 = new JButton ("Custom");
+        custom1.setForeground(new Color(204, 185, 45));
+        custom1.setFont(new Font("Times New Roman", Font.PLAIN, 35));
+        custom1.setBounds(1100, 525, 155, 50);
+        custom1.setBorder(BorderFactory.createLineBorder(Color.white));
+        buttonFormatting(custom1);
+        custom1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(customHeroScreen);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+
         JButton createGame = new JButton("Create Game");
         createGame.setForeground(new Color(204, 185, 45));
         createGame.setFont(new Font("Times New Roman", Font.BOLD, 75));
         createGame.setBounds(455, 650, 500, 100);
-        createGame.setOpaque(false);
-        createGame.setContentAreaFilled(false);
         createGame.setBorderPainted(false);
-        createGame.setFocusPainted(false);
-        createGame.setVisible(true);
+        buttonFormatting(createGame);
 
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
         back1.setFont(new Font("Times New Roman", Font.BOLD, 30));
         back1.setBounds(5, 730, 130, 50);
-        back1.setOpaque(false);
-        back1.setContentAreaFilled(false);
-        back1.setFocusPainted(false);
         back1.setBorder(BorderFactory.createLineBorder(Color.white));
-        back1.setVisible(true);
+        buttonFormatting(back1);
         back1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -283,7 +299,6 @@ public class Game extends JFrame {
 
     //custom hero screen
 
-
         introScreen.add(joinGame);
         introScreen.add(hostGame);
 
@@ -295,6 +310,7 @@ public class Game extends JFrame {
         joinScreen.add(heroClass);
         joinScreen.add(heroClassChoice);
         heroClassChoice.setSelectedIndex(-1);
+        joinScreen.add(custom);
         joinScreen.add(beginGame);
         joinScreen.add(back);
 
@@ -306,13 +322,21 @@ public class Game extends JFrame {
         hostScreen.add(heroClass1);
         hostScreen.add(heroClassChoice1);
         heroClassChoice1.setSelectedIndex(-1);
+        hostScreen.add(custom1);
         hostScreen.add(createGame);
         hostScreen.add(back1);
-
 
         getContentPane().add(introScreen);
         setVisible(true);
         setSize(1400, 1000);
         setResizable(false);
+    }
+
+    public void buttonFormatting (JButton button)
+    {
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setFocusPainted(false);
+        button.setVisible(true);
     }
 }
