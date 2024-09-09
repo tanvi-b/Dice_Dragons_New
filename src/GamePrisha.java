@@ -369,10 +369,6 @@ public class GamePrisha extends JFrame {
 
 
         ////playing screen
-
-
-
-
         JTextField turn = new JTextField();
         turn.setForeground(new Color(0, 0, 0));
         turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
@@ -529,11 +525,6 @@ public class GamePrisha extends JFrame {
 
 
         */
-
-
-
-
-
 
         //custom hero screen
 
