@@ -28,6 +28,9 @@ public class ClientListener implements Runnable {
                 if(cfs.getCommand() == CommandFromServer.CONNECT){
                     
                 }
+                if(cfs.getCommand() == CommandFromServer.INVALID_CONNECTION){
+
+                }
                 if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
                 {
                     

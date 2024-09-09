@@ -26,7 +26,12 @@ public class GameTanvi extends JFrame {
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
     private Font customFont;
-    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6;
+    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6,
+            background, weapon, prPage1, prPage2, prPage3, prPage4, prPage5, prPage6,
+            prPage7, prPage8, prPage9, prPage10, prPage11, prPage12;
+    private JList<BufferedImage> playerRulesImages;
+    private JList<BufferedImage> dragonSheets;
+    private JList<BufferedImage> heroSheets;
 
     public GameTanvi()
     {
@@ -37,6 +42,7 @@ public class GameTanvi extends JFrame {
         {
             intro  = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/introScreen.jpg"));
             loginBackground = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreen.jpg"));
+            background = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/backgroundImage.png"));
             diceFace1 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/dice side.png"));
             diceFace2 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_001.png"));
             diceFace3 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_002.png"));
@@ -57,6 +63,7 @@ public class GameTanvi extends JFrame {
             }
         };
         introScreen.setLayout(null);
+
         JPanel joinScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -65,6 +72,7 @@ public class GameTanvi extends JFrame {
             }
         };
         joinScreen.setLayout(null);
+
         JPanel hostScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -73,6 +81,7 @@ public class GameTanvi extends JFrame {
             }
         };
         hostScreen.setLayout(null);
+
         JPanel customHeroScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -86,8 +95,21 @@ public class GameTanvi extends JFrame {
             }
         };
         customHeroScreen.setLayout(null);
-        JPanel playingScreen = new JPanel();
+
+        JPanel playingScreen = new JPanel(){
+            @Override
+            protected void paintComponent(Graphics g){
+                super.paintComponent(g);
+                g.drawImage(background, 0, 0, 1400, 1000, this);
+            }
+        };
         playingScreen.setLayout(null);
+
+        JPanel dragonGuide = new JPanel();
+        dragonGuide.setLayout(null);
+
+        JPanel playerRules = new JPanel();
+        playerRules.setLayout(null);
 
         //intro screen
         host = false;
@@ -463,6 +485,96 @@ public class GameTanvi extends JFrame {
             }
         });
 
+        //playing screen
+        JTextField turn = new JTextField();
+        turn.setForeground(new Color(0, 0, 0));
+        turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
+        turn.setBounds(450, 30, 500, 100);
+        turn.setVisible(true);
+        turn.setText("TURN: ");
+
+        JButton rules = new JButton("Rules");
+        rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        rules.setBounds(1000, 30, 120, 100);
+        rules.setEnabled(true);
+        rules.setBorder(BorderFactory.createLineBorder(Color.black));
+        buttonFormatting(rules);
+
+        rules.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(playerRules);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+
+        JButton guide = new JButton("Dragon Guide");
+        guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        guide.setBounds(1150, 30, 200, 100);
+        guide.setEnabled(true);
+        guide.setBorder(BorderFactory.createLineBorder(Color.black));
+        buttonFormatting(guide);
+
+        guide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                getContentPane().removeAll();
+                getContentPane().add(dragonGuide);
+                validate();
+                repaint();
+                setVisible(true);
+            }
+        });
+        JTextField pointsText = new JTextField();
+        pointsText.setForeground(new Color(0, 0, 0));
+        pointsText.setFont(new Font("Arial", Font.BOLD, 30));
+        pointsText.setBounds(20, 30, 360, 100);
+        pointsText.setVisible(true);
+        pointsText.setText("        Hero's Updates  ");
+
+        JList<String> heroUpdates = new JList<>();
+
+        JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
+        pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        pointsScrollBar.setBounds(20, 150, 360, 300);
+
+        JTextField dragonsText = new JTextField();
+        dragonsText.setForeground(new Color(0, 0, 0));
+        dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
+        dragonsText.setBounds(20, 490, 360, 100);
+        dragonsText.setVisible(true);
+        dragonsText.setText("      Dragon's Updates  ");
+
+        JList<String> dragonUpdates = new JList<>();
+
+        JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
+        dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        dragonScrollBar.setBounds(20, 620, 360, 300);
+
+        JList<String> messages = new JList<>();
+        JScrollPane chatBox = new JScrollPane(messages);
+        chatBox.setBounds(970,700, 400,200);
+
+        JTextField textMessage = new JTextField();
+        textMessage.setBounds(970, 1000, 300, 50);
+        textMessage.setEditable(true);
+
+        JButton send = new JButton();
+        send.setBounds(1300, 1000, 80, 20);
+        send.setText("Send");
+
+        send.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                String acc = characterName + ": " + textMessage.getText();
+                ///will need to implement following method
+                //sendMessage(os,name+ ": " + input.getText());
+                textMessage.setText("");
+            }
+        });
+
         introScreen.add(joinGame);
         introScreen.add(hostGame);
 
@@ -500,6 +612,17 @@ public class GameTanvi extends JFrame {
         customHeroScreen.add(armorClassText);
         customHeroScreen.add(back2);
         customHeroScreen.add(createHero);
+
+        playingScreen.add(turn);
+        playingScreen.add(rules);
+        playingScreen.add(guide);
+        playingScreen.add(pointsText);
+        playingScreen.add(pointsScrollBar);
+        playingScreen.add(dragonScrollBar);
+        playingScreen.add(dragonsText);
+        playingScreen.add(chatBox);
+        playingScreen.add(textMessage);
+        playingScreen.add(send);
 
         getContentPane().add(introScreen);
         setVisible(true);

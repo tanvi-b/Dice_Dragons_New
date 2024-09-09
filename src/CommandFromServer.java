@@ -9,9 +9,11 @@ public class CommandFromServer implements Serializable {
     public static final int ACCESS_CODE = 0;
     public static final int CONNECT = 1;
 
-    public static final int MAKE_HERO = 2;
+    public static final int INVALID_CONNECTION = 2;
 
-    public static final int CHAT = 3;
+    public static final int MAKE_HERO = 3;
+
+    public static final int CHAT = 4;
     //public static final int DISCONNECT = 3;
 
     //public static final int ADD_HERO = 4;

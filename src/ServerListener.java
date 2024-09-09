@@ -24,7 +24,10 @@ public class ServerListener implements Runnable {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
 
                 if(cfc.getCommand() == CommandFromClient.JOIN){
-                    sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+                    if (validPlayer(cfc.getData()))
+                        sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+                    else
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_CONNECTION, null, null));
                 }
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
@@ -49,8 +52,10 @@ public class ServerListener implements Runnable {
 
     }
 
-    private boolean validPlayer ()
+    private boolean validPlayer (Object data)
     {
+        Game gameObject = (Game) data;
+
         return false;
     }
 
