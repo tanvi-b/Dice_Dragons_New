@@ -24,8 +24,6 @@ public class Game extends JFrame {
     boolean host;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    private JList<Hero> heroList;
-    private JList<Dragon> dragonList;
     private Font customFont;
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> playerRules;
@@ -40,7 +38,12 @@ public class Game extends JFrame {
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
+        playerRules = new ArrayList<>();
+        dragonGuide = new ArrayList<>();
+        dragonSheets = new ArrayList<>();
+        heroSheets = new ArrayList<>();
         readImages();
         JPanel introScreen = new JPanel() {
             @Override
@@ -179,11 +182,21 @@ public class Game extends JFrame {
         characterNameText.setEditable(true);
         characterNameText.setText("");
 
-        //need to change and only show available classes
-        //ArrayList<String> availableHeroClasses = new ArrayList<String>();
-        //JComboBox<String> heroClassChoice = new JComboBox<String>((ComboBoxModel<String>) availableHeroClasses);
-        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
-        JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
+        ArrayList<String> availableHeroClasses = new ArrayList<String>();
+        availableHeroClasses.add("Warrior");
+        availableHeroClasses.add("Wizard");
+        availableHeroClasses.add("Cleric");
+        availableHeroClasses.add("Ranger");
+        availableHeroClasses.add("Rogue");
+        for (int i = 4; i>=0; i--)
+        {
+            for (int j = 0; j<heroes.size(); j++)
+            {
+                if (heroes.get(j).classType==i)
+                    availableHeroClasses.remove(i);
+            }
+        }
+        JComboBox<String> heroClassChoice = new JComboBox<>(availableHeroClasses.toArray(new String[0]));
         heroClassChoice.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
