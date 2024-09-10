@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+//dragon face is on dice side 5
 
 public class GameTanvi extends JFrame {
     String accessCode;
@@ -26,29 +27,30 @@ public class GameTanvi extends JFrame {
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
     private Font customFont;
-    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6,
-            background, weapon, prPage1, prPage2, prPage3, prPage4, prPage5, prPage6,
-            prPage7, prPage8, prPage9, prPage10, prPage11, prPage12;
-    private JList<BufferedImage> playerRulesImages;
-    private JList<BufferedImage> dragonSheets;
-    private JList<BufferedImage> heroSheets;
+    private ArrayList<BufferedImage> diceFaces;
+    private ArrayList<BufferedImage> playerRules;
+    private ArrayList<BufferedImage> dragonGuide;
+    private ArrayList<BufferedImage> dragonSheets;
+    private ArrayList<BufferedImage> heroSheets;
+    private BufferedImage intro, loginBackground, background, weapon;
 
     public GameTanvi()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        diceFaces = new ArrayList<>();
 
         try
         {
             intro  = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/introScreen.jpg"));
             loginBackground = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreen.jpg"));
             background = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/backgroundImage.png"));
-            diceFace1 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/dice side.png"));
-            diceFace2 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_001.png"));
-            diceFace3 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_002.png"));
-            diceFace4 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_004.png"));
-            diceFace5 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_005.png"));
-            diceFace6 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_006.png"));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/dice side.png")));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_006.png")));
         }
         catch(Exception e)
         {
@@ -87,11 +89,11 @@ public class GameTanvi extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFace1, 550, 120, 100, 100, this);
-                g.drawImage(diceFace1, 675, 120, 100, 100, this);
-                g.drawImage(diceFace1, 800, 120, 100, 100, this);
-                g.drawImage(diceFace1, 925, 120, 100, 100, this);
-                g.drawImage(diceFace1, 1050, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
             }
         };
         customHeroScreen.setLayout(null);
@@ -233,11 +235,14 @@ public class GameTanvi extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
+                        heroClassChoice.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
 
@@ -338,11 +343,14 @@ public class GameTanvi extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
+                        heroClassChoice1.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
 
@@ -403,6 +411,11 @@ public class GameTanvi extends JFrame {
         diceMessage.setFont(customFont.deriveFont(25f));
         diceMessage.setBounds(530, 30, 700, 100);
 
+        JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setForeground(Color.red);
+        rollingDice.setFont(customFont.deriveFont(45f));
+        rollingDice.setBounds(675, 130, 300, 100);
+
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
         roll.setFont(customFont.deriveFont(45f));
@@ -412,6 +425,12 @@ public class GameTanvi extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        rollingDice.setVisible(true);
+                    }
+                });
             }
         });
 
@@ -469,12 +488,14 @@ public class GameTanvi extends JFrame {
                 getContentPane().removeAll();
                 if (host) {
                     getContentPane().add(hostScreen);
+                    heroClassChoice1.setSelectedIndex(0);
                     hostScreen.remove(heroClassChoice1);
                     hostScreen.remove(custom1);
                     hostScreen.add(customHeroMade1);
                 }
                 else {
                     getContentPane().add(joinScreen);
+                    heroClassChoice.setSelectedIndex(0);
                     joinScreen.remove(heroClassChoice);
                     joinScreen.remove(custom);
                     joinScreen.add(customHeroMade);
@@ -612,6 +633,8 @@ public class GameTanvi extends JFrame {
         customHeroScreen.add(armorClassText);
         customHeroScreen.add(back2);
         customHeroScreen.add(createHero);
+        customHeroScreen.add(rollingDice);
+        rollingDice.setVisible(false);
 
         playingScreen.add(turn);
         playingScreen.add(rules);
