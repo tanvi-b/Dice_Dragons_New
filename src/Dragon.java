@@ -1,4 +1,4 @@
-public class Dragon {
+public class Dragon extends Player{
 
     private void successHunt()
     {
