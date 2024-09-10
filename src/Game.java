@@ -756,7 +756,7 @@ public class Game extends JFrame {
             dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/young red dragon.png")));
-//add pale dragon
+            dragonSheets.add(ImageIO.read(new File("images/pale dragon.png")));
             heroSheets.add(ImageIO.read(new File("images/cleric.png")));
             heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
             heroSheets.add(ImageIO.read(new File("images/ranger.png")));
