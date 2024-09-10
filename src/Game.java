@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+//dragon face is on dice side 5
 
 public class Game extends JFrame {
     String accessCode;
@@ -26,29 +27,30 @@ public class Game extends JFrame {
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
     private Font customFont;
-    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6,
-            background, weapon, prPage1, prPage2, prPage3, prPage4, prPage5, prPage6,
-            prPage7, prPage8, prPage9, prPage10, prPage11, prPage12;
-    private JList<BufferedImage> playerRulesImages;
-    private JList<BufferedImage> dragonSheets;
-    private JList<BufferedImage> heroSheets;
+    private ArrayList<BufferedImage> diceFaces;
+    private ArrayList<BufferedImage> playerRules;
+    private ArrayList<BufferedImage> dragonGuide;
+    private ArrayList<BufferedImage> dragonSheets;
+    private ArrayList<BufferedImage> heroSheets;
+    private BufferedImage intro, loginBackground, background, weapon;
 
     public Game()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        diceFaces = new ArrayList<>();
 
         try
         {
             intro  = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\introScreen.jpg"));
             loginBackground = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\loginScreen.jpg"));
             background = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\backgroundImage.png"));
-            diceFace1 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\dice side.png"));
-            diceFace2 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_001.png"));
-            diceFace3 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_002.png"));
-            diceFace4 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_004.png"));
-            diceFace5 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_005.png"));
-            diceFace6 = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_006.png"));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\dice side.png")));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_006.png")));
         }
         catch(Exception e)
         {
@@ -87,11 +89,11 @@ public class Game extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFace1, 550, 120, 100, 100, this);
-                g.drawImage(diceFace1, 675, 120, 100, 100, this);
-                g.drawImage(diceFace1, 800, 120, 100, 100, this);
-                g.drawImage(diceFace1, 925, 120, 100, 100, this);
-                g.drawImage(diceFace1, 1050, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
             }
         };
         customHeroScreen.setLayout(null);
@@ -110,7 +112,6 @@ public class Game extends JFrame {
 
         JPanel playerRules = new JPanel();
         playerRules.setLayout(null);
-
 
         //intro screen
         host = false;
@@ -205,7 +206,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        heroClassChoice.setSize(350, 75);
+        heroClassChoice.setSize(350, 100); //see if you can increase height itself
         heroClassChoice.setLocation(600, 500);
 
         JButton custom = new JButton ("Custom");
@@ -234,11 +235,14 @@ public class Game extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
+                        heroClassChoice.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
 
@@ -310,7 +314,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        heroClassChoice1.setSize(350, 75);
+        heroClassChoice1.setSize(350, 100); //see if you can increase height itself
         heroClassChoice1.setLocation(600, 500);
 
         JButton custom1 = new JButton ("Custom");
@@ -339,11 +343,14 @@ public class Game extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
+                        heroClassChoice1.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
 
@@ -401,8 +408,13 @@ public class Game extends JFrame {
 
         JLabel diceMessage = new JLabel("Roll the dice 3 times to determine your hit points and armor class.");
         diceMessage.setForeground(Color.white);
-        diceMessage.setFont(customFont.deriveFont(23f));
+        diceMessage.setFont(customFont.deriveFont(25f));
         diceMessage.setBounds(530, 30, 700, 100);
+
+        JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setForeground(Color.red);
+        rollingDice.setFont(customFont.deriveFont(45f));
+        rollingDice.setBounds(675, 130, 300, 100);
 
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
@@ -413,6 +425,12 @@ public class Game extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        rollingDice.setVisible(true);
+                    }
+                });
             }
         });
 
@@ -470,12 +488,14 @@ public class Game extends JFrame {
                 getContentPane().removeAll();
                 if (host) {
                     getContentPane().add(hostScreen);
+                    heroClassChoice1.setSelectedIndex(0);
                     hostScreen.remove(heroClassChoice1);
                     hostScreen.remove(custom1);
                     hostScreen.add(customHeroMade1);
                 }
                 else {
                     getContentPane().add(joinScreen);
+                    heroClassChoice.setSelectedIndex(0);
                     joinScreen.remove(heroClassChoice);
                     joinScreen.remove(custom);
                     joinScreen.add(customHeroMade);
@@ -576,43 +596,6 @@ public class Game extends JFrame {
             }
         });
 
-        //player images and weapons will be decided further through threading
-
-        //attempt to do unique playersheet but not working with draw
-        // will attempt threading first and then come back here
-
-       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
-
-       try {
-           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
-           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
-           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
-           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
-           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-
-       protected void paintComponent(Graphics g){
-       super.paintComponent(g);
-       if (selection1 == 0 || selection2 == 0) {
-           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 1 || selection2 == 1) {
-           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 2 || selection2 == 2) {
-           g.drawImage(clericSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 3 || selection2 == 3) {
-           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 4 || selection2 == 4) {
-           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
-       }
-   }
-        */
-
         introScreen.add(joinGame);
         introScreen.add(hostGame);
 
@@ -650,6 +633,8 @@ public class Game extends JFrame {
         customHeroScreen.add(armorClassText);
         customHeroScreen.add(back2);
         customHeroScreen.add(createHero);
+        customHeroScreen.add(rollingDice);
+        rollingDice.setVisible(false);
 
         playingScreen.add(turn);
         playingScreen.add(rules);
