@@ -40,6 +40,7 @@ public class GameTanvi extends JFrame {
 
         try
         {
+            /*
             intro  = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/introScreen.jpg"));
             loginBackground = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreen.jpg"));
             background = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/backgroundImage.png"));
@@ -49,6 +50,8 @@ public class GameTanvi extends JFrame {
             diceFace4 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_004.png"));
             diceFace5 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_005.png"));
             diceFace6 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_006.png"));
+
+             */
         }
         catch(Exception e)
         {
@@ -114,7 +117,7 @@ public class GameTanvi extends JFrame {
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("/Users/tanvibhattad/Downloads/Almendra/Almendra-Regular.ttf")).deriveFont(42f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\Almendra-Regular.ttf")).deriveFont(42f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
@@ -531,28 +534,34 @@ public class GameTanvi extends JFrame {
         JTextField pointsText = new JTextField();
         pointsText.setForeground(new Color(0, 0, 0));
         pointsText.setFont(new Font("Arial", Font.BOLD, 30));
-        pointsText.setBounds(20, 30, 360, 100);
+        pointsText.setBounds(10, 50, 360, 90);
         pointsText.setVisible(true);
         pointsText.setText("        Hero's Updates  ");
+        pointsText.setEditable(false);
+        pointsText.setBackground(Color.white);
+
 
         JList<String> heroUpdates = new JList<>();
 
         JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        pointsScrollBar.setBounds(20, 150, 360, 300);
+        pointsScrollBar.setBounds(10, 160, 360, 250);
+
 
         JTextField dragonsText = new JTextField();
         dragonsText.setForeground(new Color(0, 0, 0));
         dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
-        dragonsText.setBounds(20, 490, 360, 100);
+        dragonsText.setBounds(10, 500, 360, 90);
         dragonsText.setVisible(true);
         dragonsText.setText("      Dragon's Updates  ");
+        dragonsText.setEditable(false);
+        dragonsText.setBackground(Color.white);
 
         JList<String> dragonUpdates = new JList<>();
 
         JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(20, 620, 360, 300);
+        dragonScrollBar.setBounds(10, 610, 360, 280);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);

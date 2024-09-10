@@ -12,7 +12,7 @@ public class ClientListener implements Runnable {
   public ClientListener(ObjectInputStream is, ObjectOutputStream os, Game game){
     this.inputStream = is; 
     this.outputStream = os; 
-    this.game = game; 
+    this.game = game; //asdf
   }
   public void run() {
         try {
