@@ -42,15 +42,15 @@ public class Game extends JFrame {
 
         try
         {
-            intro  = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\introScreen.jpg"));
-            loginBackground = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\loginScreen.jpg"));
-            background = ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\backgroundImage.png"));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\dice side.png")));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_001.png")));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_002.png")));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_004.png")));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_005.png")));
-            diceFaces.add(ImageIO.read(new File("C:\\Users\\k2106464\\Downloads\\Dice-and-Dragons-Board-Game-main (1)\\Dice-and-Dragons-Board-Game-main\\images\\D&D dice_006.png")));
+            intro = ImageIO.read(new File("images/introScreen.jpg"));
+            loginBackground = ImageIO.read(new File("images/loginScreen.jpg"));
+            background = ImageIO.read(new File("images/backgroundImage.png"));
+            diceFaces.add(ImageIO.read(new File("images/dice side.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_006.png")));
         }
         catch(Exception e)
         {
@@ -116,7 +116,7 @@ public class Game extends JFrame {
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("C:\\Users\\k2106464\\Downloads\\Almendra\\Almendra-Regular.ttf")).deriveFont(42f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf")).deriveFont(42f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
@@ -515,21 +515,17 @@ public class Game extends JFrame {
         });
 
         //playing screen
-       JTextField turn = new JTextField();
-        turn.setForeground(new Color(0, 0, 0));
-        turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
+        JLabel turn = new JLabel();
+        turn.setFont(customFont.deriveFont(60f));
         turn.setBounds(450, 75, 500, 90);
-        turn.setVisible(true);
-        turn.setText("TURN: ");
-        turn.setEditable(false);
-        turn.setBackground(Color.white);
+        turn.setText("Turn: ");
+        turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        rules.setFont(customFont.deriveFont(30f));
         rules.setBounds(970, 80, 80, 80);
-        rules.setEnabled(true);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
-        rules.setBackground(Color.WHITE);
+        rules.setOpaque(true);
 
         rules.addActionListener(new ActionListener() {
             @Override
@@ -543,11 +539,10 @@ public class Game extends JFrame {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        guide.setFont(customFont.deriveFont(30f));
         guide.setBounds(1070, 80, 80, 80);
-        guide.setEnabled(true);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
-        guide.setBackground(Color.white);
+        guide.setOpaque(true);
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -559,14 +554,13 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-        JTextField pointsText = new JTextField();
-        pointsText.setForeground(new Color(0, 0, 0));
-        pointsText.setFont(new Font("Arial", Font.BOLD, 30));
+
+        JLabel pointsText = new JLabel();
+        pointsText.setFont(customFont.deriveFont(30f));
         pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setVisible(true);
-        pointsText.setText("        Hero's Updates  ");
-        pointsText.setEditable(false);
-        pointsText.setBackground(Color.white);
+        pointsText.setText("Hero's Updates");
+        pointsText.setHorizontalAlignment(JLabel.CENTER);
+        pointsText.setOpaque(true);
 
         JList<String> heroUpdates = new JList<>();
 
@@ -574,12 +568,12 @@ public class Game extends JFrame {
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pointsScrollBar.setBounds(10, 190, 360, 280);
 
-        JTextField dragonsText = new JTextField();
-        dragonsText.setForeground(new Color(0, 0, 0));
-        dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
+        JLabel dragonsText = new JLabel();
+        dragonsText.setFont(customFont.deriveFont(30f));
         dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setVisible(true);
-        dragonsText.setText("      Dragon's Updates  ");
+        dragonsText.setText("Dragon's Updates");
+        dragonsText.setHorizontalAlignment(JLabel.CENTER);
+        dragonsText.setOpaque(true);
 
         JList<String> dragonUpdates = new JList<>();
 
@@ -587,34 +581,35 @@ public class Game extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
-        JTextField accessCodeShow = new JTextField();
+        JLabel accessCodeShow = new JLabel();
+        accessCodeShow.setFont(customFont.deriveFont(20f));
         accessCodeShow.setBounds(900,10,250,50);
         accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setOpaque(true);
         accessCodeShow.setBackground(Color.black);
         accessCodeShow.setForeground(Color.ORANGE);
-        accessCodeShow.setEditable(false);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(870,720, 310,150);
 
-        JTextField textMessage = new JTextField();
-        textMessage.setBounds(870, 880, 240, 65);
-        textMessage.setText("Message:");
-        textMessage.setEditable(true);
-        textMessage.setVisible(true);
+        JTextField messageText = new JTextField();
+        messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        messageText.setBounds(870, 880, 240, 65);
+        messageText.setBackground(Color.white);
+        messageText.setOpaque(true);
 
         JButton send = new JButton();
+        send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
         send.setText("Send");
-        send.setVisible(true);
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                String acc = characterName + ": " + textMessage.getText();
+                String acc = characterName + ": " + messageText.getText();
                 ///will need to implement following method
                 //sendMessage(os,name+ ": " + input.getText());
-                textMessage.setText("");
+                messageText.setText("");
             }
         });
 
@@ -707,7 +702,7 @@ public class Game extends JFrame {
         playingScreen.add(dragonScrollBar);
         playingScreen.add(dragonsText);
         playingScreen.add(chatBox);
-        playingScreen.add(textMessage);
+        playingScreen.add(messageText);
         playingScreen.add(send);
         playingScreen.add(accessCodeShow);
 
