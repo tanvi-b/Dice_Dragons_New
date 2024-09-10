@@ -206,7 +206,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        heroClassChoice.setSize(350, 100); //see if you can increase height itself
+        heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
         JButton custom = new JButton ("Custom");
@@ -246,6 +246,11 @@ public class Game extends JFrame {
             }
         });
 
+        JLabel customHeroMade = new JLabel("Custom hero has been made");
+        customHeroMade.setForeground(Color.red);
+        customHeroMade.setFont(customFont.deriveFont(38f));
+        customHeroMade.setBounds(600, 500, 700, 100);
+
         JButton back = new JButton ("Back");
         back.setForeground(new Color(204, 185, 45));
         back.setFont(customFont.deriveFont(30f));
@@ -255,6 +260,10 @@ public class Game extends JFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice.setSelectedIndex(-1);
+                heroClassChoice.setVisible(true);
+                custom.setVisible(true);
+                customHeroMade.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -262,11 +271,6 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade = new JLabel("Custom hero has been made");
-        customHeroMade.setForeground(Color.red);
-        customHeroMade.setFont(customFont.deriveFont(38f));
-        customHeroMade.setBounds(600, 500, 700, 100);
 
         //host screen
         JLabel numberOfPlayers = new JLabel("Number of players:");
@@ -296,7 +300,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        numbersOfPlayersChoice.setSize(350, 100); //see if you can increase height itself
+        numbersOfPlayersChoice.setSize(350, 75);
         numbersOfPlayersChoice.setLocation(600, 200);
 
         JTextField characterNameText1 = new JTextField();
@@ -314,7 +318,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        heroClassChoice1.setSize(350, 100); //see if you can increase height itself
+        heroClassChoice1.setSize(350, 75);
         heroClassChoice1.setLocation(600, 500);
 
         JButton custom1 = new JButton ("Custom");
@@ -354,6 +358,11 @@ public class Game extends JFrame {
             }
         });
 
+        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
+        customHeroMade1.setForeground(Color.red);
+        customHeroMade1.setFont(customFont.deriveFont(38f));
+        customHeroMade1.setBounds(600, 500, 700, 100);
+
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
         back1.setFont(customFont.deriveFont(30f));
@@ -363,6 +372,10 @@ public class Game extends JFrame {
         back1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice1.setSelectedIndex(-1);
+                heroClassChoice1.setVisible(true);
+                custom1.setVisible(true);
+                customHeroMade1.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -370,11 +383,6 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
-        customHeroMade1.setForeground(Color.red);
-        customHeroMade1.setFont(customFont.deriveFont(38f));
-        customHeroMade1.setBounds(600, 500, 700, 100);
 
         //custom hero screen
         DefaultTableModel skillsModel = new DefaultTableModel() {
@@ -489,16 +497,16 @@ public class Game extends JFrame {
                 if (host) {
                     getContentPane().add(hostScreen);
                     heroClassChoice1.setSelectedIndex(0);
-                    hostScreen.remove(heroClassChoice1);
-                    hostScreen.remove(custom1);
-                    hostScreen.add(customHeroMade1);
+                    heroClassChoice1.setVisible(false);
+                    custom1.setVisible(false);
+                    customHeroMade1.setVisible(true);
                 }
                 else {
                     getContentPane().add(joinScreen);
                     heroClassChoice.setSelectedIndex(0);
-                    joinScreen.remove(heroClassChoice);
-                    joinScreen.remove(custom);
-                    joinScreen.add(customHeroMade);
+                    heroClassChoice.setVisible(false);
+                    custom.setVisible(false);
+                    customHeroMade.setVisible(true);
                 }
                 validate();
                 repaint();
@@ -610,6 +618,8 @@ public class Game extends JFrame {
         joinScreen.add(custom);
         joinScreen.add(beginGame);
         joinScreen.add(back);
+        joinScreen.add(customHeroMade);
+        customHeroMade.setVisible(false);
 
         hostScreen.add(numberOfPlayers);
         hostScreen.add(numbersOfPlayersChoice);
@@ -622,6 +632,8 @@ public class Game extends JFrame {
         hostScreen.add(custom1);
         hostScreen.add(createGame);
         hostScreen.add(back1);
+        hostScreen.add(customHeroMade1);
+        customHeroMade1.setVisible(false);
 
         customHeroScreen.add(skillsTable);
         customHeroScreen.add(scrollPane);

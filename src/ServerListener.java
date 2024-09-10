@@ -54,7 +54,10 @@ public class ServerListener implements Runnable {
 
     private boolean validPlayer (Object data)
     {
-        Game gameObject = (Game) data;
+        String playerEntry = (String) data;
+        String[] playerInputs = playerEntry.split(",");
+        //validate access code
+        //validate character name
 
         return false;
     }
