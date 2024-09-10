@@ -515,10 +515,10 @@ public class Game extends JFrame {
         });
 
         //playing screen
-        JTextField turn = new JTextField();
+       JTextField turn = new JTextField();
         turn.setForeground(new Color(0, 0, 0));
         turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
-        turn.setBounds(450, 30, 500, 100);
+        turn.setBounds(450, 75, 500, 90);
         turn.setVisible(true);
         turn.setText("TURN: ");
         turn.setEditable(false);
@@ -526,7 +526,7 @@ public class Game extends JFrame {
 
         JButton rules = new JButton("Rules");
         rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        rules.setBounds(1000, 30, 120, 100);
+        rules.setBounds(970, 80, 80, 80);
         rules.setEnabled(true);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setBackground(Color.WHITE);
@@ -542,9 +542,9 @@ public class Game extends JFrame {
             }
         });
 
-        JButton guide = new JButton("Dragon Guide");
+        JButton guide = new JButton("Guide");
         guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        guide.setBounds(1150, 30, 200, 100);
+        guide.setBounds(1070, 80, 80, 80);
         guide.setEnabled(true);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setBackground(Color.white);
@@ -562,7 +562,7 @@ public class Game extends JFrame {
         JTextField pointsText = new JTextField();
         pointsText.setForeground(new Color(0, 0, 0));
         pointsText.setFont(new Font("Arial", Font.BOLD, 30));
-        pointsText.setBounds(20, 30, 360, 100);
+        pointsText.setBounds(10, 75, 360, 95);
         pointsText.setVisible(true);
         pointsText.setText("        Hero's Updates  ");
         pointsText.setEditable(false);
@@ -572,12 +572,12 @@ public class Game extends JFrame {
 
         JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        pointsScrollBar.setBounds(20, 150, 360, 300);
+        pointsScrollBar.setBounds(10, 190, 360, 280);
 
         JTextField dragonsText = new JTextField();
         dragonsText.setForeground(new Color(0, 0, 0));
         dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
-        dragonsText.setBounds(20, 490, 360, 100);
+        dragonsText.setBounds(10, 500, 360, 95);
         dragonsText.setVisible(true);
         dragonsText.setText("      Dragon's Updates  ");
 
@@ -585,7 +585,7 @@ public class Game extends JFrame {
 
         JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(20, 620, 360, 300);
+        dragonScrollBar.setBounds(10, 610, 360, 280);
 
         JTextField accessCodeShow = new JTextField();
         accessCodeShow.setBounds(900,10,250,50);
@@ -596,18 +596,19 @@ public class Game extends JFrame {
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
-        chatBox.setBounds(970,700, 400,200);
+        chatBox.setBounds(870,720, 310,150);
 
         JTextField textMessage = new JTextField();
-        textMessage.setBounds(970, 1000, 300, 50);
+        textMessage.setBounds(870, 880, 240, 65);
+        textMessage.setText("Message:");
         textMessage.setEditable(true);
         textMessage.setVisible(true);
 
         JButton send = new JButton();
-        send.setBounds(1300, 1000, 80, 20);
+        send.setBounds(1115, 880, 65, 65);
         send.setText("Send");
         send.setVisible(true);
-        
+
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String acc = characterName + ": " + textMessage.getText();
