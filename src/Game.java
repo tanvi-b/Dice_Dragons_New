@@ -521,13 +521,15 @@ public class Game extends JFrame {
         turn.setBounds(450, 30, 500, 100);
         turn.setVisible(true);
         turn.setText("TURN: ");
+        turn.setEditable(false);
+        turn.setBackground(Color.white);
 
         JButton rules = new JButton("Rules");
         rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
         rules.setBounds(1000, 30, 120, 100);
         rules.setEnabled(true);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
-        buttonFormatting(rules);
+        rules.setBackground(Color.WHITE);
 
         rules.addActionListener(new ActionListener() {
             @Override
@@ -545,7 +547,7 @@ public class Game extends JFrame {
         guide.setBounds(1150, 30, 200, 100);
         guide.setEnabled(true);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
-        buttonFormatting(guide);
+        guide.setBackground(Color.white);
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -563,6 +565,8 @@ public class Game extends JFrame {
         pointsText.setBounds(20, 30, 360, 100);
         pointsText.setVisible(true);
         pointsText.setText("        Hero's Updates  ");
+        pointsText.setEditable(false);
+        pointsText.setBackground(Color.white);
 
         JList<String> heroUpdates = new JList<>();
 
@@ -583,6 +587,13 @@ public class Game extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(20, 620, 360, 300);
 
+        JTextField accessCodeShow = new JTextField();
+        accessCodeShow.setBounds(900,10,250,50);
+        accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setBackground(Color.black);
+        accessCodeShow.setForeground(Color.ORANGE);
+        accessCodeShow.setEditable(false);
+
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(970,700, 400,200);
@@ -590,11 +601,13 @@ public class Game extends JFrame {
         JTextField textMessage = new JTextField();
         textMessage.setBounds(970, 1000, 300, 50);
         textMessage.setEditable(true);
+        textMessage.setVisible(true);
 
         JButton send = new JButton();
         send.setBounds(1300, 1000, 80, 20);
         send.setText("Send");
-
+        send.setVisible(true);
+        
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 String acc = characterName + ": " + textMessage.getText();
@@ -603,6 +616,43 @@ public class Game extends JFrame {
                 textMessage.setText("");
             }
         });
+
+        //player images and weapons will be decided further through threading
+
+        //attempt to do unique playersheet but not working with draw
+        // will attempt threading first and then come back here
+
+       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
+
+       try {
+           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
+           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
+           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
+           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
+           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
+       } catch (IOException e) {
+           throw new RuntimeException(e);
+       }
+
+       protected void paintComponent(Graphics g){
+       super.paintComponent(g);
+       if (selection1 == 0 || selection2 == 0) {
+           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 1 || selection2 == 1) {
+           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 2 || selection2 == 2) {
+           g.drawImage(clericSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 3 || selection2 == 3) {
+           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 4 || selection2 == 4) {
+           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
+       }
+   }
+        */
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -658,6 +708,7 @@ public class Game extends JFrame {
         playingScreen.add(chatBox);
         playingScreen.add(textMessage);
         playingScreen.add(send);
+        playingScreen.add(accessCodeShow);
 
         getContentPane().add(introScreen);
         setVisible(true);
