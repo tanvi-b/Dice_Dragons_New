@@ -23,7 +23,8 @@ import java.util.ArrayList;
 //exceptions/error code labels
 //lobby screen
 
-public class Game extends JFrame {
+    //put in constructor: ObjectOutputStream os, String username
+    public Game() {
     String accessCode;
     boolean host;
     boolean rollClicked;
