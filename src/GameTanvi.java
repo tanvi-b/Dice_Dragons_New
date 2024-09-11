@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+//dragon face is on dice side 5
 
 public class GameTanvi extends JFrame {
     String accessCode;
@@ -26,32 +27,30 @@ public class GameTanvi extends JFrame {
     private JList<Hero> heroList;
     private JList<Dragon> dragonList;
     private Font customFont;
-    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6,
-            background, weapon, prPage1, prPage2, prPage3, prPage4, prPage5, prPage6,
-            prPage7, prPage8, prPage9, prPage10, prPage11, prPage12;
-    private JList<BufferedImage> playerRulesImages;
-    private JList<BufferedImage> dragonSheets;
-    private JList<BufferedImage> heroSheets;
+    private ArrayList<BufferedImage> diceFaces;
+    private ArrayList<BufferedImage> playerRules;
+    private ArrayList<BufferedImage> dragonGuide;
+    private ArrayList<BufferedImage> dragonSheets;
+    private ArrayList<BufferedImage> heroSheets;
+    private BufferedImage intro, loginBackground, background, weapon;
 
     public GameTanvi()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        diceFaces = new ArrayList<>();
 
         try
         {
-            /*
-            intro  = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/introScreen.jpg"));
-            loginBackground = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/loginScreen.jpg"));
-            background = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/backgroundImage.png"));
-            diceFace1 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/dice side.png"));
-            diceFace2 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_001.png"));
-            diceFace3 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_002.png"));
-            diceFace4 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_004.png"));
-            diceFace5 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_005.png"));
-            diceFace6 = ImageIO.read(new File("/Users/tanvibhattad/Downloads/Dice-and-Dragons-Board-Game-main/images/D&D dice_006.png"));
-
-             */
+            intro = ImageIO.read(new File("images/introScreen.jpg"));
+            loginBackground = ImageIO.read(new File("images/loginScreen.jpg"));
+            background = ImageIO.read(new File("images/backgroundImage.png"));
+            diceFaces.add(ImageIO.read(new File("images/dice side.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_006.png")));
         }
         catch(Exception e)
         {
@@ -90,11 +89,11 @@ public class GameTanvi extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFace1, 550, 120, 100, 100, this);
-                g.drawImage(diceFace1, 675, 120, 100, 100, this);
-                g.drawImage(diceFace1, 800, 120, 100, 100, this);
-                g.drawImage(diceFace1, 925, 120, 100, 100, this);
-                g.drawImage(diceFace1, 1050, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
             }
         };
         customHeroScreen.setLayout(null);
@@ -117,7 +116,7 @@ public class GameTanvi extends JFrame {
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\Almendra-Regular.ttf")).deriveFont(42f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf")).deriveFont(42f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
@@ -207,7 +206,7 @@ public class GameTanvi extends JFrame {
                 }
             }
         });
-        heroClassChoice.setSize(350, 100); //see if you can increase height itself
+        heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
         JButton custom = new JButton ("Custom");
@@ -236,13 +235,21 @@ public class GameTanvi extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
+                        heroClassChoice.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
+
+        JLabel customHeroMade = new JLabel("Custom hero has been made");
+        customHeroMade.setForeground(Color.red);
+        customHeroMade.setFont(customFont.deriveFont(38f));
+        customHeroMade.setBounds(600, 500, 700, 100);
 
         JButton back = new JButton ("Back");
         back.setForeground(new Color(204, 185, 45));
@@ -253,6 +260,10 @@ public class GameTanvi extends JFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice.setSelectedIndex(-1);
+                heroClassChoice.setVisible(true);
+                custom.setVisible(true);
+                customHeroMade.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -260,11 +271,6 @@ public class GameTanvi extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade = new JLabel("Custom hero has been made");
-        customHeroMade.setForeground(Color.red);
-        customHeroMade.setFont(customFont.deriveFont(38f));
-        customHeroMade.setBounds(600, 500, 700, 100);
 
         //host screen
         JLabel numberOfPlayers = new JLabel("Number of players:");
@@ -294,7 +300,7 @@ public class GameTanvi extends JFrame {
                 }
             }
         });
-        numbersOfPlayersChoice.setSize(350, 100); //see if you can increase height itself
+        numbersOfPlayersChoice.setSize(350, 75);
         numbersOfPlayersChoice.setLocation(600, 200);
 
         JTextField characterNameText1 = new JTextField();
@@ -312,7 +318,7 @@ public class GameTanvi extends JFrame {
                 }
             }
         });
-        heroClassChoice1.setSize(350, 100); //see if you can increase height itself
+        heroClassChoice1.setSize(350, 75);
         heroClassChoice1.setLocation(600, 500);
 
         JButton custom1 = new JButton ("Custom");
@@ -341,13 +347,21 @@ public class GameTanvi extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
+                        heroClassChoice1.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
+
+        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
+        customHeroMade1.setForeground(Color.red);
+        customHeroMade1.setFont(customFont.deriveFont(38f));
+        customHeroMade1.setBounds(600, 500, 700, 100);
 
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
@@ -358,6 +372,10 @@ public class GameTanvi extends JFrame {
         back1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice1.setSelectedIndex(-1);
+                heroClassChoice1.setVisible(true);
+                custom1.setVisible(true);
+                customHeroMade1.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -365,11 +383,6 @@ public class GameTanvi extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
-        customHeroMade1.setForeground(Color.red);
-        customHeroMade1.setFont(customFont.deriveFont(38f));
-        customHeroMade1.setBounds(600, 500, 700, 100);
 
         //custom hero screen
         DefaultTableModel skillsModel = new DefaultTableModel() {
@@ -406,6 +419,11 @@ public class GameTanvi extends JFrame {
         diceMessage.setFont(customFont.deriveFont(25f));
         diceMessage.setBounds(530, 30, 700, 100);
 
+        JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setForeground(Color.red);
+        rollingDice.setFont(customFont.deriveFont(45f));
+        rollingDice.setBounds(675, 130, 300, 100);
+
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
         roll.setFont(customFont.deriveFont(45f));
@@ -415,6 +433,12 @@ public class GameTanvi extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Timer timer = new Timer(2000, new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        rollingDice.setVisible(true);
+                    }
+                });
             }
         });
 
@@ -472,15 +496,17 @@ public class GameTanvi extends JFrame {
                 getContentPane().removeAll();
                 if (host) {
                     getContentPane().add(hostScreen);
-                    hostScreen.remove(heroClassChoice1);
-                    hostScreen.remove(custom1);
-                    hostScreen.add(customHeroMade1);
+                    heroClassChoice1.setSelectedIndex(0);
+                    heroClassChoice1.setVisible(false);
+                    custom1.setVisible(false);
+                    customHeroMade1.setVisible(true);
                 }
                 else {
                     getContentPane().add(joinScreen);
-                    joinScreen.remove(heroClassChoice);
-                    joinScreen.remove(custom);
-                    joinScreen.add(customHeroMade);
+                    heroClassChoice.setSelectedIndex(0);
+                    heroClassChoice.setVisible(false);
+                    custom.setVisible(false);
+                    customHeroMade.setVisible(true);
                 }
                 validate();
                 repaint();
@@ -489,19 +515,17 @@ public class GameTanvi extends JFrame {
         });
 
         //playing screen
-        JTextField turn = new JTextField();
-        turn.setForeground(new Color(0, 0, 0));
-        turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
-        turn.setBounds(450, 30, 500, 100);
-        turn.setVisible(true);
-        turn.setText("TURN: ");
+        JLabel turn = new JLabel();
+        turn.setFont(customFont.deriveFont(60f));
+        turn.setBounds(450, 75, 500, 90);
+        turn.setText("Turn: ");
+        turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        rules.setBounds(1000, 30, 120, 100);
-        rules.setEnabled(true);
+        rules.setFont(customFont.deriveFont(30f));
+        rules.setBounds(970, 80, 80, 80);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
-        buttonFormatting(rules);
+        rules.setOpaque(true);
 
         rules.addActionListener(new ActionListener() {
             @Override
@@ -514,12 +538,11 @@ public class GameTanvi extends JFrame {
             }
         });
 
-        JButton guide = new JButton("Dragon Guide");
-        guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
-        guide.setBounds(1150, 30, 200, 100);
-        guide.setEnabled(true);
+        JButton guide = new JButton("Guide");
+        guide.setFont(customFont.deriveFont(30f));
+        guide.setBounds(1070, 80, 80, 80);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
-        buttonFormatting(guide);
+        guide.setOpaque(true);
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -531,31 +554,26 @@ public class GameTanvi extends JFrame {
                 setVisible(true);
             }
         });
-        JTextField pointsText = new JTextField();
-        pointsText.setForeground(new Color(0, 0, 0));
-        pointsText.setFont(new Font("Arial", Font.BOLD, 30));
-        pointsText.setBounds(10, 50, 360, 90);
-        pointsText.setVisible(true);
-        pointsText.setText("        Hero's Updates  ");
-        pointsText.setEditable(false);
-        pointsText.setBackground(Color.white);
 
+        JLabel pointsText = new JLabel();
+        pointsText.setFont(customFont.deriveFont(30f));
+        pointsText.setBounds(10, 75, 360, 95);
+        pointsText.setText("Hero's Updates");
+        pointsText.setHorizontalAlignment(JLabel.CENTER);
+        pointsText.setOpaque(true);
 
         JList<String> heroUpdates = new JList<>();
 
         JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        pointsScrollBar.setBounds(10, 160, 360, 250);
+        pointsScrollBar.setBounds(10, 190, 360, 280);
 
-
-        JTextField dragonsText = new JTextField();
-        dragonsText.setForeground(new Color(0, 0, 0));
-        dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
-        dragonsText.setBounds(10, 500, 360, 90);
-        dragonsText.setVisible(true);
-        dragonsText.setText("      Dragon's Updates  ");
-        dragonsText.setEditable(false);
-        dragonsText.setBackground(Color.white);
+        JLabel dragonsText = new JLabel();
+        dragonsText.setFont(customFont.deriveFont(30f));
+        dragonsText.setBounds(10, 500, 360, 95);
+        dragonsText.setText("Dragon's Updates");
+        dragonsText.setHorizontalAlignment(JLabel.CENTER);
+        dragonsText.setOpaque(true);
 
         JList<String> dragonUpdates = new JList<>();
 
@@ -563,26 +581,74 @@ public class GameTanvi extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
+        JLabel accessCodeShow = new JLabel();
+        accessCodeShow.setFont(customFont.deriveFont(20f));
+        accessCodeShow.setBounds(900,10,250,50);
+        accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setOpaque(true);
+        accessCodeShow.setBackground(Color.black);
+        accessCodeShow.setForeground(Color.ORANGE);
+
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
-        chatBox.setBounds(970,700, 400,200);
+        chatBox.setBounds(870,720, 310,150);
 
-        JTextField textMessage = new JTextField();
-        textMessage.setBounds(970, 1000, 300, 50);
-        textMessage.setEditable(true);
+        JTextField messageText = new JTextField();
+        messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        messageText.setBounds(870, 880, 240, 65);
+        messageText.setBackground(Color.white);
+        messageText.setOpaque(true);
 
         JButton send = new JButton();
-        send.setBounds(1300, 1000, 80, 20);
+        send.setFont(customFont.deriveFont(20f));
+        send.setBounds(1115, 880, 65, 65);
         send.setText("Send");
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                String acc = characterName + ": " + textMessage.getText();
+                String acc = characterName + ": " + messageText.getText();
                 ///will need to implement following method
                 //sendMessage(os,name+ ": " + input.getText());
-                textMessage.setText("");
+                messageText.setText("");
             }
         });
+
+        //player images and weapons will be decided further through threading
+
+        //attempt to do unique playersheet but not working with draw
+        // will attempt threading first and then come back here
+
+       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
+
+       try {
+           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
+           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
+           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
+           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
+           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
+       } catch (IOException e) {
+           throw new RuntimeException(e);
+       }
+
+       protected void paintComponent(Graphics g){
+       super.paintComponent(g);
+       if (selection1 == 0 || selection2 == 0) {
+           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 1 || selection2 == 1) {
+           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 2 || selection2 == 2) {
+           g.drawImage(clericSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 3 || selection2 == 3) {
+           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
+       }
+       if (selection1 == 4 || selection2 == 4) {
+           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
+       }
+   }
+        */
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -598,6 +664,8 @@ public class GameTanvi extends JFrame {
         joinScreen.add(custom);
         joinScreen.add(beginGame);
         joinScreen.add(back);
+        joinScreen.add(customHeroMade);
+        customHeroMade.setVisible(false);
 
         hostScreen.add(numberOfPlayers);
         hostScreen.add(numbersOfPlayersChoice);
@@ -610,6 +678,8 @@ public class GameTanvi extends JFrame {
         hostScreen.add(custom1);
         hostScreen.add(createGame);
         hostScreen.add(back1);
+        hostScreen.add(customHeroMade1);
+        customHeroMade1.setVisible(false);
 
         customHeroScreen.add(skillsTable);
         customHeroScreen.add(scrollPane);
@@ -621,6 +691,8 @@ public class GameTanvi extends JFrame {
         customHeroScreen.add(armorClassText);
         customHeroScreen.add(back2);
         customHeroScreen.add(createHero);
+        customHeroScreen.add(rollingDice);
+        rollingDice.setVisible(false);
 
         playingScreen.add(turn);
         playingScreen.add(rules);
@@ -630,8 +702,9 @@ public class GameTanvi extends JFrame {
         playingScreen.add(dragonScrollBar);
         playingScreen.add(dragonsText);
         playingScreen.add(chatBox);
-        playingScreen.add(textMessage);
+        playingScreen.add(messageText);
         playingScreen.add(send);
+        playingScreen.add(accessCodeShow);
 
         getContentPane().add(introScreen);
         setVisible(true);

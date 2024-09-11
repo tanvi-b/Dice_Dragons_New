@@ -17,43 +17,36 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
+//dragon face is on dice side 5
 
 public class Game extends JFrame {
     String accessCode;
     boolean host;
+    boolean rollClicked;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    private JList<Hero> heroList;
-    private JList<Dragon> dragonList;
     private Font customFont;
-    private BufferedImage intro, loginBackground, diceFace1, diceFace2, diceFace3, diceFace4, diceFace5, diceFace6,
-            background, weapon, prPage1, prPage2, prPage3, prPage4, prPage5, prPage6,
-            prPage7, prPage8, prPage9, prPage10, prPage11, prPage12;
-    private JList<BufferedImage> playerRulesImages;
-    private JList<BufferedImage> dragonSheets;
-    private JList<BufferedImage> heroSheets;
+    private ArrayList<BufferedImage> diceFaces;
+    private ArrayList<BufferedImage> playerRules;
+    private ArrayList<BufferedImage> dragonGuide;
+    private ArrayList<BufferedImage> dragonSheets;
+    private ArrayList<BufferedImage> heroSheets;
+    private BufferedImage intro, loginBackground, background;
+    //playing tokens
+    //circular tokens
 
     public Game()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
-
-        try
-        {
-            intro = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\introScreen.jpg"));
-            loginBackground = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\loginScreen.jpg"));
-            background = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\backgroundImage.png"));
-            diceFace1 = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\D&D dice_001.png"));
-            diceFace2 = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\D&D dice_002.png"));
-            diceFace3 = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\D&D dice_004.png"));
-            diceFace5 = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\D&D dice_005.png"));
-            diceFace6 = ImageIO.read(new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\D&D dice_006.png"));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        rollClicked = false;
+        heroes = new ArrayList<>();
+        diceFaces = new ArrayList<>();
+        playerRules = new ArrayList<>();
+        dragonGuide = new ArrayList<>();
+        dragonSheets = new ArrayList<>();
+        heroSheets = new ArrayList<>();
+        readImages();
         JPanel introScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -86,11 +79,13 @@ public class Game extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFace1, 550, 120, 100, 100, this);
-                g.drawImage(diceFace1, 675, 120, 100, 100, this);
-                g.drawImage(diceFace1, 800, 120, 100, 100, this);
-                g.drawImage(diceFace1, 925, 120, 100, 100, this);
-                g.drawImage(diceFace1, 1050, 120, 100, 100, this);
+                if (rollClicked==false) {
+                    g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
+                }
             }
         };
         customHeroScreen.setLayout(null);
@@ -110,11 +105,10 @@ public class Game extends JFrame {
         JPanel playerRules = new JPanel();
         playerRules.setLayout(null);
 
-
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("C:\\Users\\K1334989\\Desktop\\GitHub\\Dice_Dragons_New\\images\\Almendra-Regular.ttf")).deriveFont(42f);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf")).deriveFont(42f);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(customFont);
         } catch (IOException | FontFormatException e) {
@@ -192,11 +186,21 @@ public class Game extends JFrame {
         characterNameText.setEditable(true);
         characterNameText.setText("");
 
-        //need to change and only show available classes
-        //ArrayList<String> availableHeroClasses = new ArrayList<String>();
-        //JComboBox<String> heroClassChoice = new JComboBox<String>((ComboBoxModel<String>) availableHeroClasses);
-        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
-        JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
+        ArrayList<String> availableHeroClasses = new ArrayList<String>();
+        availableHeroClasses.add("Warrior");
+        availableHeroClasses.add("Wizard");
+        availableHeroClasses.add("Cleric");
+        availableHeroClasses.add("Ranger");
+        availableHeroClasses.add("Rogue");
+        for (int i = 4; i>=0; i--)
+        {
+            for (int j = 0; j<heroes.size(); j++)
+            {
+                if (heroes.get(j).classType==i)
+                    availableHeroClasses.remove(i);
+            }
+        }
+        JComboBox<String> heroClassChoice = new JComboBox<>(availableHeroClasses.toArray(new String[0]));
         heroClassChoice.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -233,13 +237,21 @@ public class Game extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
+                        heroClassChoice.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
+
+        JLabel customHeroMade = new JLabel("Custom hero has been made");
+        customHeroMade.setForeground(Color.red);
+        customHeroMade.setFont(customFont.deriveFont(38f));
+        customHeroMade.setBounds(600, 500, 700, 100);
 
         JButton back = new JButton ("Back");
         back.setForeground(new Color(204, 185, 45));
@@ -250,6 +262,10 @@ public class Game extends JFrame {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice.setSelectedIndex(-1);
+                heroClassChoice.setVisible(true);
+                custom.setVisible(true);
+                customHeroMade.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -257,11 +273,6 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade = new JLabel("Custom hero has been made");
-        customHeroMade.setForeground(Color.red);
-        customHeroMade.setFont(customFont.deriveFont(38f));
-        customHeroMade.setBounds(600, 500, 700, 100);
 
         //host screen
         JLabel numberOfPlayers = new JLabel("Number of players:");
@@ -291,7 +302,7 @@ public class Game extends JFrame {
                 }
             }
         });
-        numbersOfPlayersChoice.setSize(350, 100); //see if you can increase height itself
+        numbersOfPlayersChoice.setSize(350, 75);
         numbersOfPlayersChoice.setLocation(600, 200);
 
         JTextField characterNameText1 = new JTextField();
@@ -338,13 +349,21 @@ public class Game extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getContentPane().removeAll();
-                getContentPane().add(playingScreen);
-                validate();
-                repaint();
-                setVisible(true);
+                if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
+                        heroClassChoice1.getSelectedIndex()!=-1) {
+                    getContentPane().removeAll();
+                    getContentPane().add(playingScreen);
+                    validate();
+                    repaint();
+                    setVisible(true);
+                }
             }
         });
+
+        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
+        customHeroMade1.setForeground(Color.red);
+        customHeroMade1.setFont(customFont.deriveFont(38f));
+        customHeroMade1.setBounds(600, 500, 700, 100);
 
         JButton back1 = new JButton ("Back");
         back1.setForeground(new Color(204, 185, 45));
@@ -355,6 +374,10 @@ public class Game extends JFrame {
         back1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                heroClassChoice1.setSelectedIndex(-1);
+                heroClassChoice1.setVisible(true);
+                custom1.setVisible(true);
+                customHeroMade1.setVisible(false);
                 getContentPane().removeAll();
                 getContentPane().add(introScreen);
                 validate();
@@ -362,11 +385,6 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-
-        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
-        customHeroMade1.setForeground(Color.red);
-        customHeroMade1.setFont(customFont.deriveFont(38f));
-        customHeroMade1.setBounds(600, 500, 700, 100);
 
         //custom hero screen
         DefaultTableModel skillsModel = new DefaultTableModel() {
@@ -377,14 +395,13 @@ public class Game extends JFrame {
         };
         skillsModel.addColumn("Skill");
         skillsModel.addColumn("Class(es)");
-        skillsModel.addColumn("Symbol 1");
-        skillsModel.addColumn("Symbol 2");
-        skillsModel.addColumn("Symbol 3");
-        skillsModel.addColumn("Symbol 4");
-        skillsModel.addColumn("Symbol 5");
         skillsModel.addColumn("Effect");
         JTable skillsTable = new JTable(skillsModel);
+        skillsTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
         skillsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane skillsScrollPane = new JScrollPane(skillsTable);
+        skillsScrollPane.setBounds(20, 35, 500, 680);
+
         ListSelectionModel selectionModel = skillsTable.getSelectionModel();
         selectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -394,14 +411,20 @@ public class Game extends JFrame {
                 }
             }
         });
-        skillsTable.setBounds(10, 35, 500, 680);
-        JScrollPane scrollPane = new JScrollPane(skillsTable);
-        scrollPane.setBounds(20, 35, 500, 680);
+        skillsTable.setBounds(20, 35, 500, 680);
+        skillsTable.setOpaque(true);
 
         JLabel diceMessage = new JLabel("Roll the dice 3 times to determine your hit points and armor class.");
         diceMessage.setForeground(Color.white);
-        diceMessage.setFont(customFont.deriveFont(23f));
+        diceMessage.setFont(customFont.deriveFont(25f));
         diceMessage.setBounds(530, 30, 700, 100);
+
+        JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setHorizontalAlignment(SwingConstants.CENTER);
+        rollingDice.setForeground(Color.red);
+        rollingDice.setFont(customFont.deriveFont(45f));
+        rollingDice.setBounds(600, 120, 500, 75);
+        rollingDice.setOpaque(true);
 
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
@@ -412,6 +435,11 @@ public class Game extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                rollClicked = true;
+                rollingDice.setVisible(true);
+                validate();
+                repaint();
+                setVisible(true);
             }
         });
 
@@ -469,15 +497,17 @@ public class Game extends JFrame {
                 getContentPane().removeAll();
                 if (host) {
                     getContentPane().add(hostScreen);
-                    hostScreen.remove(heroClassChoice1);
-                    hostScreen.remove(custom1);
-                    hostScreen.add(customHeroMade1);
+                    heroClassChoice1.setSelectedIndex(0);
+                    heroClassChoice1.setVisible(false);
+                    custom1.setVisible(false);
+                    customHeroMade1.setVisible(true);
                 }
                 else {
                     getContentPane().add(joinScreen);
-                    joinScreen.remove(heroClassChoice);
-                    joinScreen.remove(custom);
-                    joinScreen.add(customHeroMade);
+                    heroClassChoice.setSelectedIndex(0);
+                    heroClassChoice.setVisible(false);
+                    custom.setVisible(false);
+                    customHeroMade.setVisible(true);
                 }
                 validate();
                 repaint();
@@ -486,21 +516,17 @@ public class Game extends JFrame {
         });
 
         //playing screen
-        JTextField turn = new JTextField();
-        turn.setForeground(new Color(0, 0, 0));
-        turn.setFont(new Font("Times New Roman", Font.BOLD, 60));
+        JLabel turn = new JLabel();
+        turn.setFont(customFont.deriveFont(60f));
         turn.setBounds(450, 75, 500, 90);
-        turn.setVisible(true);
-        turn.setText("TURN: ");
-        turn.setEditable(false);
-        turn.setBackground(Color.white);
+        turn.setText("Turn: ");
+        turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        rules.setFont(customFont.deriveFont(30f));
         rules.setBounds(970, 80, 80, 80);
-        rules.setEnabled(true);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
-        rules.setBackground(Color.WHITE);
+        rules.setOpaque(true);
 
         rules.addActionListener(new ActionListener() {
             @Override
@@ -514,11 +540,10 @@ public class Game extends JFrame {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(new Font("Times New Roman", Font.BOLD, 30));
+        guide.setFont(customFont.deriveFont(30f));
         guide.setBounds(1070, 80, 80, 80);
-        guide.setEnabled(true);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
-        guide.setBackground(Color.white);
+        guide.setOpaque(true);
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -530,14 +555,13 @@ public class Game extends JFrame {
                 setVisible(true);
             }
         });
-        JTextField pointsText = new JTextField();
-        pointsText.setForeground(new Color(0, 0, 0));
-        pointsText.setFont(new Font("Arial", Font.BOLD, 30));
+
+        JLabel pointsText = new JLabel();
+        pointsText.setFont(customFont.deriveFont(30f));
         pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setVisible(true);
-        pointsText.setText("        Hero's Updates  ");
-        pointsText.setEditable(false);
-        pointsText.setBackground(Color.white);
+        pointsText.setText("Hero's Updates");
+        pointsText.setHorizontalAlignment(JLabel.CENTER);
+        pointsText.setOpaque(true);
 
         JList<String> heroUpdates = new JList<>();
 
@@ -545,12 +569,12 @@ public class Game extends JFrame {
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pointsScrollBar.setBounds(10, 190, 360, 280);
 
-        JTextField dragonsText = new JTextField();
-        dragonsText.setForeground(new Color(0, 0, 0));
-        dragonsText.setFont(new Font("Arial", Font.BOLD, 30));
+        JLabel dragonsText = new JLabel();
+        dragonsText.setFont(customFont.deriveFont(30f));
         dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setVisible(true);
-        dragonsText.setText("      Dragon's Updates  ");
+        dragonsText.setText("Dragon's Updates");
+        dragonsText.setHorizontalAlignment(JLabel.CENTER);
+        dragonsText.setOpaque(true);
 
         JList<String> dragonUpdates = new JList<>();
 
@@ -558,34 +582,35 @@ public class Game extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
-        JTextField accessCodeShow = new JTextField();
+        JLabel accessCodeShow = new JLabel();
+        accessCodeShow.setFont(customFont.deriveFont(20f));
         accessCodeShow.setBounds(900,10,250,50);
         accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setOpaque(true);
         accessCodeShow.setBackground(Color.black);
         accessCodeShow.setForeground(Color.ORANGE);
-        accessCodeShow.setEditable(false);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(870,720, 310,150);
 
-        JTextField textMessage = new JTextField();
-        textMessage.setBounds(870, 880, 240, 65);
-        textMessage.setText("Message:");
-        textMessage.setEditable(true);
-        textMessage.setVisible(true);
+        JTextField messageText = new JTextField();
+        messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
+        messageText.setBounds(870, 880, 240, 65);
+        messageText.setBackground(Color.white);
+        messageText.setOpaque(true);
 
         JButton send = new JButton();
+        send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
         send.setText("Send");
-        send.setVisible(true);
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                String acc = characterName + ": " + textMessage.getText();
+                String acc = characterName + ": " + messageText.getText();
                 ///will need to implement following method
                 //sendMessage(os,name+ ": " + input.getText());
-                textMessage.setText("");
+                messageText.setText("");
             }
         });
 
@@ -640,6 +665,8 @@ public class Game extends JFrame {
         joinScreen.add(custom);
         joinScreen.add(beginGame);
         joinScreen.add(back);
+        joinScreen.add(customHeroMade);
+        customHeroMade.setVisible(false);
 
         hostScreen.add(numberOfPlayers);
         hostScreen.add(numbersOfPlayersChoice);
@@ -652,9 +679,10 @@ public class Game extends JFrame {
         hostScreen.add(custom1);
         hostScreen.add(createGame);
         hostScreen.add(back1);
+        hostScreen.add(customHeroMade1);
+        customHeroMade1.setVisible(false);
 
-        customHeroScreen.add(skillsTable);
-        customHeroScreen.add(scrollPane);
+        customHeroScreen.add(skillsScrollPane);
         customHeroScreen.add(diceMessage);
         customHeroScreen.add(roll);
         customHeroScreen.add(hitPoints);
@@ -663,6 +691,8 @@ public class Game extends JFrame {
         customHeroScreen.add(armorClassText);
         customHeroScreen.add(back2);
         customHeroScreen.add(createHero);
+        customHeroScreen.add(rollingDice);
+        rollingDice.setVisible(false);
 
         playingScreen.add(turn);
         playingScreen.add(rules);
@@ -672,7 +702,7 @@ public class Game extends JFrame {
         playingScreen.add(dragonScrollBar);
         playingScreen.add(dragonsText);
         playingScreen.add(chatBox);
-        playingScreen.add(textMessage);
+        playingScreen.add(messageText);
         playingScreen.add(send);
         playingScreen.add(accessCodeShow);
 
@@ -688,5 +718,70 @@ public class Game extends JFrame {
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setVisible(true);
+    }
+
+    public void readImages()
+    {
+        try
+        {
+            intro = ImageIO.read(new File("images/introScreen.jpg"));
+            loginBackground = ImageIO.read(new File("images/loginScreen.jpg"));
+            background = ImageIO.read(new File("images/backgroundImage.png"));
+            diceFaces.add(ImageIO.read(new File("images/dice side.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_006.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/1.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/2.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/3.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/4.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/5.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/6.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/7.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/8.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/9.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page10.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page11.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page12.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-01.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-02.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-03.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-04.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-05.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-07.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-08.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-09.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-10.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-11.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-12.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-13.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-14.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-15.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-16.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-17.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-18.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-19.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-20.png")));
+            dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/green dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/pale dragon.png")));
+            heroSheets.add(ImageIO.read(new File("images/cleric.png")));
+            heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
+            heroSheets.add(ImageIO.read(new File("images/ranger.png")));
+            heroSheets.add(ImageIO.read(new File("images/rogue.png")));
+            heroSheets.add(ImageIO.read(new File("images/warrior.png")));
+            heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

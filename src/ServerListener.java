@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class ServerListener implements Runnable {
@@ -9,7 +10,7 @@ public class ServerListener implements Runnable {
     private ObjectOutputStream os;
     private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
-    static HashMap<String, Game> currentGames;
+    static Map<String, Game> currentGames;
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
@@ -54,8 +55,24 @@ public class ServerListener implements Runnable {
 
     private boolean validPlayer (Object data)
     {
-        Game gameObject = (Game) data;
-
+        String playerEntry = (String) data;
+        String[] playerInputs = playerEntry.split(",");
+        for (Map.Entry<String, Game> entry : currentGames.entrySet())
+        {
+            String key = entry.getKey();
+            if (key.equals(playerInputs[0])) {
+                Game value = entry.getValue();
+                ArrayList<Hero> currentHeroes = value.heroes;
+                for (int i = 0; i<currentHeroes.size(); i++)
+                {
+                    Hero hero = currentHeroes.get(i);
+                    if (hero.name.equals(playerInputs[1]))
+                        return false;
+                }
+                return true;
+            }
+        }
+        //validate class type?
         return false;
     }
 
@@ -82,5 +99,4 @@ public class ServerListener implements Runnable {
 //            }
 //        }
 //    }
-
 }
