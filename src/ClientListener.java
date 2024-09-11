@@ -28,18 +28,20 @@ public class ClientListener implements Runnable {
                 if(cfs.getCommand() == CommandFromServer.CONNECT){
                     
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_CONNECTION){
+                if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
 
                 }
-                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
-                {
-                    
-                }
-                if(cfs.getCommand() == CommandFromServer.CHAT)
-                {
+                if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
 
                 }
-
+//                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
+//                {
+//
+//                }
+//                if(cfs.getCommand() == CommandFromServer.CHAT)
+//                {
+//
+//                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

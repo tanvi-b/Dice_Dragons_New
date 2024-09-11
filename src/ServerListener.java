@@ -25,10 +25,12 @@ public class ServerListener implements Runnable {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
 
                 if(cfc.getCommand() == CommandFromClient.JOIN){
-                    if (validPlayer(cfc.getData()))
+                    if (cfc.getData().equals("valid"))
                         sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+                    else if (cfc.getData().equals("invalidAccessCode"))
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
                     else
-                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_CONNECTION, null, null));
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_NAME, null, null));
                 }
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
@@ -37,13 +39,13 @@ public class ServerListener implements Runnable {
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
                 }
 
-                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
-                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
-                }
-
-                if(cfc.getCommand() == CommandFromClient.CHAT){
-                    sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer()));
-                }
+//                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
+//                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
+//                }
+//
+//                if(cfc.getCommand() == CommandFromClient.CHAT){
+//                    sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer()));
+//                }
 
             }
         }
@@ -53,7 +55,7 @@ public class ServerListener implements Runnable {
 
     }
 
-    private boolean validPlayer (Object data)
+    private String validPlayer (Object data)
     {
         String playerEntry = (String) data;
         String[] playerInputs = playerEntry.split(",");
@@ -67,13 +69,12 @@ public class ServerListener implements Runnable {
                 {
                     Hero hero = currentHeroes.get(i);
                     if (hero.name.equals(playerInputs[1]))
-                        return false;
+                        return "invalidName";
                 }
-                return true;
+                return "valid";
             }
         }
-        //validate class type?
-        return false;
+        return "invalidAccessCode";
     }
 
     private void sendCommand (CommandFromServer cfs)
