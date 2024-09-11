@@ -22,6 +22,7 @@ import java.util.ArrayList;
 public class Game extends JFrame {
     String accessCode;
     boolean host;
+    boolean rollClicked;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     private Font customFont;
@@ -38,6 +39,7 @@ public class Game extends JFrame {
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        rollClicked = false;
         heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
         playerRules = new ArrayList<>();
@@ -77,11 +79,13 @@ public class Game extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
+                if (rollClicked==false) {
+                    g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
+                }
             }
         };
         customHeroScreen.setLayout(null);
@@ -391,14 +395,13 @@ public class Game extends JFrame {
         };
         skillsModel.addColumn("Skill");
         skillsModel.addColumn("Class(es)");
-        skillsModel.addColumn("Symbol 1");
-        skillsModel.addColumn("Symbol 2");
-        skillsModel.addColumn("Symbol 3");
-        skillsModel.addColumn("Symbol 4");
-        skillsModel.addColumn("Symbol 5");
         skillsModel.addColumn("Effect");
         JTable skillsTable = new JTable(skillsModel);
+        skillsTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
         skillsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane skillsScrollPane = new JScrollPane(skillsTable);
+        skillsScrollPane.setBounds(20, 35, 500, 680);
+
         ListSelectionModel selectionModel = skillsTable.getSelectionModel();
         selectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -408,9 +411,8 @@ public class Game extends JFrame {
                 }
             }
         });
-        skillsTable.setBounds(10, 35, 500, 680);
-        JScrollPane scrollPane = new JScrollPane(skillsTable);
-        scrollPane.setBounds(20, 35, 500, 680);
+        skillsTable.setBounds(20, 35, 500, 680);
+        skillsTable.setOpaque(true);
 
         JLabel diceMessage = new JLabel("Roll the dice 3 times to determine your hit points and armor class.");
         diceMessage.setForeground(Color.white);
@@ -418,9 +420,11 @@ public class Game extends JFrame {
         diceMessage.setBounds(530, 30, 700, 100);
 
         JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setHorizontalAlignment(SwingConstants.CENTER);
         rollingDice.setForeground(Color.red);
         rollingDice.setFont(customFont.deriveFont(45f));
-        rollingDice.setBounds(675, 130, 300, 100);
+        rollingDice.setBounds(600, 120, 500, 75);
+        rollingDice.setOpaque(true);
 
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
@@ -431,12 +435,11 @@ public class Game extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Timer timer = new Timer(2000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        rollingDice.setVisible(true);
-                    }
-                });
+                rollClicked = true;
+                rollingDice.setVisible(true);
+                validate();
+                repaint();
+                setVisible(true);
             }
         });
 
@@ -679,8 +682,7 @@ public class Game extends JFrame {
         hostScreen.add(customHeroMade1);
         customHeroMade1.setVisible(false);
 
-        customHeroScreen.add(skillsTable);
-        customHeroScreen.add(scrollPane);
+        customHeroScreen.add(skillsScrollPane);
         customHeroScreen.add(diceMessage);
         customHeroScreen.add(roll);
         customHeroScreen.add(hitPoints);
