@@ -2,18 +2,22 @@ import java.io.Serializable;
 
 public class CommandFromServer implements Serializable {
     private int command;
-    private String data = "";
+    private Object data = null;
     private String player = "";
 
     // Command list
     public static final int ACCESS_CODE = 0;
-    public static final int PLAY = 1;
-    public static final int CONNECT = 2;
-    public static final int DISCONNECT = 3;
+    public static final int CONNECT = 1;
 
-    public static final int ADD_HERO = 4;
+    public static final int INVALID_ACCESS_CODE = 2;
+    public static final int INVALID_NAME = 3;
 
-    public CommandFromServer(int command, String data, String player) {
+    //public static final int MAKE_HERO = 4;
+    //public static final int CHAT = 5;
+    //public static final int DISCONNECT = 3;
+    //public static final int ADD_HERO = 4;
+
+    public CommandFromServer(int command, Object data, String player) {
         this.command = command;
         this.data = data;
         this.player = player;
@@ -23,7 +27,7 @@ public class CommandFromServer implements Serializable {
         return command;
     }
 
-    public String getData() {
+    public Object getData() {
         return data;
     }
 
