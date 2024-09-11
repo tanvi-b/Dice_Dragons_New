@@ -19,15 +19,14 @@ import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
-//dragon face is on dice side 5
 //exceptions/error code labels
 //lobby screen
 
-    //put in constructor: ObjectOutputStream os, String username
-    public Game() {
+public class Game extends JFrame {
     String accessCode;
     boolean host;
     boolean rollClicked;
+    int level;
     private static String username;
     private static ObjectOutputStream os;
     ArrayList<Hero> heroes;
@@ -42,13 +41,15 @@ import java.util.ArrayList;
     //playing tokens
     //circular tokens
 
-    public Game(ObjectOutputStream os, String username)
+    //put in constructor: ObjectOutputStream os, String username
+    public Game()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
         this.os = os;
         this.username = username;
         rollClicked = false;
+        level = 0;
         heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
         playerRules = new ArrayList<>();
@@ -259,7 +260,7 @@ import java.util.ArrayList;
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
@@ -369,10 +370,11 @@ import java.util.ArrayList;
             @Override
             public void actionPerformed(ActionEvent e) {
                 //send message to server and receive access code
+                //get number of players, class type, and username
                 if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
@@ -495,10 +497,16 @@ import java.util.ArrayList;
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
-                if (host)
+                if (host) {
                     getContentPane().add(hostScreen);
-                else
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
+                else {
                     getContentPane().add(joinScreen);
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
                 validate();
                 repaint();
                 setVisible(true);
@@ -634,14 +642,6 @@ import java.util.ArrayList;
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
-        JLabel accessCodeShow = new JLabel();
-        accessCodeShow.setFont(customFont.deriveFont(20f));
-        accessCodeShow.setBounds(900,10,250,50);
-        accessCodeShow.setText("Access Code: ");
-        accessCodeShow.setOpaque(true);
-        accessCodeShow.setBackground(Color.black);
-        accessCodeShow.setForeground(Color.ORANGE);
-
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(870,720, 310,150);
@@ -665,43 +665,6 @@ import java.util.ArrayList;
                 messageText.setText("");
             }
         });
-
-        //player images and weapons will be decided further through threading
-
-        //attempt to do unique playersheet but not working with draw
-        // will attempt threading first and then come back here
-
-       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
-
-       try {
-           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
-           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
-           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
-           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
-           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-
-       protected void paintComponent(Graphics g){
-       super.paintComponent(g);
-       if (selection1 == 0 || selection2 == 0) {
-           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 1 || selection2 == 1) {
-           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 2 || selection2 == 2) {
-           g.drawImage(clericSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 3 || selection2 == 3) {
-           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 4 || selection2 == 4) {
-           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
-       }
-   }
-        */
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -762,7 +725,6 @@ import java.util.ArrayList;
         playingScreen.add(chatBox);
         playingScreen.add(messageText);
         playingScreen.add(send);
-        playingScreen.add(accessCodeShow);
 
         getContentPane().add(introScreen);
         setVisible(true);

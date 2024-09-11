@@ -14,49 +14,49 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
+//exceptions/error code labels
+//lobby screen
 
 public class GameTanvi extends JFrame {
     String accessCode;
     boolean host;
+    boolean rollClicked;
+    int level;
+    private static String username;
+    private static ObjectOutputStream os;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    private JList<Hero> heroList;
-    private JList<Dragon> dragonList;
     private Font customFont;
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> playerRules;
     private ArrayList<BufferedImage> dragonGuide;
     private ArrayList<BufferedImage> dragonSheets;
     private ArrayList<BufferedImage> heroSheets;
-    private BufferedImage intro, loginBackground, background, weapon;
+    private BufferedImage intro, loginBackground, background;
+    //playing tokens
+    //circular tokens
 
+    //put in constructor: ObjectOutputStream os, String username
     public GameTanvi()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        this.os = os;
+        this.username = username;
+        rollClicked = false;
+        level = 0;
+        heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
-
-        try
-        {
-            intro = ImageIO.read(new File("images/introScreen.jpg"));
-            loginBackground = ImageIO.read(new File("images/loginScreen.jpg"));
-            background = ImageIO.read(new File("images/backgroundImage.png"));
-            diceFaces.add(ImageIO.read(new File("images/dice side.png")));
-            diceFaces.add(ImageIO.read(new File("images/D&D dice_001.png")));
-            diceFaces.add(ImageIO.read(new File("images/D&D dice_002.png")));
-            diceFaces.add(ImageIO.read(new File("images/D&D dice_004.png")));
-            diceFaces.add(ImageIO.read(new File("images/D&D dice_005.png")));
-            diceFaces.add(ImageIO.read(new File("images/D&D dice_006.png")));
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
+        playerRules = new ArrayList<>();
+        dragonGuide = new ArrayList<>();
+        dragonSheets = new ArrayList<>();
+        heroSheets = new ArrayList<>();
+        readImages();
         JPanel introScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -89,14 +89,25 @@ public class GameTanvi extends JFrame {
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-                g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
-                g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
+                if (rollClicked==false) {
+                    g.drawImage(diceFaces.get(0), 550, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 675, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 800, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 925, 120, 100, 100, this);
+                    g.drawImage(diceFaces.get(0), 1050, 120, 100, 100, this);
+                }
             }
         };
         customHeroScreen.setLayout(null);
+
+        JPanel lobbyScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
+            }
+        };
+        lobbyScreen.setLayout(null);
 
         JPanel playingScreen = new JPanel(){
             @Override
@@ -194,11 +205,21 @@ public class GameTanvi extends JFrame {
         characterNameText.setEditable(true);
         characterNameText.setText("");
 
-        //need to change and only show available classes
-        //ArrayList<String> availableHeroClasses = new ArrayList<String>();
-        //JComboBox<String> heroClassChoice = new JComboBox<String>((ComboBoxModel<String>) availableHeroClasses);
-        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
-        JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
+        ArrayList<String> availableHeroClasses = new ArrayList<String>();
+        availableHeroClasses.add("Warrior");
+        availableHeroClasses.add("Wizard");
+        availableHeroClasses.add("Cleric");
+        availableHeroClasses.add("Ranger");
+        availableHeroClasses.add("Rogue");
+        for (int i = 4; i>=0; i--)
+        {
+            for (int j = 0; j<heroes.size(); j++)
+            {
+                if (heroes.get(j).classType==i)
+                    availableHeroClasses.remove(i);
+            }
+        }
+        JComboBox<String> heroClassChoice = new JComboBox<>(availableHeroClasses.toArray(new String[0]));
         heroClassChoice.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
@@ -235,10 +256,11 @@ public class GameTanvi extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and validate input
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
@@ -347,10 +369,12 @@ public class GameTanvi extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and receive access code
+                //get number of players, class type, and username
                 if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
@@ -393,14 +417,13 @@ public class GameTanvi extends JFrame {
         };
         skillsModel.addColumn("Skill");
         skillsModel.addColumn("Class(es)");
-        skillsModel.addColumn("Symbol 1");
-        skillsModel.addColumn("Symbol 2");
-        skillsModel.addColumn("Symbol 3");
-        skillsModel.addColumn("Symbol 4");
-        skillsModel.addColumn("Symbol 5");
         skillsModel.addColumn("Effect");
         JTable skillsTable = new JTable(skillsModel);
+        skillsTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
         skillsTable.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        JScrollPane skillsScrollPane = new JScrollPane(skillsTable);
+        skillsScrollPane.setBounds(20, 35, 500, 680);
+
         ListSelectionModel selectionModel = skillsTable.getSelectionModel();
         selectionModel.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -410,9 +433,8 @@ public class GameTanvi extends JFrame {
                 }
             }
         });
-        skillsTable.setBounds(10, 35, 500, 680);
-        JScrollPane scrollPane = new JScrollPane(skillsTable);
-        scrollPane.setBounds(20, 35, 500, 680);
+        skillsTable.setBounds(20, 35, 500, 680);
+        skillsTable.setOpaque(true);
 
         JLabel diceMessage = new JLabel("Roll the dice 3 times to determine your hit points and armor class.");
         diceMessage.setForeground(Color.white);
@@ -420,9 +442,11 @@ public class GameTanvi extends JFrame {
         diceMessage.setBounds(530, 30, 700, 100);
 
         JLabel rollingDice = new JLabel("Rolling dice...");
+        rollingDice.setHorizontalAlignment(SwingConstants.CENTER);
         rollingDice.setForeground(Color.red);
         rollingDice.setFont(customFont.deriveFont(45f));
-        rollingDice.setBounds(675, 130, 300, 100);
+        rollingDice.setBounds(600, 120, 500, 75);
+        rollingDice.setOpaque(true);
 
         JButton roll = new JButton ("Roll");
         roll.setForeground(Color.white);
@@ -433,12 +457,11 @@ public class GameTanvi extends JFrame {
         roll.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Timer timer = new Timer(2000, new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        rollingDice.setVisible(true);
-                    }
-                });
+                rollClicked = true;
+                rollingDice.setVisible(true);
+                validate();
+                repaint();
+                setVisible(true);
             }
         });
 
@@ -474,10 +497,16 @@ public class GameTanvi extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
-                if (host)
+                if (host) {
                     getContentPane().add(hostScreen);
-                else
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
+                else {
                     getContentPane().add(joinScreen);
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
                 validate();
                 repaint();
                 setVisible(true);
@@ -513,6 +542,38 @@ public class GameTanvi extends JFrame {
                 setVisible(true);
             }
         });
+
+        //lobby screen
+        JLabel accessCodeShow = new JLabel();
+        accessCodeShow.setFont(customFont.deriveFont(20f));
+        accessCodeShow.setBounds(900,10,250,50);
+        accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setOpaque(true);
+        accessCodeShow.setBackground(Color.black);
+        accessCodeShow.setForeground(Color.ORANGE);
+
+        JLabel playersJoined = new JLabel();
+        playersJoined.setFont(customFont.deriveFont(60f));
+        playersJoined.setBounds(350, 200, 500, 75);
+        playersJoined.setText("Players Joined");
+        playersJoined.setHorizontalAlignment(SwingConstants.CENTER);
+        playersJoined.setOpaque(true);
+
+        //in this table list the usernames of players
+        DefaultTableModel playersModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        playersModel.addColumn("Username");
+        JTable playersTable = new JTable(playersModel);
+        playersTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
+        JScrollPane playersScrollPane = new JScrollPane(playersTable);
+        playersScrollPane.setBounds(450, 300, 300, 400);
+
+        //timer - after all players have joined show a jlabel saying starting game in 3 2 1
+        //lead to playing screen
 
         //playing screen
         JLabel turn = new JLabel();
@@ -581,14 +642,6 @@ public class GameTanvi extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
-        JLabel accessCodeShow = new JLabel();
-        accessCodeShow.setFont(customFont.deriveFont(20f));
-        accessCodeShow.setBounds(900,10,250,50);
-        accessCodeShow.setText("Access Code: ");
-        accessCodeShow.setOpaque(true);
-        accessCodeShow.setBackground(Color.black);
-        accessCodeShow.setForeground(Color.ORANGE);
-
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(870,720, 310,150);
@@ -612,43 +665,6 @@ public class GameTanvi extends JFrame {
                 messageText.setText("");
             }
         });
-
-        //player images and weapons will be decided further through threading
-
-        //attempt to do unique playersheet but not working with draw
-        // will attempt threading first and then come back here
-
-       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
-
-       try {
-           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
-           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
-           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
-           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
-           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-
-       protected void paintComponent(Graphics g){
-       super.paintComponent(g);
-       if (selection1 == 0 || selection2 == 0) {
-           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 1 || selection2 == 1) {
-           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 2 || selection2 == 2) {
-           g.drawImage(clericSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 3 || selection2 == 3) {
-           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 4 || selection2 == 4) {
-           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
-       }
-   }
-        */
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -681,8 +697,7 @@ public class GameTanvi extends JFrame {
         hostScreen.add(customHeroMade1);
         customHeroMade1.setVisible(false);
 
-        customHeroScreen.add(skillsTable);
-        customHeroScreen.add(scrollPane);
+        customHeroScreen.add(skillsScrollPane);
         customHeroScreen.add(diceMessage);
         customHeroScreen.add(roll);
         customHeroScreen.add(hitPoints);
@@ -694,6 +709,12 @@ public class GameTanvi extends JFrame {
         customHeroScreen.add(rollingDice);
         rollingDice.setVisible(false);
 
+        lobbyScreen.add(playersJoined);
+        lobbyScreen.add(accessCodeShow);
+        lobbyScreen.add(playersScrollPane);
+        //add jtable
+        //add starting game label but make visible false
+
         playingScreen.add(turn);
         playingScreen.add(rules);
         playingScreen.add(guide);
@@ -704,7 +725,6 @@ public class GameTanvi extends JFrame {
         playingScreen.add(chatBox);
         playingScreen.add(messageText);
         playingScreen.add(send);
-        playingScreen.add(accessCodeShow);
 
         getContentPane().add(introScreen);
         setVisible(true);
@@ -718,5 +738,70 @@ public class GameTanvi extends JFrame {
         button.setContentAreaFilled(false);
         button.setFocusPainted(false);
         button.setVisible(true);
+    }
+
+    public void readImages()
+    {
+        try
+        {
+            intro = ImageIO.read(new File("images/introScreen.jpg"));
+            loginBackground = ImageIO.read(new File("images/loginScreen.jpg"));
+            background = ImageIO.read(new File("images/backgroundImage.png"));
+            diceFaces.add(ImageIO.read(new File("images/dice side.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_001.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_002.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_004.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_005.png")));
+            diceFaces.add(ImageIO.read(new File("images/D&D dice_006.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/1.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/2.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/3.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/4.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/5.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/6.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/7.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/8.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/9.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page10.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page11.png")));
+            playerRules.add(ImageIO.read(new File("rules/playerRules/page12.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-01.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-02.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-03.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-04.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-05.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-07.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-08.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-09.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-10.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-11.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-12.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-13.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-14.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-15.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-16.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-17.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-18.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-19.png")));
+            dragonGuide.add(ImageIO.read(new File("rules/dragonRules/D&D dragons guide-20.png")));
+            dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/green dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/pale dragon.png")));
+            heroSheets.add(ImageIO.read(new File("images/cleric.png")));
+            heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
+            heroSheets.add(ImageIO.read(new File("images/ranger.png")));
+            heroSheets.add(ImageIO.read(new File("images/rogue.png")));
+            heroSheets.add(ImageIO.read(new File("images/warrior.png")));
+            heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }
