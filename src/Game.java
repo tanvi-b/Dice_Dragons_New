@@ -14,6 +14,7 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -23,6 +24,9 @@ public class Game extends JFrame {
     String accessCode;
     boolean host;
     boolean rollClicked;
+    int level;
+    private static String username;
+    private static ObjectOutputStream os;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     private Font customFont;
@@ -35,11 +39,14 @@ public class Game extends JFrame {
     //playing tokens
     //circular tokens
 
-    public Game()
+    public Game(ObjectOutputStream os, String username)
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        this.os = os;
+        this.username = username;
         rollClicked = false;
+        level = 0;
         heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
         playerRules = new ArrayList<>();
@@ -237,6 +244,7 @@ public class Game extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and validate input
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
@@ -349,6 +357,7 @@ public class Game extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and receive access code
                 if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
@@ -475,10 +484,16 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
-                if (host)
+                if (host) {
                     getContentPane().add(hostScreen);
-                else
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
+                else {
                     getContentPane().add(joinScreen);
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
                 validate();
                 repaint();
                 setVisible(true);
