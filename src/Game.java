@@ -20,8 +20,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
-//exceptions/error code labels
-//lobby screen
 
 public class Game extends JFrame {
     String accessCode;
@@ -33,6 +31,7 @@ public class Game extends JFrame {
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     private Font customFont;
+    private Font customBoldFont;
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> playerRules;
     private ArrayList<BufferedImage> dragonGuide;
@@ -128,16 +127,25 @@ public class Game extends JFrame {
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf")).deriveFont(42f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf"));
+            customBoldFont = Font.createFont(Font.TRUETYPE_FONT,new File("fonts/Almendra-Bold.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
 
+        JLabel gameTitleLine1 = new JLabel("Dice &");
+        gameTitleLine1.setForeground(Color.white);
+        gameTitleLine1.setFont(customBoldFont.deriveFont(75f));
+        gameTitleLine1.setBounds(260, 12, 700, 100);
+
+        JLabel gameTitleLine2 = new JLabel("Dragons");
+        gameTitleLine2.setForeground(Color.white);
+        gameTitleLine2.setFont(customBoldFont.deriveFont(75f));
+        gameTitleLine2.setBounds(230, 80, 700, 100);
+
         JButton joinGame = new JButton ("Join Game");
         joinGame.setForeground(Color.black);
-        joinGame.setFont(customFont);
+        joinGame.setFont(customFont.deriveFont(42f));
         joinGame.setBounds(10, 600, 425, 50);
         joinGame.setBorderPainted(false);
         buttonFormatting(joinGame);
@@ -154,8 +162,8 @@ public class Game extends JFrame {
 
         JButton hostGame = new JButton ("Host Game");
         hostGame.setForeground(Color.black);
-        hostGame.setFont(customFont);
-        hostGame.setBounds(10, 675, 425, 50);
+        hostGame.setFont(customFont.deriveFont(42f));
+        hostGame.setBounds(10, 665, 425, 50);
         hostGame.setBorderPainted(false);
         buttonFormatting(hostGame);
         hostGame.addActionListener(new ActionListener() {
@@ -302,6 +310,8 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 heroClassChoice.setSelectedIndex(-1);
+                accessCodeText.setText("");
+                characterNameText.setText("");
                 heroClassChoice.setVisible(true);
                 custom.setVisible(true);
                 customHeroMade.setVisible(false);
@@ -416,6 +426,8 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 heroClassChoice1.setSelectedIndex(-1);
+                numbersOfPlayersChoice.setSelectedIndex(-1);
+                characterNameText1.setText("");
                 heroClassChoice1.setVisible(true);
                 custom1.setVisible(true);
                 customHeroMade1.setVisible(false);
@@ -681,6 +693,8 @@ public class Game extends JFrame {
             }
         });
 
+        introScreen.add(gameTitleLine1);
+        introScreen.add(gameTitleLine2);
         introScreen.add(joinGame);
         introScreen.add(hostGame);
 
