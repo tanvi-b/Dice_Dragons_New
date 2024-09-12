@@ -4,6 +4,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
@@ -197,11 +198,25 @@ public class Game extends JFrame {
         accessCodeText.setEditable(true);
         accessCodeText.setText("");
 
+        JLabel invalidAccessCode = new JLabel("Invalid access code");
+        invalidAccessCode.setHorizontalAlignment(SwingConstants.CENTER);
+        invalidAccessCode.setForeground(Color.red);
+        invalidAccessCode.setFont(customFont.deriveFont(20f));
+        invalidAccessCode.setBounds(950, 213, 245, 50);
+        invalidAccessCode.setOpaque(true);
+
         JTextField characterNameText = new JTextField();
         characterNameText.setFont(new Font("Arial", Font.PLAIN, 20));
         characterNameText.setBounds(600, 350, 350, 75);
         characterNameText.setEditable(true);
         characterNameText.setText("");
+
+        JLabel duplicateName = new JLabel("Name has already been taken");
+        duplicateName.setHorizontalAlignment(SwingConstants.CENTER);
+        duplicateName.setForeground(Color.red);
+        duplicateName.setFont(customFont.deriveFont(20f));
+        duplicateName.setBounds(950, 360, 245, 50);
+        duplicateName.setOpaque(true);
 
         ArrayList<String> availableHeroClasses = new ArrayList<String>();
         availableHeroClasses.add("Warrior");
@@ -255,6 +270,8 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //send message to server and validate input
+                //if access code is not valid display jlabel
+                //if name is duplicate display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
@@ -265,6 +282,8 @@ public class Game extends JFrame {
                 }
             }
         });
+
+        //jlabel saying max players reached or once game starts, make the access code invalid?
 
         JLabel customHeroMade = new JLabel("Custom hero has been made");
         customHeroMade.setForeground(Color.red);
@@ -578,10 +597,9 @@ public class Game extends JFrame {
         //lead to playing screen
 
         //playing screen
-        JLabel turn = new JLabel();
+        JLabel turn = new JLabel("Turn: ");
         turn.setFont(customFont.deriveFont(60f));
         turn.setBounds(450, 75, 500, 90);
-        turn.setText("Turn: ");
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
@@ -618,10 +636,9 @@ public class Game extends JFrame {
             }
         });
 
-        JLabel pointsText = new JLabel();
+        JLabel pointsText = new JLabel("Hero's Updates");
         pointsText.setFont(customFont.deriveFont(30f));
         pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setText("Hero's Updates");
         pointsText.setHorizontalAlignment(JLabel.CENTER);
         pointsText.setOpaque(true);
 
@@ -631,10 +648,9 @@ public class Game extends JFrame {
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pointsScrollBar.setBounds(10, 190, 360, 280);
 
-        JLabel dragonsText = new JLabel();
+        JLabel dragonsText = new JLabel("Dragon's Updates");
         dragonsText.setFont(customFont.deriveFont(30f));
         dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setText("Dragon's Updates");
         dragonsText.setHorizontalAlignment(JLabel.CENTER);
         dragonsText.setOpaque(true);
 
@@ -654,10 +670,9 @@ public class Game extends JFrame {
         messageText.setBackground(Color.white);
         messageText.setOpaque(true);
 
-        JButton send = new JButton();
+        JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
-        send.setText("Send");
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -683,7 +698,11 @@ public class Game extends JFrame {
         joinScreen.add(beginGame);
         joinScreen.add(back);
         joinScreen.add(customHeroMade);
+        joinScreen.add(invalidAccessCode);
+        joinScreen.add(duplicateName);
         customHeroMade.setVisible(false);
+        invalidAccessCode.setVisible(false);
+        duplicateName.setVisible(false);
 
         hostScreen.add(numberOfPlayers);
         hostScreen.add(numbersOfPlayersChoice);
@@ -714,7 +733,6 @@ public class Game extends JFrame {
         lobbyScreen.add(playersJoined);
         lobbyScreen.add(accessCodeShow);
         lobbyScreen.add(playersScrollPane);
-        //add jtable
         //add starting game label but make visible false
 
         playingScreen.add(turn);
