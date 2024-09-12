@@ -19,8 +19,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
-//exceptions/error code labels
-//lobby screen
 
 public class Game extends JFrame {
     String accessCode;
@@ -283,6 +281,8 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 heroClassChoice.setSelectedIndex(-1);
+                accessCodeText.setText("");
+                characterNameText.setText("");
                 heroClassChoice.setVisible(true);
                 custom.setVisible(true);
                 customHeroMade.setVisible(false);
@@ -397,6 +397,8 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 heroClassChoice1.setSelectedIndex(-1);
+                numbersOfPlayersChoice.setSelectedIndex(-1);
+                characterNameText1.setText("");
                 heroClassChoice1.setVisible(true);
                 custom1.setVisible(true);
                 customHeroMade1.setVisible(false);
