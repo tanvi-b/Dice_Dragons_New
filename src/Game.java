@@ -4,6 +4,7 @@ import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
@@ -14,15 +15,21 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
+//exceptions/error code labels
+//lobby screen
 
 public class Game extends JFrame {
     String accessCode;
     boolean host;
     boolean rollClicked;
+    int level;
+    private static String username;
+    private static ObjectOutputStream os;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     private Font customFont;
@@ -35,11 +42,15 @@ public class Game extends JFrame {
     //playing tokens
     //circular tokens
 
+    //put in constructor: ObjectOutputStream os, String username
     public Game()
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
+        this.os = os;
+        this.username = username;
         rollClicked = false;
+        level = 0;
         heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
         playerRules = new ArrayList<>();
@@ -89,6 +100,15 @@ public class Game extends JFrame {
             }
         };
         customHeroScreen.setLayout(null);
+
+        JPanel lobbyScreen = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
+            }
+        };
+        lobbyScreen.setLayout(null);
 
         JPanel playingScreen = new JPanel(){
             @Override
@@ -180,11 +200,25 @@ public class Game extends JFrame {
         accessCodeText.setEditable(true);
         accessCodeText.setText("");
 
+        JLabel invalidAccessCode = new JLabel("Invalid access code");
+        invalidAccessCode.setHorizontalAlignment(SwingConstants.CENTER);
+        invalidAccessCode.setForeground(Color.red);
+        invalidAccessCode.setFont(customFont.deriveFont(20f));
+        invalidAccessCode.setBounds(950, 213, 245, 50);
+        invalidAccessCode.setOpaque(true);
+
         JTextField characterNameText = new JTextField();
         characterNameText.setFont(new Font("Arial", Font.PLAIN, 20));
         characterNameText.setBounds(600, 350, 350, 75);
         characterNameText.setEditable(true);
         characterNameText.setText("");
+
+        JLabel duplicateName = new JLabel("Name has already been taken");
+        duplicateName.setHorizontalAlignment(SwingConstants.CENTER);
+        duplicateName.setForeground(Color.red);
+        duplicateName.setFont(customFont.deriveFont(20f));
+        duplicateName.setBounds(950, 360, 245, 50);
+        duplicateName.setOpaque(true);
 
         ArrayList<String> availableHeroClasses = new ArrayList<String>();
         availableHeroClasses.add("Warrior");
@@ -237,16 +271,21 @@ public class Game extends JFrame {
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and validate input
+                //if access code is not valid display jlabel
+                //if name is duplicate display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
                 }
             }
         });
+
+        //jlabel saying max players reached or once game starts, make the access code invalid?
 
         JLabel customHeroMade = new JLabel("Custom hero has been made");
         customHeroMade.setForeground(Color.red);
@@ -349,10 +388,12 @@ public class Game extends JFrame {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //send message to server and receive access code
+                //get number of players, class type, and username
                 if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex()!=-1) {
                     getContentPane().removeAll();
-                    getContentPane().add(playingScreen);
+                    getContentPane().add(lobbyScreen);
                     validate();
                     repaint();
                     setVisible(true);
@@ -475,10 +516,16 @@ public class Game extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 getContentPane().removeAll();
-                if (host)
+                if (host) {
                     getContentPane().add(hostScreen);
-                else
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
+                else {
                     getContentPane().add(joinScreen);
+                    rollClicked=false;
+                    rollingDice.setVisible(false);
+                }
                 validate();
                 repaint();
                 setVisible(true);
@@ -515,11 +562,42 @@ public class Game extends JFrame {
             }
         });
 
+        //lobby screen
+        JLabel accessCodeShow = new JLabel();
+        accessCodeShow.setFont(customFont.deriveFont(20f));
+        accessCodeShow.setBounds(900,10,250,50);
+        accessCodeShow.setText("Access Code: ");
+        accessCodeShow.setOpaque(true);
+        accessCodeShow.setBackground(Color.black);
+        accessCodeShow.setForeground(Color.ORANGE);
+
+        JLabel playersJoined = new JLabel();
+        playersJoined.setFont(customFont.deriveFont(60f));
+        playersJoined.setBounds(350, 200, 500, 75);
+        playersJoined.setText("Players Joined");
+        playersJoined.setHorizontalAlignment(SwingConstants.CENTER);
+        playersJoined.setOpaque(true);
+
+        //in this table list the usernames of players
+        DefaultTableModel playersModel = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        playersModel.addColumn("Username");
+        JTable playersTable = new JTable(playersModel);
+        playersTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
+        JScrollPane playersScrollPane = new JScrollPane(playersTable);
+        playersScrollPane.setBounds(450, 300, 300, 400);
+
+        //timer - after all players have joined show a jlabel saying starting game in 3 2 1
+        //lead to playing screen
+
         //playing screen
-        JLabel turn = new JLabel();
+        JLabel turn = new JLabel("Turn: ");
         turn.setFont(customFont.deriveFont(60f));
         turn.setBounds(450, 75, 500, 90);
-        turn.setText("Turn: ");
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
@@ -556,10 +634,9 @@ public class Game extends JFrame {
             }
         });
 
-        JLabel pointsText = new JLabel();
+        JLabel pointsText = new JLabel("Hero's Updates");
         pointsText.setFont(customFont.deriveFont(30f));
         pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setText("Hero's Updates");
         pointsText.setHorizontalAlignment(JLabel.CENTER);
         pointsText.setOpaque(true);
 
@@ -569,10 +646,9 @@ public class Game extends JFrame {
         pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         pointsScrollBar.setBounds(10, 190, 360, 280);
 
-        JLabel dragonsText = new JLabel();
+        JLabel dragonsText = new JLabel("Dragon's Updates");
         dragonsText.setFont(customFont.deriveFont(30f));
         dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setText("Dragon's Updates");
         dragonsText.setHorizontalAlignment(JLabel.CENTER);
         dragonsText.setOpaque(true);
 
@@ -581,14 +657,6 @@ public class Game extends JFrame {
         JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
-
-        JLabel accessCodeShow = new JLabel();
-        accessCodeShow.setFont(customFont.deriveFont(20f));
-        accessCodeShow.setBounds(900,10,250,50);
-        accessCodeShow.setText("Access Code: ");
-        accessCodeShow.setOpaque(true);
-        accessCodeShow.setBackground(Color.black);
-        accessCodeShow.setForeground(Color.ORANGE);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
@@ -600,10 +668,9 @@ public class Game extends JFrame {
         messageText.setBackground(Color.white);
         messageText.setOpaque(true);
 
-        JButton send = new JButton();
+        JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
-        send.setText("Send");
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -613,43 +680,6 @@ public class Game extends JFrame {
                 messageText.setText("");
             }
         });
-
-        //player images and weapons will be decided further through threading
-
-        //attempt to do unique playersheet but not working with draw
-        // will attempt threading first and then come back here
-
-       /*BufferedImage warriorSheet, wizardSheet, clericSheet, rangerSheet, rogueSheet;
-
-       try {
-           warriorSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\warrior.png"));
-           wizardSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\wizard.png"));
-           clericSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\cleric.png"));
-           rangerSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\ranger.png"));
-           rogueSheet = ImageIO.read(new File("C:\\Users\\rishi\\IdeaProjects\\Dice_Dragons_New\\images\\rogue.png"));
-       } catch (IOException e) {
-           throw new RuntimeException(e);
-       }
-
-       protected void paintComponent(Graphics g){
-       super.paintComponent(g);
-       if (selection1 == 0 || selection2 == 0) {
-           g.drawImage(warriorSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 1 || selection2 == 1) {
-           g.drawImage(wizardSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 2 || selection2 == 2) {
-           g.drawImage(clericSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 3 || selection2 == 3) {
-           g.drawImage(rangerSheet, 100, 100, 200, 300, this);
-       }
-       if (selection1 == 4 || selection2 == 4) {
-           g.drawImage(rogueSheet, 100, 100, 200, 300, this);
-       }
-   }
-        */
 
         introScreen.add(joinGame);
         introScreen.add(hostGame);
@@ -666,7 +696,11 @@ public class Game extends JFrame {
         joinScreen.add(beginGame);
         joinScreen.add(back);
         joinScreen.add(customHeroMade);
+        joinScreen.add(invalidAccessCode);
+        joinScreen.add(duplicateName);
         customHeroMade.setVisible(false);
+        invalidAccessCode.setVisible(false);
+        duplicateName.setVisible(false);
 
         hostScreen.add(numberOfPlayers);
         hostScreen.add(numbersOfPlayersChoice);
@@ -694,6 +728,11 @@ public class Game extends JFrame {
         customHeroScreen.add(rollingDice);
         rollingDice.setVisible(false);
 
+        lobbyScreen.add(playersJoined);
+        lobbyScreen.add(accessCodeShow);
+        lobbyScreen.add(playersScrollPane);
+        //add starting game label but make visible false
+
         playingScreen.add(turn);
         playingScreen.add(rules);
         playingScreen.add(guide);
@@ -704,7 +743,6 @@ public class Game extends JFrame {
         playingScreen.add(chatBox);
         playingScreen.add(messageText);
         playingScreen.add(send);
-        playingScreen.add(accessCodeShow);
 
         getContentPane().add(introScreen);
         setVisible(true);
