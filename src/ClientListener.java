@@ -1,3 +1,5 @@
+//eventually delete
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -5,20 +7,19 @@ import java.net.Socket;
 
 public class ClientListener implements Runnable {
   private Socket socket;
-  private ObjectInputStream inputStream; 
-  private ObjectOutputStream outputStream;
+  private ObjectInputStream is;
+  private ObjectOutputStream os;
   private Game game; 
 
-  public ClientListener(ObjectInputStream is, ObjectOutputStream os, Game game){
-    this.inputStream = is; 
-    this.outputStream = os; 
+  public ClientListener(ObjectInputStream is, Game game){
+    this.is = is;
     this.game = game; 
   }
   public void run() {
         try {
             while (true) {
                 // Read message from the server
-                CommandFromServer cfs = (CommandFromServer) inputStream.readObject();
+                CommandFromServer cfs = (CommandFromServer) is.readObject();
 
                 // Process the received message
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
