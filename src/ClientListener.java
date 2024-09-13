@@ -27,7 +27,7 @@ public class ClientListener implements Runnable {
                   // game.method(cfs.getVariable()); 
                 }
                 if(cfs.getCommand() == CommandFromServer.CONNECT){
-                    
+                    game.addPlayerToLobby(cfs.getPlayer());
                 }
                 if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
 
@@ -35,14 +35,14 @@ public class ClientListener implements Runnable {
                 if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
 
                 }
-//                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
-//                {
-//
-//                }
-//                if(cfs.getCommand() == CommandFromServer.CHAT)
-//                {
-//
-//                }
+                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
+                {
+
+                }
+                if(cfs.getCommand() == CommandFromServer.CHAT)
+                {
+                game.addToChat(cfs.getMessage());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
