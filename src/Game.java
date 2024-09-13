@@ -66,6 +66,19 @@ public class Game implements Runnable {
         }
     }
 
+    public void playerJoin (ObjectOutputStream os, String info)
+    {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "access code,character name", username);
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public GameUI getGameUI() {
         return gameUI;
     }
