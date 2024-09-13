@@ -28,6 +28,13 @@ public class Game extends JFrame {
     int level;
     private static String username;
     private static ObjectOutputStream os;
+    private static DefaultListModel<String> chatModel;
+    private static JList<String> messages;
+    private static JTable playersTable;
+    //Jlabel used in lobby screen
+    private static JList<String> lobbyUsers;
+    private DefaultListModel<String> waiting;
+    private JPanel lobbyScreen;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     private Font customFont;
@@ -41,8 +48,8 @@ public class Game extends JFrame {
     //playing tokens
     //circular tokens
 
-    //put in constructor: ObjectOutputStream os, String username
-    public Game()
+
+    public Game(ObjectOutputStream os, String username)
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
@@ -100,7 +107,7 @@ public class Game extends JFrame {
         };
         customHeroScreen.setLayout(null);
 
-        JPanel lobbyScreen = new JPanel() {
+         lobbyScreen = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -359,6 +366,8 @@ public class Game extends JFrame {
         characterNameText1.setBounds(600, 350, 350, 75);
         characterNameText1.setEditable(true);
         characterNameText1.setText("");
+        String user = characterNameText1.getText();
+        sendPlayer(os,user);
 
         String[] heroClasses1 = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice1 = new JComboBox<String>(heroClasses1);
@@ -591,6 +600,7 @@ public class Game extends JFrame {
         playersJoined.setOpaque(true);
 
         //in this table list the usernames of players
+        /*
         DefaultTableModel playersModel = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -598,10 +608,19 @@ public class Game extends JFrame {
             }
         };
         playersModel.addColumn("Username");
-        JTable playersTable = new JTable(playersModel);
+        playersTable = new JTable(playersModel);
         playersTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
         JScrollPane playersScrollPane = new JScrollPane(playersTable);
         playersScrollPane.setBounds(450, 300, 300, 400);
+
+         */
+        waiting = new DefaultListModel<>();
+        lobbyUsers= new JList<>(waiting);
+
+        JScrollPane waitingLobby = new JScrollPane(lobbyUsers);
+        waitingLobby.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        waitingLobby.setBounds(450, 300, 300, 400);
+
 
         //timer - after all players have joined show a jlabel saying starting game in 3 2 1
         //lead to playing screen
@@ -670,7 +689,7 @@ public class Game extends JFrame {
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 280);
 
-        JList<String> messages = new JList<>();
+
         JScrollPane chatBox = new JScrollPane(messages);
         chatBox.setBounds(870,720, 310,150);
 
@@ -686,9 +705,8 @@ public class Game extends JFrame {
 
         send.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                String acc = characterName + ": " + messageText.getText();
-                ///will need to implement following method
-                //sendMessage(os,name+ ": " + input.getText());
+                String acc = username + ": " + messageText.getText();
+                sendMessage(os,username+ ": " + messageText.getText());
                 messageText.setText("");
             }
         });
@@ -742,9 +760,9 @@ public class Game extends JFrame {
         customHeroScreen.add(rollingDice);
         rollingDice.setVisible(false);
 
-        lobbyScreen.add(playersJoined);
+        lobbyScreen.add(waitingLobby);
         lobbyScreen.add(accessCodeShow);
-        lobbyScreen.add(playersScrollPane);
+        lobbyScreen.add(playersJoined);
         //add starting game label but make visible false
 
         playingScreen.add(turn);
@@ -771,6 +789,47 @@ public class Game extends JFrame {
         button.setFocusPainted(false);
         button.setVisible(true);
     }
+
+
+    ///chat
+    public void sendMessage(ObjectOutputStream os, String message){
+        try{
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.CHAT, null, username, message);
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addToChat(String message){
+        SwingUtilities.invokeLater(() -> {
+        chatModel.addElement(message);
+        messages.ensureIndexIsVisible(chatModel.getSize()-1);
+        });
+    }
+
+
+    //lobby screen players
+    public void sendPlayer(ObjectOutputStream os, String name){
+        try{
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, null, name, null);
+            os.writeObject(cfc);
+            os.flush();
+
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void addPlayerToLobby(String name){
+        SwingUtilities.invokeLater(() -> {
+            waiting.addElement(name);
+        });
+    }
+
 
     public void readImages()
     {

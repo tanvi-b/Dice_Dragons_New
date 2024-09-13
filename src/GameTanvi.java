@@ -761,7 +761,7 @@ public class GameTanvi extends JFrame {
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "access code,character name", username);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "access code,character name", username,null);
             os.writeObject(cfc);
             os.flush();
         }
@@ -774,7 +774,7 @@ public class GameTanvi extends JFrame {
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, null, username);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.CONNECT, null, username,null);
             os.writeObject(cfc);
             os.flush();
         }

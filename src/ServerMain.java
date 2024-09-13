@@ -27,10 +27,10 @@ public class ServerMain {
                 Thread thread = new Thread(serverListener);
                 thread.start();
 
-//                os.writeObject(new CommandFromServer(CommandFromServer.PLAY,null,null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.ADD_HERO, null, null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.CONNECT, null, null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, null, null));
+                //os.writeObject(new CommandFromServer(CommandFromServer.PLAY,null,null));
+                //os.writeObject(new CommandFromServer(CommandFromServer.ADD_HERO, null, null, null));
+                os.writeObject(new CommandFromServer(CommandFromServer.CONNECT, null, null,null));
+                os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, null, null,null));
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.ConnectException;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -13,11 +14,10 @@ public class ClientMain {
             ObjectInputStream is = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
 
-//            Game gameC = new Game(os, name);
-//
-//            ClientListener cl = new ClientListener (is, os, gameC);
-//            Thread t = new Thread(cl);
-//            t.start();
+            Game gameC = new Game(os, name);
+            ClientListener cl = new ClientListener (is, os, gameC);
+            Thread t = new Thread(cl);
+            t.start();
 
         }
         catch (Exception e) {
