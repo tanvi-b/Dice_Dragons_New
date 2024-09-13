@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 //dragon face is on dice side 5
 
-public class Game extends JFrame {
+public class GamePrisha extends JFrame {
     String accessCode;
     boolean host;
     boolean rollClicked;
@@ -49,7 +49,7 @@ public class Game extends JFrame {
     //circular tokens
 
 
-    public Game(ObjectOutputStream os, String username)
+    public GamePrisha(ObjectOutputStream os, String username)
     {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
