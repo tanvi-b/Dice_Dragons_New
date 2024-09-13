@@ -1,12 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,21 +12,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.sql.*;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
+//create separate class for each screen
 
-public class GameTanvi extends JFrame {
-    String accessCode;
+public class GameUI extends JFrame {
+    Game game;
     boolean host;
     boolean rollClicked;
-    int level;
-    private static String username;
-    private static ObjectOutputStream os;
-    ArrayList<Hero> heroes;
-    ArrayList<Dragon> dragons;
     private Font customFont;
+    private Font customBoldFont;
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> playerRules;
     private ArrayList<BufferedImage> dragonGuide;
@@ -40,16 +32,12 @@ public class GameTanvi extends JFrame {
     //playing tokens
     //circular tokens
 
-    //put in constructor: ObjectOutputStream os, String username
-    public GameTanvi()
+    public GameUI(Game game)
     {
+        this.game = game;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Dice and Dragons Board Game");
-        this.os = os;
-        this.username = username;
         rollClicked = false;
-        level = 0;
-        heroes = new ArrayList<>();
         diceFaces = new ArrayList<>();
         playerRules = new ArrayList<>();
         dragonGuide = new ArrayList<>();
@@ -126,16 +114,25 @@ public class GameTanvi extends JFrame {
         //intro screen
         host = false;
         try {
-            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf")).deriveFont(42f);
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont);
+            customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf"));
+            customBoldFont = Font.createFont(Font.TRUETYPE_FONT,new File("fonts/Almendra-Bold.ttf"));
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
 
+        JLabel gameTitleLine1 = new JLabel("Dice &");
+        gameTitleLine1.setForeground(Color.white);
+        gameTitleLine1.setFont(customBoldFont.deriveFont(75f));
+        gameTitleLine1.setBounds(260, 12, 700, 100);
+
+        JLabel gameTitleLine2 = new JLabel("Dragons");
+        gameTitleLine2.setForeground(Color.white);
+        gameTitleLine2.setFont(customBoldFont.deriveFont(75f));
+        gameTitleLine2.setBounds(230, 80, 700, 100);
+
         JButton joinGame = new JButton ("Join Game");
         joinGame.setForeground(Color.black);
-        joinGame.setFont(customFont);
+        joinGame.setFont(customFont.deriveFont(42f));
         joinGame.setBounds(10, 600, 425, 50);
         joinGame.setBorderPainted(false);
         buttonFormatting(joinGame);
@@ -152,8 +149,8 @@ public class GameTanvi extends JFrame {
 
         JButton hostGame = new JButton ("Host Game");
         hostGame.setForeground(Color.black);
-        hostGame.setFont(customFont);
-        hostGame.setBounds(10, 675, 425, 50);
+        hostGame.setFont(customFont.deriveFont(42f));
+        hostGame.setBounds(10, 665, 425, 50);
         hostGame.setBorderPainted(false);
         buttonFormatting(hostGame);
         hostGame.addActionListener(new ActionListener() {
@@ -226,9 +223,9 @@ public class GameTanvi extends JFrame {
         availableHeroClasses.add("Rogue");
         for (int i = 4; i>=0; i--)
         {
-            for (int j = 0; j<heroes.size(); j++)
+            for (int j = 0; j<game.heroes.size(); j++)
             {
-                if (heroes.get(j).classType==i)
+                if (game.heroes.get(j).classType==i)
                     availableHeroClasses.remove(i);
             }
         }
@@ -274,9 +271,6 @@ public class GameTanvi extends JFrame {
                 //if name is duplicate display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
-                    username = characterNameText.getText();
-                    //get access code text as well
-                    //called playerJoin()
                     getContentPane().removeAll();
                     getContentPane().add(lobbyScreen);
                     validate();
@@ -395,8 +389,7 @@ public class GameTanvi extends JFrame {
                 //get number of players, class type, and username
                 if (numbersOfPlayersChoice.getSelectedIndex()!=-1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex()!=-1) {
-                    username = characterNameText1.getText();
-                    //call playerHost method
+                    //call game.playerHost
                     getContentPane().removeAll();
                     getContentPane().add(lobbyScreen);
                     validate();
@@ -688,6 +681,8 @@ public class GameTanvi extends JFrame {
             }
         });
 
+        introScreen.add(gameTitleLine1);
+        introScreen.add(gameTitleLine2);
         introScreen.add(joinGame);
         introScreen.add(hostGame);
 
@@ -755,32 +750,6 @@ public class GameTanvi extends JFrame {
         setVisible(true);
         setSize(1200, 1000);
         setResizable(false);
-    }
-
-    public void playerJoin (ObjectOutputStream os, String info)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "access code,character name", username);
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void playerHost (ObjectOutputStream os)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, null, username);
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
     public void buttonFormatting (JButton button)

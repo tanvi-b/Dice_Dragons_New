@@ -13,8 +13,10 @@ public class CommandFromClient implements Serializable
 
     //public static final int CUSTOM_HERO = 2;
     //public static final int CHAT = 3;
-    //public static final int PLAY=4;
-    //public static final int DISCONNECT = 5;
+//    public static final int PLAY=4;
+//    public static final int DISCONNECT = 5;
+//    public static final int CONNECT = 6;
+
 
 
     public CommandFromClient(int command, Object data, String player) {
@@ -32,4 +34,8 @@ public class CommandFromClient implements Serializable
     public String getPlayer(){
         return player;
     }
+
+//    public String getMessage(){
+//        return message;
+//    }
 }

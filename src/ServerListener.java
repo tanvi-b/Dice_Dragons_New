@@ -26,26 +26,26 @@ public class ServerListener implements Runnable {
 
                 if(cfc.getCommand() == CommandFromClient.JOIN){
                     if (cfc.getData().equals("valid"))
-                        sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, null));
+                        sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, cfc.getPlayer(),null));
                     else if (cfc.getData().equals("invalidAccessCode"))
-                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null,null));
                     else
-                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_NAME, null, null));
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_NAME, null, null,null));
                 }
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
                     Random random = new Random();
                     int accessCode = 100000 + random.nextInt(900000);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null,null));
                 }
 
-//                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
-//                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
-//                }
-//
-//                if(cfc.getCommand() == CommandFromClient.CHAT){
-//                    sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer()));
-//                }
+                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
+                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null, null));
+                }
+
+                if(cfc.getCommand() == CommandFromClient.CHAT){
+                   sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer(), cfc.getMessage()));
+                }
 
             }
         }
@@ -88,16 +88,5 @@ public class ServerListener implements Runnable {
         }
     }
 
-//    public void sendCommand(CommandFromServer cfs)
-//    {
-//        //sends command to everyone
-//        for (ObjectOutputStream o : outs) {
-//            try {
-//                o.writeObject(cfs);
-//                o.flush();
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }
+
