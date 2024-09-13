@@ -27,7 +27,7 @@ public class ClientListener implements Runnable {
                   // game.method(cfs.getVariable()); 
                 }
                 if(cfs.getCommand() == CommandFromServer.CONNECT){
-                    
+                    game.addPlayerToLobby(cfs.getPlayer());
                 }
                 if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
 
