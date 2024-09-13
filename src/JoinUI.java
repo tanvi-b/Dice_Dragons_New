@@ -111,7 +111,7 @@ public class JoinUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeAll();
-                //add(new CustomHeroUI());
+                // cardLayout.show(mainPanel, "CustomHeroScreen");
                 validate();
                 repaint();
                 setVisible(true);
@@ -133,7 +133,7 @@ public class JoinUI extends JPanel {
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     removeAll();
-                    //add(new LobbyUI());
+                    //cardLayout.show(main Panel, "LobbyScreen")
                     validate();
                     repaint();
                     setVisible(true);
