@@ -41,9 +41,11 @@ public class Game implements Runnable {
                 }
 //                if(cfs.getCommand() == CommandFromServer.MAKE_HERO)
 //                {
+
 //                }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)
 //                {
+
 //                }
             }
         } catch (IOException | ClassNotFoundException e) {
