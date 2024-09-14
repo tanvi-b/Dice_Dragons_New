@@ -41,6 +41,7 @@ public class ServerListener implements Runnable {
                     Random random = new Random();
                     int accessCode = 100000 + random.nextInt(900000);
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
+                    //might have to add the game into hash map?
                 }
 
 //                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){

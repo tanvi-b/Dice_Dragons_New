@@ -8,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 public class HostUI extends JPanel {
     private CardLayout cardLayout;
@@ -38,17 +39,17 @@ public class HostUI extends JPanel {
         numberOfPlayers.setBounds(80, 200, 500, 100);
         numberOfPlayers.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        JLabel characterName1 = new JLabel("Enter character name:");
-        characterName1.setForeground(Color.black);
-        characterName1.setFont(customFont.deriveFont(55f));
-        characterName1.setBounds(80, 350, 500, 100);
-        characterName1.setHorizontalAlignment(SwingConstants.RIGHT);
+        JLabel characterName = new JLabel("Enter character name:");
+        characterName.setForeground(Color.black);
+        characterName.setFont(customFont.deriveFont(55f));
+        characterName.setBounds(80, 350, 500, 100);
+        characterName.setHorizontalAlignment(SwingConstants.RIGHT);
 
-        JLabel heroClass1 = new JLabel("Choose your hero class:");
-        heroClass1.setForeground(Color.black);
-        heroClass1.setFont(customFont.deriveFont(50f));
-        heroClass1.setBounds(80, 500, 500, 100);
-        heroClass1.setHorizontalAlignment(SwingConstants.RIGHT);
+        JLabel heroClass = new JLabel("Choose your hero class:");
+        heroClass.setForeground(Color.black);
+        heroClass.setFont(customFont.deriveFont(50f));
+        heroClass.setBounds(80, 500, 500, 100);
+        heroClass.setHorizontalAlignment(SwingConstants.RIGHT);
 
         Integer[] numbers = {1, 2, 3, 4, 5};
         JComboBox<Integer> numbersOfPlayersChoice = new JComboBox<Integer>(numbers);
@@ -62,29 +63,29 @@ public class HostUI extends JPanel {
         numbersOfPlayersChoice.setSize(350, 75);
         numbersOfPlayersChoice.setLocation(600, 200);
 
-        JTextField characterNameText1 = new JTextField();
-        characterNameText1.setFont(new Font("Arial", Font.PLAIN, 20));
-        characterNameText1.setBounds(600, 350, 350, 75);
+        JTextField characterNameText = new JTextField();
+        characterNameText.setFont(new Font("Arial", Font.PLAIN, 20));
+        characterNameText.setBounds(600, 350, 350, 75);
 
-        String[] heroClasses1 = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
-        JComboBox<String> heroClassChoice1 = new JComboBox<String>(heroClasses1);
-        heroClassChoice1.addItemListener(new ItemListener() {
+        String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
+        JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
+        heroClassChoice.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
                 }
             }
         });
-        heroClassChoice1.setSize(350, 75);
-        heroClassChoice1.setLocation(600, 500);
+        heroClassChoice.setSize(350, 75);
+        heroClassChoice.setLocation(600, 500);
 
-        JButton custom1 = new JButton("Custom");
-        custom1.setForeground(new Color(204, 185, 45));
-        custom1.setFont(customFont.deriveFont(35f));
-        custom1.setBounds(1000, 525, 155, 50);
-        custom1.setBorder(BorderFactory.createLineBorder(Color.white));
-        buttonFormatting(custom1);
-        custom1.addActionListener(new ActionListener() {
+        JButton custom = new JButton("Custom");
+        custom.setForeground(new Color(204, 185, 45));
+        custom.setFont(customFont.deriveFont(35f));
+        custom.setBounds(1000, 525, 155, 50);
+        custom.setBorder(BorderFactory.createLineBorder(Color.white));
+        buttonFormatting(custom);
+        custom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //cardLayout.show(mainPanel, "CustomHeroScreen");
@@ -102,35 +103,36 @@ public class HostUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 //send message to server and receive access code
                 //get number of players, class type, and username
-                if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText1.getText().equals("") &&
-                        heroClassChoice1.getSelectedIndex() != -1) {
-                    //call game.playerHost;
+                if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText.getText().equals("") &&
+                        heroClassChoice.getSelectedIndex() != -1) {
+                    String info = numbersOfPlayersChoice.getSelectedIndex() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
+                    //Game.playerHost(os, info); - somehow get access to os
                     cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
         });
 
-        JLabel customHeroMade1 = new JLabel("Custom hero has been made");
-        customHeroMade1.setForeground(Color.red);
-        customHeroMade1.setFont(customFont.deriveFont(38f));
-        customHeroMade1.setBounds(600, 500, 700, 100);
-        customHeroMade1.setVisible(false);
+        JLabel customHeroMade = new JLabel("Custom hero has been made");
+        customHeroMade.setForeground(Color.red);
+        customHeroMade.setFont(customFont.deriveFont(38f));
+        customHeroMade.setBounds(600, 500, 700, 100);
+        customHeroMade.setVisible(false);
 
-        JButton back1 = new JButton("Back");
-        back1.setForeground(new Color(204, 185, 45));
-        back1.setFont(customFont.deriveFont(30f));
-        back1.setBounds(5, 730, 130, 50);
-        back1.setBorder(BorderFactory.createLineBorder(Color.white));
-        buttonFormatting(back1);
-        back1.addActionListener(new ActionListener() {
+        JButton back = new JButton("Back");
+        back.setForeground(new Color(204, 185, 45));
+        back.setFont(customFont.deriveFont(30f));
+        back.setBounds(5, 730, 130, 50);
+        back.setBorder(BorderFactory.createLineBorder(Color.white));
+        buttonFormatting(back);
+        back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                heroClassChoice1.setSelectedIndex(-1);
+                heroClassChoice.setSelectedIndex(-1);
                 numbersOfPlayersChoice.setSelectedIndex(-1);
-                characterNameText1.setText("");
-                heroClassChoice1.setVisible(true);
-                custom1.setVisible(true);
-                customHeroMade1.setVisible(false);
+                characterNameText.setText("");
+                heroClassChoice.setVisible(true);
+                custom.setVisible(true);
+                customHeroMade.setVisible(false);
                 cardLayout.show(mainPanel, "IntroScreen");
             }
         });
@@ -138,16 +140,16 @@ public class HostUI extends JPanel {
         add(numberOfPlayers);
         add(numbersOfPlayersChoice);
         numbersOfPlayersChoice.setSelectedIndex(-1);
-        add(characterName1);
-        add(characterNameText1);
-        add(heroClass1);
-        add(heroClassChoice1);
-        heroClassChoice1.setSelectedIndex(-1);
-        add(custom1);
+        add(characterName);
+        add(characterNameText);
+        add(heroClass);
+        add(heroClassChoice);
+        heroClassChoice.setSelectedIndex(-1);
+        add(custom);
         add(createGame);
-        add(back1);
-        add(customHeroMade1);
-        customHeroMade1.setVisible(false);
+        add(back);
+        add(customHeroMade);
+        customHeroMade.setVisible(false);
     }
 
     private void buttonFormatting(JButton button) {

@@ -8,6 +8,7 @@ import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class JoinUI extends JPanel {
@@ -113,10 +114,11 @@ public class JoinUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //send message to server and validate input
-                //if access code is not valid display jlabel
-                //if name is duplicate display jlabel
+                //for any invalidations display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
+                    String info = accessCodeText.getText() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
+                    //Game.playerJoin(os, info); - somehow get access to os
                     cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
