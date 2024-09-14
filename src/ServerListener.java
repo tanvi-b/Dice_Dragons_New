@@ -52,6 +52,7 @@ public class ServerListener implements Runnable {
 
     private String validPlayer (Object data)
     {
+        //validate hero class
         String playerEntry = (String) data;
         String[] playerInputs = playerEntry.split(",");
         for (Map.Entry<String, Game> entry : currentGames.entrySet())

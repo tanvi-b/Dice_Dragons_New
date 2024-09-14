@@ -81,23 +81,7 @@ public class JoinUI extends JPanel {
         duplicateName.setBounds(950, 360, 245, 50);
         duplicateName.setOpaque(true);
 
-        ArrayList<String> availableHeroClasses = new ArrayList<>();
-        availableHeroClasses.add("Warrior");
-        availableHeroClasses.add("Wizard");
-        availableHeroClasses.add("Cleric");
-        availableHeroClasses.add("Ranger");
-        availableHeroClasses.add("Rogue");
-
-//        for (int i = 4; i>=0; i--)
-//        {
-//            for (int j = 0; j<game.heroes.size(); j++)
-//            {
-//                if (game.heroes.get(j).classType==i)
-//                    availableHeroClasses.remove(i);
-//            }
-//        }
-
-        JComboBox<String> heroClassChoice = new JComboBox<>(availableHeroClasses.toArray(new String[0]));
+        JComboBox<String> heroClassChoice = new JComboBox<>(new String[]{"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"});
         heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
