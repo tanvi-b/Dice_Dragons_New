@@ -26,27 +26,22 @@ public class ServerListener implements Runnable {
 
                 if(cfc.getCommand() == CommandFromClient.JOIN){
                     if (cfc.getData().equals("valid"))
-                        sendCommand(new CommandFromServer(CommandFromServer.CONNECT, null, cfc.getPlayer(),null));
+                        sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
                     else if (cfc.getData().equals("invalidAccessCode"))
-                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null,null));
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
                     else
-                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_NAME, null, null,null));
+                        sendCommand(new CommandFromServer(CommandFromServer.INVALID_NAME, null, null));
                 }
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
                     Random random = new Random();
                     int accessCode = 100000 + random.nextInt(900000);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null,null));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
                 }
 
-                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
-                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null, null));
-                }
-
-                if(cfc.getCommand() == CommandFromClient.CHAT){
-                   sendCommand(new CommandFromServer(CommandFromServer.CHAT, null, cfc.getPlayer(), cfc.getMessage()));
-                }
-
+//                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
+//                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
+//                }
             }
         }
         catch(Exception e){
@@ -57,6 +52,7 @@ public class ServerListener implements Runnable {
 
     private String validPlayer (Object data)
     {
+        //validate hero class
         String playerEntry = (String) data;
         String[] playerInputs = playerEntry.split(",");
         for (Map.Entry<String, Game> entry : currentGames.entrySet())
@@ -89,3 +85,4 @@ public class ServerListener implements Runnable {
     }
 
 }
+
