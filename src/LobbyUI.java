@@ -65,6 +65,7 @@ public class LobbyUI extends JPanel {
         add(playersJoined);
         add(accessCodeShow);
         add(playersScrollPane);
+        //add starting game label but make visible false
     }
 
     private void buttonFormatting(JButton button) {

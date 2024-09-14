@@ -1,17 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 //dragon face is on dice side 5
@@ -23,7 +14,7 @@ public class GameUI extends JFrame {
     private ArrayList<BufferedImage> dragonGuide;
     private ArrayList<BufferedImage> dragonSheets;
     private ArrayList<BufferedImage> heroSheets;
-    private BufferedImage intro, loginBackground, background;
+    private BufferedImage background;
     //playing tokens
     //circular tokens
 
@@ -36,15 +27,6 @@ public class GameUI extends JFrame {
         dragonGuide = new ArrayList<>();
         dragonSheets = new ArrayList<>();
         heroSheets = new ArrayList<>();
-
-        JPanel lobbyScreen = new JPanel() {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(loginBackground, 0, 0, 1400, 1000, this);
-            }
-        };
-        lobbyScreen.setLayout(null);
 
         JPanel playingScreen = new JPanel(){
             @Override
@@ -60,38 +42,6 @@ public class GameUI extends JFrame {
 
         JPanel playerRules = new JPanel();
         playerRules.setLayout(null);
-
-        //lobby screen
-//        JLabel accessCodeShow = new JLabel();
-//        accessCodeShow.setFont(customFont.deriveFont(20f));
-//        accessCodeShow.setBounds(900,10,250,50);
-//        accessCodeShow.setText("Access Code: ");
-//        accessCodeShow.setOpaque(true);
-//        accessCodeShow.setBackground(Color.black);
-//        accessCodeShow.setForeground(Color.ORANGE);
-//
-//        JLabel playersJoined = new JLabel();
-//        playersJoined.setFont(customFont.deriveFont(60f));
-//        playersJoined.setBounds(350, 200, 500, 75);
-//        playersJoined.setText("Players Joined");
-//        playersJoined.setHorizontalAlignment(SwingConstants.CENTER);
-//        playersJoined.setOpaque(true);
-//
-//        //in this table list the usernames of players
-//        DefaultTableModel playersModel = new DefaultTableModel() {
-//            @Override
-//            public boolean isCellEditable(int row, int column) {
-//                return false;
-//            }
-//        };
-//        playersModel.addColumn("Username");
-//        JTable playersTable = new JTable(playersModel);
-//        playersTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
-//        JScrollPane playersScrollPane = new JScrollPane(playersTable);
-//        playersScrollPane.setBounds(450, 300, 300, 400);
-
-        //timer - after all players have joined show a jlabel saying starting game in 3 2 1
-        //lead to playing screen
 
         //playing screen
 //        JLabel turn = new JLabel("Turn: ");
@@ -180,11 +130,6 @@ public class GameUI extends JFrame {
 //            }
 //        });
 
-//        lobbyScreen.add(playersJoined);
-//        lobbyScreen.add(accessCodeShow);
-//        lobbyScreen.add(playersScrollPane);
-//        //add starting game label but make visible false
-//
 //        playingScreen.add(turn);
 //        playingScreen.add(rules);
 //        playingScreen.add(guide);
@@ -202,14 +147,6 @@ public class GameUI extends JFrame {
         setVisible(true);
         setSize(1200, 1000);
         setResizable(false);
-    }
-
-    public void buttonFormatting (JButton button)
-    {
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setVisible(true);
     }
 
     public void readImages()
