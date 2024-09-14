@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Game implements Runnable {
 
     GameUI gameUI;
+    int maxPlayers;
     String accessCode;
     String username;
     int level;
@@ -29,6 +30,7 @@ public class Game implements Runnable {
 
                 // Process the received message
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
+                    String accessCode = (String) cfs.getData();
                    //inside code will follow this syntax
                   // game.method(cfs.getVariable()); 
                 }
@@ -41,6 +43,12 @@ public class Game implements Runnable {
                 if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
 
                 }
+                if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
+
+                }
+                if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
+
+                }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)
 //                {
 //                    game.addToChat(cfs.getMessage());
@@ -51,11 +59,11 @@ public class Game implements Runnable {
         }
     }
 
-    public void playerHost ()
+    public static void playerJoin (ObjectOutputStream os, String info)
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, null, username);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, null);
             os.writeObject(cfc);
             os.flush();
         }
@@ -64,11 +72,12 @@ public class Game implements Runnable {
         }
     }
 
-    public void playerJoin (ObjectOutputStream os, String info)
+    public static void playerHost (ObjectOutputStream os, String info)
     {
+        //might need to pass name for player parameter
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "access code,character name", username);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, null);
             os.writeObject(cfc);
             os.flush();
         }
@@ -76,6 +85,7 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
     }
+
 
     public GameUI getGameUI() {
         return gameUI;
