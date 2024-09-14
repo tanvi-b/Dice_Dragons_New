@@ -105,11 +105,7 @@ public class HostUI extends JPanel {
                 if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText1.getText().equals("") &&
                         heroClassChoice1.getSelectedIndex() != -1) {
                     //call game.playerHost;
-                    removeAll();
-                    //cardLayout.show(mainPanel, "LobbyScreen");
-                    validate();
-                    repaint();
-                    setVisible(true);
+                    cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
         });

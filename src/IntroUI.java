@@ -30,13 +30,13 @@ public class IntroUI extends JPanel {
         mainPanel.add(hostPanel, "HostScreen");
 
 //        JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
-//        mainPanel.add(hostPanel, "CustomHeroScreen");
+//        mainPanel.add(customHeroPanel, "CustomHeroScreen");
 
-//        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel);
-//        mainPanel.add(hostPanel, "LobbyScreen");
+        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel);
+        mainPanel.add(lobbyPanel, "LobbyScreen");
 //
 //        JPanel playingPanel = new PlayingUI(cardLayout, mainPanel);
-//        mainPanel.add(hostPanel, "PlayingScreen");
+//        mainPanel.add(playingPanel, "PlayingScreen");
 
         add(mainPanel, BorderLayout.CENTER);
         cardLayout.show(mainPanel, "IntroScreen");

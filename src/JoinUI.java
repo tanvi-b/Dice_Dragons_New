@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class JoinUI extends JPanel {
-    Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private BufferedImage loginBackground;
@@ -19,7 +18,6 @@ public class JoinUI extends JPanel {
     private Font customBoldFont;
 
     public JoinUI(CardLayout cardLayout, JPanel mainPanel) {
-        this.game = game; //access game object from game ui
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         setLayout(null);
@@ -95,7 +93,7 @@ public class JoinUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 removeAll();
-                // cardLayout.show(mainPanel, "CustomHeroScreen");
+                //cardLayout.show(mainPanel, "CustomHeroScreen");
                 validate();
                 repaint();
                 setVisible(true);
@@ -116,11 +114,7 @@ public class JoinUI extends JPanel {
                 //if name is duplicate display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
-                    removeAll();
-                    //cardLayout.show(main Panel, "LobbyScreen")
-                    validate();
-                    repaint();
-                    setVisible(true);
+                    cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
         });
