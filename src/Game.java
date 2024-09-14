@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Game implements Runnable {
 
     GameUI gameUI;
+    int maxPlayers;
     String accessCode;
     String username;
     int level;
@@ -39,6 +40,12 @@ public class Game implements Runnable {
 
                 }
                 if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
+
+                }
+                if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
+
+                }
+                if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
 
                 }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)

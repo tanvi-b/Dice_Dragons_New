@@ -119,7 +119,7 @@ public class JoinUI extends JPanel {
             }
         });
 
-        //jlabel saying max players reached or once game starts, make the access code invalid?
+        //jlabel saying max players reached
 
         JLabel customHeroMade = new JLabel("Custom hero has been made");
         customHeroMade.setForeground(Color.red);
