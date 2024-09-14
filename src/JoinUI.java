@@ -83,6 +83,13 @@ public class JoinUI extends JPanel {
         heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
+        JLabel duplicateClass = new JLabel ("Class has already been taken");
+        duplicateClass.setHorizontalAlignment(SwingConstants.CENTER);
+        duplicateClass.setForeground(Color.red);
+        duplicateClass.setFont(customFont.deriveFont(20f));
+        duplicateClass.setBounds(950, 510, 245, 50);
+        duplicateClass.setOpaque(true);
+
         JButton custom = new JButton("Custom");
         custom.setForeground(new Color(204, 185, 45));
         custom.setFont(customFont.deriveFont(35f));
@@ -92,18 +99,14 @@ public class JoinUI extends JPanel {
         custom.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeAll();
                 //cardLayout.show(mainPanel, "CustomHeroScreen");
-                validate();
-                repaint();
-                setVisible(true);
             }
         });
 
         JButton beginGame = new JButton ("Begin Game");
         beginGame.setForeground(Color.white);
         beginGame.setFont(customFont.deriveFont(75f));
-        beginGame.setBounds(400, 650, 500, 100);
+        beginGame.setBounds(425, 600, 500, 100);
         beginGame.setBorderPainted(false);
         buttonFormatting(beginGame);
         beginGame.addActionListener(new ActionListener() {
@@ -119,7 +122,12 @@ public class JoinUI extends JPanel {
             }
         });
 
-        //jlabel saying max players reached
+        JLabel maxPlayersReached = new JLabel("Max players have been reached.");
+        maxPlayersReached.setHorizontalAlignment(SwingConstants.CENTER);
+        maxPlayersReached.setForeground(Color.red);
+        maxPlayersReached.setFont(customFont.deriveFont(20f));
+        maxPlayersReached.setBounds(525, 700, 300, 75);
+        maxPlayersReached.setOpaque(true);
 
         JLabel customHeroMade = new JLabel("Custom hero has been made");
         customHeroMade.setForeground(Color.red);
@@ -159,9 +167,13 @@ public class JoinUI extends JPanel {
         add(customHeroMade);
         add(invalidAccessCode);
         add(duplicateName);
+        add(duplicateClass);
+        add(maxPlayersReached);
         customHeroMade.setVisible(false);
         invalidAccessCode.setVisible(false);
         duplicateName.setVisible(false);
+        duplicateClass.setVisible(false);
+        maxPlayersReached.setVisible(false);
     }
 
     private void buttonFormatting(JButton button) {

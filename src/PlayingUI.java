@@ -12,6 +12,8 @@ public class PlayingUI extends JPanel {
     Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private ArrayList<BufferedImage> dragonSheets;
+    private ArrayList<BufferedImage> heroSheets;
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
@@ -19,6 +21,8 @@ public class PlayingUI extends JPanel {
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        dragonSheets = new ArrayList<>();
+        heroSheets = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
@@ -46,11 +50,7 @@ public class PlayingUI extends JPanel {
         rules.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeAll();
-                //cardLayout.show(mainPanel, next screen);
-                validate();
-                repaint();
-                setVisible(true);
+                //cardLayout.show(mainPanel, "PlayerRulesScreen");
             }
         });
 
@@ -63,11 +63,7 @@ public class PlayingUI extends JPanel {
         guide.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                removeAll();
-                //cardLayout.show(mainPanel, "next screen);
-                validate();
-                repaint();
-                setVisible(true);
+                //cardLayout.show(mainPanel, "DragonGuideScreen");
             }
         });
 
@@ -109,8 +105,6 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
 
-
-
         //chat method
         /*
         send.addActionListener(new ActionListener() {
@@ -136,7 +130,6 @@ public class PlayingUI extends JPanel {
 
     }
 
-
     private void loadFonts() {
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf"));
@@ -149,6 +142,20 @@ public class PlayingUI extends JPanel {
     private void readImages() {
         try {
             background = ImageIO.read(new File("images/backgroundImage.png"));
+            dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/green dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/pale dragon.png")));
+            heroSheets.add(ImageIO.read(new File("images/cleric.png")));
+            heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
+            heroSheets.add(ImageIO.read(new File("images/ranger.png")));
+            heroSheets.add(ImageIO.read(new File("images/rogue.png")));
+            heroSheets.add(ImageIO.read(new File("images/warrior.png")));
+            heroSheets.add(ImageIO.read(new File("images/wizard.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
