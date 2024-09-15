@@ -15,51 +15,21 @@ public class IntroUI extends JPanel {
     private JPanel mainPanel;
     private CardLayout cardLayout;
 
-    public IntroUI() {
-        setLayout(new BorderLayout());
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-
-        JPanel introPanel = createIntroPanel();
-        mainPanel.add(introPanel, "IntroScreen");
-
-        JPanel joinPanel = new JoinUI(cardLayout, mainPanel);
-        mainPanel.add(joinPanel, "JoinScreen");
-
-        JPanel hostPanel = new HostUI(cardLayout, mainPanel);
-        mainPanel.add(hostPanel, "HostScreen");
-
-        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel);
-        mainPanel.add(lobbyPanel, "LobbyScreen");
-
-        //JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
-//        mainPanel.add(customHeroPanel, "CustomHeroScreen");
-//
-//        JPanel playingPanel = new PlayingUI(cardLayout, mainPanel);
-//        mainPanel.add(playingPanel, "PlayingScreen");
-
-//        JPanel dragonGuide = new DragonGuideUI(cardLayout, mainPanel);
-//        mainPanel.add(dragonGuide, "DragonGuideScreen");
-//
-//        JPanel playerRules = new PlayerRulesUI(cardLayout, mainPanel);
-////        mainPanel.add(playerRules, "PlayerRulesScreen");
-
-        add(mainPanel, BorderLayout.CENTER);
-        cardLayout.show(mainPanel, "IntroScreen");
-    }
-
-    private JPanel createIntroPanel() {
-        JPanel panel = new JPanel(null) {
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                g.drawImage(intro, 0, 0, 1200, 1000, this);
-            }
-        };
-
+    public IntroUI(CardLayout cardLayout, JPanel mainPanel) {
+        this.cardLayout = cardLayout;
+        this.mainPanel = mainPanel;
+        setLayout(null);
         readImages();
         loadFonts();
+        addComponents();
+    }
 
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.drawImage(intro, 0, 0, 1200, 1000, this);
+    }
+
+    private void addComponents() {
         host = false;
         JLabel gameTitleLine1 = new JLabel("Dice &");
         gameTitleLine1.setForeground(Color.white);
@@ -98,12 +68,10 @@ public class IntroUI extends JPanel {
             }
         });
 
-        panel.add(gameTitleLine1);
-        panel.add(gameTitleLine2);
-        panel.add(joinGame);
-        panel.add(hostGame);
-
-        return panel;
+        add(gameTitleLine1);
+        add(gameTitleLine2);
+        add(joinGame);
+        add(hostGame);
     }
 
     private void buttonFormatting(JButton button) {
