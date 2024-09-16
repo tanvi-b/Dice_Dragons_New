@@ -8,3 +8,9 @@ Prisha
 Tanvi 
 --> Passing information after begin/create game
 --> Finish join player for server 
+
+
+- handling max players exception
+- showing names on jlist in lobby ui
+- showing dragon sheets in playing ui
+- showing hero sheets in playing ui
