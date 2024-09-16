@@ -13,17 +13,13 @@ import java.io.ObjectOutputStream;
 public class HostUI extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    private Game game;
     private BufferedImage loginBackground;
     private Font customFont;
-    private ObjectOutputStream os;
     private Font customBoldFont;
 
-    public HostUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
+    public HostUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        this.game = game;
-        this.os = game.getOs();
         setLayout(null);
         readImages();
         loadFonts();
@@ -110,7 +106,7 @@ public class HostUI extends JPanel {
                 if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex() != -1) {
                     String info = numbersOfPlayersChoice.getSelectedIndex() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
-                    game.sendUserLobby(os, characterNameText.getText());
+                    LobbyUI.game.playerHost(LobbyUI.game.getOs(), info, characterNameText.getText());
                     cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
@@ -179,9 +175,4 @@ public class HostUI extends JPanel {
             e.printStackTrace();
         }
     }
-
-
-
-
-
 }
