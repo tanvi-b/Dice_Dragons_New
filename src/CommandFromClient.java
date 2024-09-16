@@ -1,21 +1,21 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class CommandFromClient implements Serializable
 {
     //The command being sent to the server
     private int command;
     private Object data = null;
+    private ArrayList<String> players;
 
     private String player = "";
 
     public static final int JOIN=0;
     public static final int HOST=1;
 
-    //public static final int CUSTOM_HERO = 2;
-    //public static final int CHAT = 3;
-//    public static final int PLAY=4;
-//    public static final int DISCONNECT = 5;
-//    public static final int CONNECT = 6;
+    //public static final int CUSTOM_HERO;
+    //public static final int CHAT;
+//    public static final int DISCONNECT;
 
 
 
@@ -24,6 +24,7 @@ public class CommandFromClient implements Serializable
         this.data = data;
         this.player = player;
     }
+
 
     public int getCommand() {return command;}
 

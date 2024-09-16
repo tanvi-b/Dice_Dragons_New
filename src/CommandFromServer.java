@@ -13,8 +13,12 @@ public class CommandFromServer implements Serializable {
     public static final int INVALID_ACCESS_CODE = 2;
     public static final int INVALID_NAME = 3;
 
-    //public static final int CHAT = 4;
-    //public static final int DISCONNECT = 5;
+    public static final int INVALID_CLASS = 4;
+
+    public static final int MAX_PLAYERS = 5;
+
+    //public static final int CHAT;
+    //public static final int DISCONNECT;
 
 
     public CommandFromServer(int command, Object data, String player) {
