@@ -16,55 +16,40 @@ public class Game implements Runnable {
     private ObjectInputStream is;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    public static String codeAll;
 
-    public static ArrayList<String> players;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
         this.os = os;
         this.is = is;
         heroes = new ArrayList<>();
-        players = new ArrayList<>();
-
     }
 
     public void run() {
         try {
             while (true) {
-                // Read message from the server
                 CommandFromServer cfs = (CommandFromServer) is.readObject();
-                // Process the received message
 
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
-                    SwingUtilities.invokeLater(() -> {
-                        maxPlayers++;
-                        players.add(cfs.getPlayer());
-                        LobbyUI.updatePlayersinLobby(cfs.getPlayer());
-                        setAccessCode(cfs.getData().toString());
-                        LobbyUI.displayCode(getAccessCode());
-                    });
+                    //LobbyUI.refreshLobby();
+                    accessCode = cfs.getData().toString();
+                    LobbyUI.displayCode(accessCode);
                 }
-                if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
-                    SwingUtilities.invokeLater(() -> {
-                    maxPlayers++;
-                    players.add(cfs.getPlayer());
-                    LobbyUI.updatePlayersinLobby(cfs.getPlayer());
-                    setAccessCode(cfs.getData().toString());
-                    System.out.println(cfs.getData().toString());
-                    LobbyUI.displayCode(getAccessCode());
-                    });
+                else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
+                    //LobbyUI.refreshLobby();
+                    LobbyUI.displayCode(cfs.getData().toString());
+                    gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
                     JoinUI.duplicateName();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
                     JoinUI.duplicateClass();
                 }
-                if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
+                else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
                     JoinUI.maxPlayers();
                 }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)
@@ -77,11 +62,15 @@ public class Game implements Runnable {
         }
     }
 
-    public void sendJoinUserLobby (ObjectOutputStream os, Object Data, String name)
+    public String toString() {
+        return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void playerJoin (ObjectOutputStream os, String info, String name)
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "valid", name);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
             os.writeObject(cfc);
             os.flush();
         }
@@ -90,24 +79,14 @@ public class Game implements Runnable {
         }
     }
 
-    public void sendUserLobby(ObjectOutputStream os, String player)  {
+    public void playerHost(ObjectOutputStream os, String info, String player)  {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, null, player);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
             os.writeObject(cfc);
             os.flush();
         }
         catch (IOException e){
-            e.printStackTrace();
-        }
-    }
-
-    public void sendCode(ObjectOutputStream os, Object data, String player){
-        try {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, data, player);
-            os.writeObject(cfc);
-            os.flush();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -119,6 +98,15 @@ public class Game implements Runnable {
     public void setGameUI(GameUI gameUI) {
         this.gameUI = gameUI;
     }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
 
     public String getAccessCode() {
         return accessCode;
@@ -139,9 +127,6 @@ public class Game implements Runnable {
     public int getLevel() {
         return level;
     }
-    public ArrayList<String> allPlayers(){
-        return players;
-    }
 
     public void setLevel(int level) {
         this.level = level;
@@ -161,14 +146,6 @@ public class Game implements Runnable {
 
     public void setHeroes(ArrayList<Hero> heroes) {
         this.heroes = heroes;
-    }
-
-    public ArrayList<String> getPlayers(){
-        return players;
-    }
-
-    public void setPlayers(ArrayList<String> players){
-        this.players = players;
     }
 
     public ArrayList<Dragon> getDragons() {
