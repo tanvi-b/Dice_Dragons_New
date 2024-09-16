@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 //dragon face is on dice side 5
 
@@ -8,6 +9,10 @@ public class GameUI extends JFrame {
     Game game;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+    private JPanel introPanel;
+    private JPanel joinPanel;
+    private JPanel hostPanel;
+    private JPanel lobbyPanel;
 
     public GameUI(Game game)
     {
@@ -19,17 +24,18 @@ public class GameUI extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        JPanel introPanel = new IntroUI(cardLayout, mainPanel);
+        introPanel = new IntroUI(cardLayout, mainPanel, game);
         mainPanel.add(introPanel, "IntroScreen");
 
-        JPanel joinPanel = new JoinUI(cardLayout, mainPanel);
+        joinPanel = new JoinUI(cardLayout, mainPanel, game);
         mainPanel.add(joinPanel, "JoinScreen");
 
-        JPanel hostPanel = new HostUI(cardLayout, mainPanel);
+        hostPanel = new HostUI(cardLayout, mainPanel, game);
         mainPanel.add(hostPanel, "HostScreen");
 
-        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel);
+        lobbyPanel = new LobbyUI(cardLayout, mainPanel, game);
         mainPanel.add(lobbyPanel, "LobbyScreen");
+
 
         //JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
 //        mainPanel.add(customHeroPanel, "CustomHeroScreen");

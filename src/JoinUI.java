@@ -3,13 +3,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 
 public class JoinUI extends JPanel {
     private CardLayout cardLayout;
@@ -17,10 +14,18 @@ public class JoinUI extends JPanel {
     private BufferedImage loginBackground;
     private Font customFont;
     private Font customBoldFont;
+    private ObjectOutputStream os;
+    private Game game;
+    private static JLabel invalidAccessCode;
+    private static JLabel duplicateName;
+    private static JLabel duplicateClass;
+    private static JLabel maxPlayersReached;
 
-    public JoinUI(CardLayout cardLayout, JPanel mainPanel) {
+    public JoinUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.game = game;
+        this.os = game.getOs();
         setLayout(null);
         readImages();
         loadFonts();
@@ -61,7 +66,7 @@ public class JoinUI extends JPanel {
         accessCodeText.setBounds(600, 200, 350, 75);
         accessCodeText.setEditable(true);
 
-        JLabel invalidAccessCode = new JLabel("Invalid access code");
+        invalidAccessCode = new JLabel("Invalid access code");
         invalidAccessCode.setHorizontalAlignment(SwingConstants.CENTER);
         invalidAccessCode.setForeground(Color.red);
         invalidAccessCode.setFont(customFont.deriveFont(20f));
@@ -73,7 +78,7 @@ public class JoinUI extends JPanel {
         characterNameText.setBounds(600, 350, 350, 75);
         characterNameText.setEditable(true);
 
-        JLabel duplicateName = new JLabel("Name has already been taken");
+        duplicateName = new JLabel("Name has already been taken");
         duplicateName.setHorizontalAlignment(SwingConstants.CENTER);
         duplicateName.setForeground(Color.red);
         duplicateName.setFont(customFont.deriveFont(20f));
@@ -84,7 +89,7 @@ public class JoinUI extends JPanel {
         heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
-        JLabel duplicateClass = new JLabel ("Class has already been taken");
+        duplicateClass = new JLabel ("Class has already been taken");
         duplicateClass.setHorizontalAlignment(SwingConstants.CENTER);
         duplicateClass.setForeground(Color.red);
         duplicateClass.setFont(customFont.deriveFont(20f));
@@ -110,6 +115,9 @@ public class JoinUI extends JPanel {
         beginGame.setBounds(425, 600, 500, 100);
         beginGame.setBorderPainted(false);
         buttonFormatting(beginGame);
+
+
+
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,13 +126,27 @@ public class JoinUI extends JPanel {
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
                     String info = accessCodeText.getText() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
-                    //Game.playerJoin(os, info); - somehow get access to os
-                    cardLayout.show(mainPanel, "LobbyScreen");
+                    if(!accessCodeText.equals(game.getAccessCode())){
+                        game.sendCode(os, "invalidAccessCode", characterNameText.getText());
+                        //System.out.println(game.getAccessCode());
+                    }
+                    else if(Game.players.contains(characterNameText.getText())){
+                        game.sendCode(os,"invalidName", characterNameText.getText());
+                    }
+                    else{
+                        //game.sendCode(os, "valid", characterNameText.getText());
+                        game.sendJoinUserLobby(os, "valid", characterNameText.getText());
+                        cardLayout.show(mainPanel, "LobbyScreen");
+                    }
+
+
+
+
                 }
             }
         });
 
-        JLabel maxPlayersReached = new JLabel("Max players have been reached.");
+        maxPlayersReached = new JLabel("Max players have been reached.");
         maxPlayersReached.setHorizontalAlignment(SwingConstants.CENTER);
         maxPlayersReached.setForeground(Color.red);
         maxPlayersReached.setFont(customFont.deriveFont(20f));
@@ -201,4 +223,22 @@ public class JoinUI extends JPanel {
             e.printStackTrace();
         }
     }
+
+    public static void invalidCodeShow(){
+        invalidAccessCode.setVisible(true);
+    }
+
+    public static void duplicateName(){
+        duplicateName.setVisible(true);
+    }
+
+    public static void duplicateClass(){
+        duplicateClass.setVisible(true);
+    }
+
+    public static void maxPlayers(){
+        maxPlayersReached.setVisible(true);
+    }
+
+
 }

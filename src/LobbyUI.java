@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class LobbyUI extends JPanel {
     private BufferedImage loginBackground;
@@ -14,10 +16,17 @@ public class LobbyUI extends JPanel {
     private Font customBoldFont;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+    public static Game game;
+    private static DefaultListModel<String> playersModel = new DefaultListModel<>();
+    public static JList<String> userNames = new JList<>(playersModel);
+    private static JLabel accessCodeShow;
 
-    public LobbyUI(CardLayout cardLayout, JPanel mainPanel) {
+    private JTable playersTable;
+
+    public LobbyUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.game = game;
         setLayout(null);
         readImages();
         loadFonts();
@@ -30,7 +39,7 @@ public class LobbyUI extends JPanel {
     }
 
     private void addComponents() {
-        JLabel accessCodeShow = new JLabel();
+        accessCodeShow = new JLabel();
         accessCodeShow.setFont(customFont.deriveFont(20f));
         accessCodeShow.setBounds(900, 10, 250, 50);
         accessCodeShow.setText("Access Code: ");
@@ -46,18 +55,11 @@ public class LobbyUI extends JPanel {
         playersJoined.setOpaque(true);
 
         //in this table list the usernames of players
-        DefaultTableModel playersModel = new DefaultTableModel() {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
 
-        playersModel.addColumn("Username");
-        JTable playersTable = new JTable(playersModel);
-        playersTable.getTableHeader().setFont(new Font("Times New Roman", Font.BOLD, 18));
-        JScrollPane playersScrollPane = new JScrollPane(playersTable);
+        JScrollPane playersScrollPane = new JScrollPane(userNames);
+        playersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         playersScrollPane.setBounds(450, 300, 300, 400);
+        playersScrollPane.setVisible(true);
 
         //timer - after all players have joined show a jlabel saying starting game in 3 2 1
         //lead to playing screen
@@ -91,4 +93,18 @@ public class LobbyUI extends JPanel {
             e.printStackTrace();
         }
     }
+
+    public static void updatePlayersinLobby(String name){
+        System.out.println("PLAYERS: " + name);
+        SwingUtilities.invokeLater(() -> {
+            playersModel.addElement(name);
+        });
+    }
+
+    public static void displayCode(String code){
+        SwingUtilities.invokeLater(() -> {
+            accessCodeShow.setText("Access Code: " + code);
+        });
+    }
+
 }

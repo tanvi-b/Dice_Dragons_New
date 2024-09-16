@@ -14,8 +14,10 @@ public class IntroUI extends JPanel {
     private Font customBoldFont;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+    private static JTextField noHostAllowed;
+    private static JButton hostGame;
 
-    public IntroUI(CardLayout cardLayout, JPanel mainPanel) {
+    public IntroUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         setLayout(null);
@@ -41,6 +43,7 @@ public class IntroUI extends JPanel {
         gameTitleLine2.setFont(customBoldFont.deriveFont(75f));
         gameTitleLine2.setBounds(230, 80, 700, 100);
 
+
         JButton joinGame = new JButton("Join Game");
         joinGame.setForeground(Color.black);
         joinGame.setFont(customFont.deriveFont(42f));
@@ -54,12 +57,20 @@ public class IntroUI extends JPanel {
             }
         });
 
-        JButton hostGame = new JButton("Host Game");
+        hostGame = new JButton("Host Game");
         hostGame.setForeground(Color.black);
         hostGame.setFont(customFont.deriveFont(42f));
         hostGame.setBounds(10, 665, 425, 50);
         hostGame.setBorderPainted(false);
         buttonFormatting(hostGame);
+
+        noHostAllowed = new JTextField("Game already created");
+        noHostAllowed.setForeground(Color.BLACK);
+        noHostAllowed.setFont(customFont.deriveFont(25f));
+        noHostAllowed.setEditable(false);
+        noHostAllowed.setBackground(Color.white);
+        noHostAllowed.setBounds(340, 665, 240, 100);
+        noHostAllowed.setVisible(false);
         hostGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -72,6 +83,7 @@ public class IntroUI extends JPanel {
         add(gameTitleLine2);
         add(joinGame);
         add(hostGame);
+        add(noHostAllowed);
     }
 
     private void buttonFormatting(JButton button) {
@@ -96,5 +108,10 @@ public class IntroUI extends JPanel {
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void noHost(){
+        noHostAllowed.setVisible(true);
+        hostGame.setEnabled(false);
     }
 }

@@ -8,14 +8,18 @@ import java.util.Random;
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
     private ObjectOutputStream os;
-    private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
+    private int code;
+    private String accessCode;
+    public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
     static Map<String, Game> currentGames;
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
-        outs.add(os);
+        synchronized (outs) {
+            outs.add(os);
+        }
     }
 
     @Override
@@ -23,10 +27,10 @@ public class ServerListener implements Runnable {
         try {
             while (true) {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
-
                 if (cfc.getCommand() == CommandFromClient.JOIN) {
-                    if (cfc.getData().equals("valid"))
-                        sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
+                    if (cfc.getData().equals("valid")) {;
+                        sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, accessCode, cfc.getPlayer()));
+                    }
                     else if (cfc.getData().equals("invalidAccessCode"))
                         sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
                     else if (cfc.getData().equals("invalidName"))
@@ -39,10 +43,21 @@ public class ServerListener implements Runnable {
 
                 if (cfc.getCommand() == CommandFromClient.HOST) {
                     Random random = new Random();
-                    int accessCode = 100000 + random.nextInt(900000);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), null));
+                    boolean pause = false;
+                    code = 0;
+                    if(pause == false){
+                        code = 100000 + random.nextInt(900000);
+                        pause = true;
+                    }
+                    accessCode  = String.valueOf(code);
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE,accessCode, cfc.getPlayer()));
+                    ///hostUsed = true; -- condition if only one game allowed
                     //might have to add the game into hash map?
                 }
+                /// code needed only if one game allowed to be host
+                //if(hostUsed == true){
+                    //IntroUI.noHost();
+               // }
 
 //                if(cfc.getCommand() == CommandFromClient.CUSTOM_HERO){
 //                    sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, null, null));
@@ -70,7 +85,7 @@ public class ServerListener implements Runnable {
                     Hero hero = currentHeroes.get(i);
                     if (hero.name.equals(playerInputs[1]))
                         return "invalidName";
-                    if (hero.classType == Integer.parseInt(playerInputs[2]))
+                   if (hero.classType == Integer.parseInt(playerInputs[2]))
                         return "invalidClass";
                 }
                 return "valid";
@@ -79,14 +94,18 @@ public class ServerListener implements Runnable {
             return "invalidAccessCode";
         }
 
-        private void sendCommand (CommandFromServer cfs)
-        {
-            //sends to one specific client
-            try {
-                os.writeObject(cfs);
-                os.flush();
-            } catch (IOException e) {
-                e.printStackTrace();
+        private void sendCommand (CommandFromServer cfs) {
+            //sends to all clients
+            for (ObjectOutputStream out : outs) {
+                try {
+                    out.writeObject(cfs);
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
+
+
 }

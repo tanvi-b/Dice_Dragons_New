@@ -1,10 +1,12 @@
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class CommandFromClient implements Serializable
 {
     //The command being sent to the server
     private int command;
     private Object data = null;
+    private ArrayList<String> players;
 
     private String player = "";
 
@@ -22,6 +24,7 @@ public class CommandFromClient implements Serializable
         this.data = data;
         this.player = player;
     }
+
 
     public int getCommand() {return command;}
 

@@ -21,7 +21,9 @@ import java.util.ArrayList;
 
 //dragon face is on dice side 5
 
+/*
 public class GamePrisha extends JFrame {
+
     String accessCode;
     boolean host;
     boolean rollClicked;
@@ -613,7 +615,7 @@ public class GamePrisha extends JFrame {
         JScrollPane playersScrollPane = new JScrollPane(playersTable);
         playersScrollPane.setBounds(450, 300, 300, 400);
 
-         */
+
         waiting = new DefaultListModel<>();
         lobbyUsers= new JList<>(waiting);
 
@@ -898,3 +900,4 @@ public class GamePrisha extends JFrame {
         }
     }
 }
+*/

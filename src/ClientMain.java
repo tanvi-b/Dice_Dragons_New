@@ -2,9 +2,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Scanner;
-
+import java.util.*;
 public class ClientMain {
 
+    public static ArrayList<String> userNames = new ArrayList<>();
 
     public static void main(String[] args) {
         try {
