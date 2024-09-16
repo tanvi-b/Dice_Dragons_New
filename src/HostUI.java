@@ -106,7 +106,7 @@ public class HostUI extends JPanel {
                 if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex() != -1) {
                     String info = numbersOfPlayersChoice.getSelectedIndex() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
-                    //Game.playerHost(os, info); - somehow get access to os
+                    LobbyUI.game.playerHost(LobbyUI.game.getOs(), info, characterNameText.getText());
                     cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }

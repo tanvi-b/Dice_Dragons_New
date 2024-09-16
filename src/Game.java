@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,9 +12,11 @@ public class Game implements Runnable {
     String username;
     int level;
     private ObjectOutputStream os;
+    public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
     private ObjectInputStream is;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
+
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -25,29 +28,29 @@ public class Game implements Runnable {
     public void run() {
         try {
             while (true) {
-                // Read message from the server
                 CommandFromServer cfs = (CommandFromServer) is.readObject();
 
-                // Process the received message
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
-                    String accessCode = (String) cfs.getData();
-                   //inside code will follow this syntax
-                  // game.method(cfs.getVariable()); 
+                    //LobbyUI.refreshLobby();
+                    accessCode = cfs.getData().toString();
+                    LobbyUI.displayCode(accessCode);
                 }
-                if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
-                    //game.addPlayerToLobby(cfs.getPlayer());
+                else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
+                    //LobbyUI.refreshLobby();
+                    LobbyUI.displayCode(cfs.getData().toString());
+                    gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
-
+                else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
+                    JoinUI.invalidCodeShow();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
-
+                else if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
+                    JoinUI.duplicateName();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
-
+                else if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
+                    JoinUI.duplicateClass();
                 }
-                if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
-
+                else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
+                    JoinUI.maxPlayers();
                 }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)
 //                {
@@ -59,11 +62,15 @@ public class Game implements Runnable {
         }
     }
 
-    public static void playerJoin (ObjectOutputStream os, String info)
+    public String toString() {
+        return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void playerJoin (ObjectOutputStream os, String info, String name)
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, null);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
             os.writeObject(cfc);
             os.flush();
         }
@@ -72,12 +79,10 @@ public class Game implements Runnable {
         }
     }
 
-    public static void playerHost (ObjectOutputStream os, String info)
-    {
-        //might need to pass name for player parameter
+    public void playerHost(ObjectOutputStream os, String info, String player)  {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, null);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
             os.writeObject(cfc);
             os.flush();
         }
@@ -85,7 +90,6 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
     }
-
 
     public GameUI getGameUI() {
         return gameUI;
@@ -94,6 +98,15 @@ public class Game implements Runnable {
     public void setGameUI(GameUI gameUI) {
         this.gameUI = gameUI;
     }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
 
     public String getAccessCode() {
         return accessCode;
@@ -142,4 +155,5 @@ public class Game implements Runnable {
     public void setDragons(ArrayList<Dragon> dragons) {
         this.dragons = dragons;
     }
+
 }

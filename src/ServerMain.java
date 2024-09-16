@@ -26,11 +26,6 @@ public class ServerMain {
                 ServerListener serverListener = new ServerListener(is, os);
                 Thread thread = new Thread(serverListener);
                 thread.start();
-
-//                os.writeObject(new CommandFromServer(CommandFromServer.PLAY,null,null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.ADD_HERO, null, null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.CONNECT, null, null));
-//                os.writeObject(new CommandFromServer(CommandFromServer.DISCONNECT, null, null));
             }
         } catch (IOException e) {
             e.printStackTrace();

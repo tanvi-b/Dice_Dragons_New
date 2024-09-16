@@ -17,6 +17,11 @@ public class JoinUI extends JPanel {
     private BufferedImage loginBackground;
     private Font customFont;
     private Font customBoldFont;
+    private static JLabel invalidAccessCode;
+    private static JLabel duplicateName;
+    private static JLabel duplicateClass;
+    private static JLabel maxPlayersReached;
+    private static JButton custom;
 
     public JoinUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -61,7 +66,7 @@ public class JoinUI extends JPanel {
         accessCodeText.setBounds(600, 200, 350, 75);
         accessCodeText.setEditable(true);
 
-        JLabel invalidAccessCode = new JLabel("Invalid access code");
+        invalidAccessCode = new JLabel("Invalid access code");
         invalidAccessCode.setHorizontalAlignment(SwingConstants.CENTER);
         invalidAccessCode.setForeground(Color.red);
         invalidAccessCode.setFont(customFont.deriveFont(20f));
@@ -73,7 +78,7 @@ public class JoinUI extends JPanel {
         characterNameText.setBounds(600, 350, 350, 75);
         characterNameText.setEditable(true);
 
-        JLabel duplicateName = new JLabel("Name has already been taken");
+        duplicateName = new JLabel("Name has already been taken");
         duplicateName.setHorizontalAlignment(SwingConstants.CENTER);
         duplicateName.setForeground(Color.red);
         duplicateName.setFont(customFont.deriveFont(20f));
@@ -84,14 +89,14 @@ public class JoinUI extends JPanel {
         heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
-        JLabel duplicateClass = new JLabel ("Class has already been taken");
+        duplicateClass = new JLabel ("Class has already been taken");
         duplicateClass.setHorizontalAlignment(SwingConstants.CENTER);
         duplicateClass.setForeground(Color.red);
         duplicateClass.setFont(customFont.deriveFont(20f));
         duplicateClass.setBounds(950, 510, 245, 50);
         duplicateClass.setOpaque(true);
 
-        JButton custom = new JButton("Custom");
+        custom = new JButton("Custom");
         custom.setForeground(new Color(204, 185, 45));
         custom.setFont(customFont.deriveFont(35f));
         custom.setBounds(1000, 525, 155, 50);
@@ -117,14 +122,19 @@ public class JoinUI extends JPanel {
                 //for any invalidations display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
+                    invalidAccessCode.setVisible(false);
+                    duplicateName.setVisible(false);
+                    duplicateClass.setVisible(false);
+                    maxPlayersReached.setVisible(false);
+
                     String info = accessCodeText.getText() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
-                    //Game.playerJoin(os, info); - somehow get access to os
-                    cardLayout.show(mainPanel, "LobbyScreen");
+                    LobbyUI.game.playerJoin(LobbyUI.game.getOs(), info, characterNameText.getText());
+                    //cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
         });
 
-        JLabel maxPlayersReached = new JLabel("Max players have been reached.");
+        maxPlayersReached = new JLabel("Max players have been reached.");
         maxPlayersReached.setHorizontalAlignment(SwingConstants.CENTER);
         maxPlayersReached.setForeground(Color.red);
         maxPlayersReached.setFont(customFont.deriveFont(20f));
@@ -176,6 +186,31 @@ public class JoinUI extends JPanel {
         duplicateName.setVisible(false);
         duplicateClass.setVisible(false);
         maxPlayersReached.setVisible(false);
+    }
+
+    public static void invalidCodeShow(){
+        invalidAccessCode.setVisible(true);
+        invalidAccessCode.revalidate();
+        invalidAccessCode.repaint();
+    }
+
+    public static void duplicateName(){
+        duplicateName.setVisible(true);
+        duplicateName.revalidate();
+        duplicateName.repaint();
+    }
+
+    public static void duplicateClass(){
+        custom.setVisible(false);
+        duplicateClass.setVisible(true);
+        duplicateClass.revalidate();
+        duplicateClass.repaint();
+    }
+
+    public static void maxPlayers(){
+        maxPlayersReached.setVisible(true);
+        maxPlayersReached.revalidate();
+        maxPlayersReached.repaint();
     }
 
     private void buttonFormatting(JButton button) {

@@ -6,8 +6,8 @@ import java.awt.*;
 public class GameUI extends JFrame {
     //might need to make the JPanels attributes to get access in other classes?
     Game game;
-    private JPanel mainPanel;
-    private CardLayout cardLayout;
+    public JPanel mainPanel;
+    public CardLayout cardLayout;
 
     public GameUI(Game game)
     {
@@ -28,7 +28,7 @@ public class GameUI extends JFrame {
         JPanel hostPanel = new HostUI(cardLayout, mainPanel);
         mainPanel.add(hostPanel, "HostScreen");
 
-        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel);
+        JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel, game);
         mainPanel.add(lobbyPanel, "LobbyScreen");
 
         //JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
