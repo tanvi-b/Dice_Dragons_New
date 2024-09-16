@@ -16,12 +16,11 @@ public class LobbyUI extends JPanel {
     private Font customBoldFont;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+
     public static Game game;
     private static DefaultListModel<String> playersModel = new DefaultListModel<>();
     public static JList<String> userNames = new JList<>(playersModel);
     private static JLabel accessCodeShow;
-
-    private JTable playersTable;
 
     public LobbyUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -94,17 +93,12 @@ public class LobbyUI extends JPanel {
         }
     }
 
-    public static void updatePlayersinLobby(String name){
-        System.out.println("PLAYERS: " + name);
-        SwingUtilities.invokeLater(() -> {
-            playersModel.addElement(name);
-        });
+    public static void refreshLobby(Game game){
+        for (int i = 0; i<game.heroes.size(); i++)
+            playersModel.addElement(game.heroes.get(i).heroName);
     }
 
     public static void displayCode(String code){
-        SwingUtilities.invokeLater(() -> {
             accessCodeShow.setText("Access Code: " + code);
-        });
     }
-
 }
