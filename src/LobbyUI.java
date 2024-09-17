@@ -65,6 +65,12 @@ public class LobbyUI extends JPanel {
         goToPlaying.setBounds(450, 710, 300, 75);
         goToPlaying.setHorizontalAlignment(SwingConstants.CENTER);
         goToPlaying.setOpaque(true);
+        goToPlaying.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "PlayingScreen");
+            }
+        });
 
         add(playersJoined);
         add(accessCodeShow);

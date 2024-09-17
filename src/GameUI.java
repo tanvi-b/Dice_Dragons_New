@@ -31,11 +31,12 @@ public class GameUI extends JFrame {
         JPanel lobbyPanel = new LobbyUI(cardLayout, mainPanel, game);
         mainPanel.add(lobbyPanel, "LobbyScreen");
 
+        JPanel playingPanel = new PlayingUI(cardLayout, mainPanel);
+        mainPanel.add(playingPanel, "PlayingScreen");
+
         //JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
 //        mainPanel.add(customHeroPanel, "CustomHeroScreen");
 //
-//        JPanel playingPanel = new PlayingUI(cardLayout, mainPanel);
-//        mainPanel.add(playingPanel, "PlayingScreen");
 
 //        JPanel dragonGuide = new DragonGuideUI(cardLayout, mainPanel);
 //        mainPanel.add(dragonGuide, "DragonGuideScreen");
