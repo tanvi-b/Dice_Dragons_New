@@ -22,6 +22,7 @@ public class Game implements Runnable {
     {
         this.os = os;
         this.is = is;
+        level = 0;
         heroes = new ArrayList<>();
     }
 
