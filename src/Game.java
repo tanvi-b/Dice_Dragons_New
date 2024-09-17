@@ -94,32 +94,14 @@ public class Game implements Runnable {
         }
     }
 
-     public void heroSheetJoin (ObjectOutputStream os, String info, String name)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
-            currentHero = name;
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+     public void heroSheetJoin (String name)
+     {
+         currentHero = name;
     }
 
-    public void heroSheetJoinForHost (ObjectOutputStream os, String info, String name)
+    public void heroSheetJoinForHost (String name)
     {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, name);
-            currentHero = name;
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        currentHero = name;
     }
 
 
