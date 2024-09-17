@@ -28,7 +28,6 @@ public class ServerListener implements Runnable {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
                 if (cfc.getCommand() == CommandFromClient.JOIN) {
                     String validationResponse = validPlayer(cfc.getData());
-                    System.out.println(validationResponse);
 
                     if (validationResponse.equals("valid")) {
                         String playerEntry = (String) cfc.getData();
@@ -42,8 +41,9 @@ public class ServerListener implements Runnable {
                         if (game != null) {
                             Hero newHero = new Hero(classType, characterName);
                             game.getHeroes().add(newHero);
+                            System.out.println("Current Games: " + currentGames.toString());
                             //LobbyUI.refreshLobby(game);
-                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, playerInfo[0], cfc.getPlayer()));
+                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, playerInfo[0], playerInfo[1]));
                         }
                     } else if (validationResponse.equals("invalidAccessCode")) {
                         sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
@@ -82,11 +82,10 @@ public class ServerListener implements Runnable {
 
                     newGame.getHeroes().add(hostHero);
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
+                    System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
                     //LobbyUI.refreshLobby(newGame);
-                    System.out.println("Current Games: " + currentGames);
-
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), cfc.getPlayer()));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), playerInfo[1]));
                 }
             }
         } catch (Exception e) {

@@ -39,4 +39,3 @@ public class CommandFromServer implements Serializable {
         return player;
     }
 }
-

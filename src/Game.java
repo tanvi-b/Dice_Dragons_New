@@ -9,7 +9,6 @@ public class Game implements Runnable {
     GameUI gameUI;
     int maxPlayers;
     String accessCode;
-    String username;
     int level;
     private ObjectOutputStream os;
     public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
@@ -31,14 +30,15 @@ public class Game implements Runnable {
                 CommandFromServer cfs = (CommandFromServer) is.readObject();
 
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
-                    //LobbyUI.refreshLobby();
                     accessCode = cfs.getData().toString();
+                    System.out.println(ServerListener.currentGames);
                     LobbyUI.displayCode(accessCode);
+                    LobbyUI.refreshLobby(cfs.getPlayer().toString());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
-                    //LobbyUI.refreshLobby();
-                    LobbyUI.displayCode(cfs.getData().toString());
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
+                    LobbyUI.displayCode(cfs.getData().toString());
+                    LobbyUI.refreshLobby(cfs.getPlayer().toString());
                 }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
@@ -116,14 +116,6 @@ public class Game implements Runnable {
         this.accessCode = accessCode;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getLevel() {
         return level;
     }
@@ -155,5 +147,4 @@ public class Game implements Runnable {
     public void setDragons(ArrayList<Dragon> dragons) {
         this.dragons = dragons;
     }
-
 }
