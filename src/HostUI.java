@@ -107,6 +107,7 @@ public class HostUI extends JPanel {
                         heroClassChoice.getSelectedIndex() != -1) {
                     String info = numbersOfPlayersChoice.getSelectedIndex() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
                     LobbyUI.game.playerHost(LobbyUI.game.getOs(), info, characterNameText.getText());
+                    PlayingUI.game.heroSheetJoinForHost(PlayingUI.game.getOs(), info, String.valueOf(heroClassChoice.getSelectedIndex()));
                     cardLayout.show(mainPanel, "LobbyScreen");
                 }
             }
