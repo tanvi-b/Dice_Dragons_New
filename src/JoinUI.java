@@ -129,6 +129,8 @@ public class JoinUI extends JPanel {
 
                     String info = accessCodeText.getText() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
                     LobbyUI.game.playerJoin(LobbyUI.game.getOs(), info, characterNameText.getText());
+                     PlayingUI.game.heroSheetJoin(PlayingUI.game.getOs(),info, String.valueOf(heroClassChoice.getSelectedIndex()));
+                    System.out.println(String.valueOf(heroClassChoice.getSelectedIndex()));
                 }
             }
         });
