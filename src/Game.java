@@ -18,7 +18,7 @@ public class Game implements Runnable {
     ArrayList<Dragon> dragons;
 
 
-    public Game(ObjectOutputStream os, ObjectInputStream is)
+    public Game(ObjectOutputStream os, ObjectInputStream is, Game game)
     {
         this.os = os;
         this.is = is;
