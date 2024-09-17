@@ -35,11 +35,13 @@ public class Game implements Runnable {
                     System.out.println(ServerListener.currentGames);
                     LobbyUI.displayCode(accessCode);
                     LobbyUI.refreshLobby(cfs.getPlayer().toString());
+                    PlayingUI.displayPlayerSheet(currentHero);
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.displayCode(cfs.getData().toString());
                     LobbyUI.refreshLobby(cfs.getPlayer().toString());
+                    PlayingUI.displayPlayerSheet(currentHero);
                 }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
