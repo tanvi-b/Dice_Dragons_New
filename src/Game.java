@@ -95,14 +95,14 @@ public class Game implements Runnable {
         }
     }
 
-     public void heroSheetJoin ( String name)
+    public void heroSheetJoin ( String name)
     {
-            currentHero = name;
+        currentHero = name;
     }
 
     public void heroSheetJoinForHost (String name)
     {
-            currentHero = name;
+        currentHero = name;
     }
 
 
