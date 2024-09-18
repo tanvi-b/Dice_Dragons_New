@@ -121,7 +121,7 @@ public class PlayingUI extends JPanel {
         messageText.setOpaque(true);
 
         JButton send = new JButton("Send");
-        send.setFont(customFont.deriveFont(20f));
+        send.setFont(customFont.deriveFont(15f));
         send.setBounds(1115, 880, 65, 65);
 
         heroSheet = new JLabel();
