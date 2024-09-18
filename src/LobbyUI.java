@@ -16,12 +16,11 @@ public class LobbyUI extends JPanel {
     private Font customBoldFont;
     private JPanel mainPanel;
     private CardLayout cardLayout;
+
     public static Game game;
     private static DefaultListModel<String> playersModel = new DefaultListModel<>();
     public static JList<String> userNames = new JList<>(playersModel);
     private static JLabel accessCodeShow;
-
-    private JTable playersTable;
 
     public LobbyUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -39,22 +38,18 @@ public class LobbyUI extends JPanel {
     }
 
     private void addComponents() {
-        accessCodeShow = new JLabel();
+        accessCodeShow = new JLabel("Access Code: ");
         accessCodeShow.setFont(customFont.deriveFont(20f));
         accessCodeShow.setBounds(900, 10, 250, 50);
-        accessCodeShow.setText("Access Code: ");
         accessCodeShow.setOpaque(true);
         accessCodeShow.setBackground(Color.black);
         accessCodeShow.setForeground(Color.ORANGE);
 
-        JLabel playersJoined = new JLabel();
+        JLabel playersJoined = new JLabel("Players Joined");
         playersJoined.setFont(customFont.deriveFont(60f));
         playersJoined.setBounds(350, 200, 500, 75);
-        playersJoined.setText("Players Joined");
         playersJoined.setHorizontalAlignment(SwingConstants.CENTER);
         playersJoined.setOpaque(true);
-
-        //in this table list the usernames of players
 
         JScrollPane playersScrollPane = new JScrollPane(userNames);
         playersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -64,9 +59,23 @@ public class LobbyUI extends JPanel {
         //timer - after all players have joined show a jlabel saying starting game in 3 2 1
         //lead to playing screen
 
+        //for testing purposes
+        JButton goToPlaying=  new JButton("Go to Playing Screen");
+        goToPlaying.setFont(customFont.deriveFont(28f));
+        goToPlaying.setBounds(450, 710, 300, 75);
+        goToPlaying.setHorizontalAlignment(SwingConstants.CENTER);
+        goToPlaying.setOpaque(true);
+        goToPlaying.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "PlayingScreen");
+            }
+        });
+
         add(playersJoined);
         add(accessCodeShow);
         add(playersScrollPane);
+        add(goToPlaying);
         //add starting game label but make visible false
     }
 
@@ -94,17 +103,15 @@ public class LobbyUI extends JPanel {
         }
     }
 
-    public static void updatePlayersinLobby(String name){
-        System.out.println("PLAYERS: " + name);
-        SwingUtilities.invokeLater(() -> {
-            playersModel.addElement(name);
-        });
+    public static void refreshLobby(String username){
+        System.out.println(username);
+        playersModel.addElement(username);
+//        playersModel.clear();
+//        for (int i = 0; i<currentGame.heroes.size(); i++)
+//            playersModel.addElement(currentGame.heroes.get(i).heroName);
     }
 
     public static void displayCode(String code){
-        SwingUtilities.invokeLater(() -> {
-            accessCodeShow.setText("Access Code: " + code);
-        });
+        accessCodeShow.setText("Access Code: " + code);
     }
-
 }

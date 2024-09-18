@@ -3,10 +3,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class JoinUI extends JPanel {
     private CardLayout cardLayout;
@@ -14,18 +17,15 @@ public class JoinUI extends JPanel {
     private BufferedImage loginBackground;
     private Font customFont;
     private Font customBoldFont;
-    private ObjectOutputStream os;
-    private Game game;
     private static JLabel invalidAccessCode;
     private static JLabel duplicateName;
     private static JLabel duplicateClass;
     private static JLabel maxPlayersReached;
+    private static JButton custom;
 
-    public JoinUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
+    public JoinUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
-        this.game = game;
-        this.os = game.getOs();
         setLayout(null);
         readImages();
         loadFonts();
@@ -96,7 +96,7 @@ public class JoinUI extends JPanel {
         duplicateClass.setBounds(950, 510, 245, 50);
         duplicateClass.setOpaque(true);
 
-        JButton custom = new JButton("Custom");
+        custom = new JButton("Custom");
         custom.setForeground(new Color(204, 185, 45));
         custom.setFont(customFont.deriveFont(35f));
         custom.setBounds(1000, 525, 155, 50);
@@ -115,9 +115,6 @@ public class JoinUI extends JPanel {
         beginGame.setBounds(425, 600, 500, 100);
         beginGame.setBorderPainted(false);
         buttonFormatting(beginGame);
-
-
-
         beginGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -125,23 +122,15 @@ public class JoinUI extends JPanel {
                 //for any invalidations display jlabel
                 if (!accessCodeText.getText().equals("") && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex()!=-1) {
+                    invalidAccessCode.setVisible(false);
+                    duplicateName.setVisible(false);
+                    duplicateClass.setVisible(false);
+                    maxPlayersReached.setVisible(false);
+
                     String info = accessCodeText.getText() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
-                    if(!accessCodeText.equals(game.getAccessCode())){
-                        game.sendCode(os, "invalidAccessCode", characterNameText.getText());
-                        //System.out.println(game.getAccessCode());
-                    }
-                    else if(Game.players.contains(characterNameText.getText())){
-                        game.sendCode(os,"invalidName", characterNameText.getText());
-                    }
-                    else{
-                        //game.sendCode(os, "valid", characterNameText.getText());
-                        game.sendJoinUserLobby(os, "valid", characterNameText.getText());
-                        cardLayout.show(mainPanel, "LobbyScreen");
-                    }
-
-
-
-
+                    LobbyUI.game.playerJoin(LobbyUI.game.getOs(), info, characterNameText.getText());
+                     PlayingUI.game.heroSheetJoin(String.valueOf(heroClassChoice.getSelectedIndex()));
+                    System.out.println(String.valueOf(heroClassChoice.getSelectedIndex()));
                 }
             }
         });
@@ -200,6 +189,31 @@ public class JoinUI extends JPanel {
         maxPlayersReached.setVisible(false);
     }
 
+    public static void invalidCodeShow(){
+        invalidAccessCode.setVisible(true);
+        invalidAccessCode.revalidate();
+        invalidAccessCode.repaint();
+    }
+
+    public static void duplicateName(){
+        duplicateName.setVisible(true);
+        duplicateName.revalidate();
+        duplicateName.repaint();
+    }
+
+    public static void duplicateClass(){
+        custom.setVisible(false);
+        duplicateClass.setVisible(true);
+        duplicateClass.revalidate();
+        duplicateClass.repaint();
+    }
+
+    public static void maxPlayers(){
+        maxPlayersReached.setVisible(true);
+        maxPlayersReached.revalidate();
+        maxPlayersReached.repaint();
+    }
+
     private void buttonFormatting(JButton button) {
         button.setOpaque(false);
         button.setContentAreaFilled(false);
@@ -223,22 +237,4 @@ public class JoinUI extends JPanel {
             e.printStackTrace();
         }
     }
-
-    public static void invalidCodeShow(){
-        invalidAccessCode.setVisible(true);
-    }
-
-    public static void duplicateName(){
-        duplicateName.setVisible(true);
-    }
-
-    public static void duplicateClass(){
-        duplicateClass.setVisible(true);
-    }
-
-    public static void maxPlayers(){
-        maxPlayersReached.setVisible(true);
-    }
-
-
 }

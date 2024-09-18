@@ -9,18 +9,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class PlayingUI extends JPanel {
-    Game game;
+    public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private ArrayList<BufferedImage> dragonSheets;
     private ArrayList<BufferedImage> heroSheets;
     private BufferedImage background;
     private Font customFont;
+    private static boolean state = false;
     private Font customBoldFont;
-
-    public PlayingUI(CardLayout cardLayout, JPanel mainPanel) {
+    private static JLabel heroSheet;
+    private static boolean wizardState;
+    private static boolean clericState;
+    private static boolean warriorState;
+    private static boolean rangerState;
+    private static boolean rogueState;
+    public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.game = game;
         dragonSheets = new ArrayList<>();
         heroSheets = new ArrayList<>();
         setLayout(null);
@@ -29,9 +36,21 @@ public class PlayingUI extends JPanel {
         addComponents();
     }
 
-    protected void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
+        //might need to change index for actual number to variable
+        g.drawImage(dragonSheets.get(0), 850, 200, 350, 450, this);
+        if(warriorState == true)
+            g.drawImage(heroSheets.get(4), 400, 450, 400, 500, this);
+        if(wizardState == true)
+            g.drawImage(heroSheets.get(5), 400, 450, 400, 500, this);
+        if(clericState == true)
+            g.drawImage(heroSheets.get(0), 400, 450, 400, 500, this);
+        if(rogueState == true)
+            g.drawImage(heroSheets.get(3), 400, 450, 400, 500, this);
+        if(rangerState == true)
+            g.drawImage(heroSheets.get(2), 400, 450, 400, 500, this);
     }
 
     private void addComponents() {
@@ -105,6 +124,9 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(20f));
         send.setBounds(1115, 880, 65, 65);
 
+        heroSheet = new JLabel();
+        heroSheet.setBounds(500,400, 600,500);
+
         //chat method
         /*
         send.addActionListener(new ActionListener() {
@@ -127,6 +149,7 @@ public class PlayingUI extends JPanel {
         add(chatBox);
         add(messageText);
         add(send);
+        add(heroSheet);
 
     }
 
@@ -142,14 +165,14 @@ public class PlayingUI extends JPanel {
     private void readImages() {
         try {
             background = ImageIO.read(new File("images/backgroundImage.png"));
-            dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
-            dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
-            dragonSheets.add(ImageIO.read(new File("images/green dragon.png")));
-            dragonSheets.add(ImageIO.read(new File("images/red dragon.png")));
-            dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
-            dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/young red dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/pale dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/young black dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/green dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/red dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
+            dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
             heroSheets.add(ImageIO.read(new File("images/cleric.png")));
             heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
             heroSheets.add(ImageIO.read(new File("images/ranger.png")));
@@ -160,4 +183,25 @@ public class PlayingUI extends JPanel {
             e.printStackTrace();
         }
     }
+
+    public static void displayPlayerSheet(String heroes){
+        int selectionOfHero = Integer.parseInt(heroes);
+        if(selectionOfHero == 0){
+            warriorState = true;
+        }
+        if(selectionOfHero == 1){
+            wizardState = true;
+        }
+        if(selectionOfHero == 2){
+            clericState = true;
+        }
+        if(selectionOfHero == 3){
+            rangerState = true;
+        }
+        if(selectionOfHero == 4){
+            rogueState = true;
+        }
+
+    }
 }
+

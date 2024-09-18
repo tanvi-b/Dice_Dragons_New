@@ -9,62 +9,51 @@ public class Game implements Runnable {
     GameUI gameUI;
     int maxPlayers;
     String accessCode;
-    String username;
     int level;
     private ObjectOutputStream os;
     public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
     private ObjectInputStream is;
+    public String currentHero;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    public static String codeAll;
 
-    public static ArrayList<String> players;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
         this.os = os;
         this.is = is;
+        level = 0;
         heroes = new ArrayList<>();
-        players = new ArrayList<>();
-
     }
 
     public void run() {
         try {
             while (true) {
-                // Read message from the server
                 CommandFromServer cfs = (CommandFromServer) is.readObject();
-                // Process the received message
 
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
-                    SwingUtilities.invokeLater(() -> {
-                        maxPlayers++;
-                        players.add(cfs.getPlayer());
-                        LobbyUI.updatePlayersinLobby(cfs.getPlayer());
-                        setAccessCode(cfs.getData().toString());
-                        LobbyUI.displayCode(getAccessCode());
-                    });
+                    accessCode = cfs.getData().toString();
+                    System.out.println(ServerListener.currentGames);
+                    LobbyUI.displayCode(accessCode);
+                    LobbyUI.refreshLobby(cfs.getPlayer().toString());
+                    PlayingUI.displayPlayerSheet(currentHero);
                 }
-                if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
-                    SwingUtilities.invokeLater(() -> {
-                    maxPlayers++;
-                    players.add(cfs.getPlayer());
-                    LobbyUI.updatePlayersinLobby(cfs.getPlayer());
-                    setAccessCode(cfs.getData().toString());
-                    System.out.println(cfs.getData().toString());
-                    LobbyUI.displayCode(getAccessCode());
-                    });
+                else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
+                    gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
+                    LobbyUI.displayCode(cfs.getData().toString());
+                    LobbyUI.refreshLobby(cfs.getPlayer().toString());
+                    PlayingUI.displayPlayerSheet(currentHero);
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_NAME){
                     JoinUI.duplicateName();
                 }
-                if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
+                else if(cfs.getCommand() == CommandFromServer.INVALID_CLASS){
                     JoinUI.duplicateClass();
                 }
-                if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
+                else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
                     JoinUI.maxPlayers();
                 }
 //                if(cfs.getCommand() == CommandFromServer.CHAT)
@@ -77,11 +66,15 @@ public class Game implements Runnable {
         }
     }
 
-    public void sendJoinUserLobby (ObjectOutputStream os, Object Data, String name)
+    public String toString() {
+        return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void playerJoin (ObjectOutputStream os, String info, String name)
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, "valid", name);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
             os.writeObject(cfc);
             os.flush();
         }
@@ -90,10 +83,10 @@ public class Game implements Runnable {
         }
     }
 
-    public void sendUserLobby(ObjectOutputStream os, String player)  {
+    public void playerHost(ObjectOutputStream os, String info, String player)  {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, null, player);
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
             os.writeObject(cfc);
             os.flush();
         }
@@ -102,15 +95,16 @@ public class Game implements Runnable {
         }
     }
 
-    public void sendCode(ObjectOutputStream os, Object data, String player){
-        try {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, data, player);
-            os.writeObject(cfc);
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+     public void heroSheetJoin ( String name)
+    {
+            currentHero = name;
     }
+
+    public void heroSheetJoinForHost (String name)
+    {
+            currentHero = name;
+    }
+
 
     public GameUI getGameUI() {
         return gameUI;
@@ -120,6 +114,15 @@ public class Game implements Runnable {
         this.gameUI = gameUI;
     }
 
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(int maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+
     public String getAccessCode() {
         return accessCode;
     }
@@ -128,19 +131,8 @@ public class Game implements Runnable {
         this.accessCode = accessCode;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public int getLevel() {
         return level;
-    }
-    public ArrayList<String> allPlayers(){
-        return players;
     }
 
     public void setLevel(int level) {
@@ -163,14 +155,6 @@ public class Game implements Runnable {
         this.heroes = heroes;
     }
 
-    public ArrayList<String> getPlayers(){
-        return players;
-    }
-
-    public void setPlayers(ArrayList<String> players){
-        this.players = players;
-    }
-
     public ArrayList<Dragon> getDragons() {
         return dragons;
     }
@@ -178,5 +162,4 @@ public class Game implements Runnable {
     public void setDragons(ArrayList<Dragon> dragons) {
         this.dragons = dragons;
     }
-
 }

@@ -1,4 +1,5 @@
 public class Dragon extends Player{
+    String dragonName;
 
     private void successHunt()
     {
