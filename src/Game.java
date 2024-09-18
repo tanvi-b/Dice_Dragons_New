@@ -95,12 +95,12 @@ public class Game implements Runnable {
         }
     }
 
-     public void heroSheetJoin (ObjectOutputStream os, String info, String name)
+     public void heroSheetJoin ( String name)
     {
             currentHero = name;
     }
 
-    public void heroSheetJoinForHost (ObjectOutputStream os, String info, String name)
+    public void heroSheetJoinForHost (String name)
     {
             currentHero = name;
     }
