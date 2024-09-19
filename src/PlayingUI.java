@@ -39,7 +39,6 @@ public class PlayingUI extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
-        //might need to change index for actual number to variable
         g.drawImage(dragonSheets.get(0), 850, 200, 350, 450, this);
         if(warriorState == true)
             g.drawImage(heroSheets.get(4), 400, 450, 400, 500, this);
@@ -108,7 +107,7 @@ public class PlayingUI extends JPanel {
 
         JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(10, 610, 360, 280);
+        dragonScrollBar.setBounds(10, 610, 360, 290);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
@@ -121,7 +120,7 @@ public class PlayingUI extends JPanel {
         messageText.setOpaque(true);
 
         JButton send = new JButton("Send");
-        send.setFont(customFont.deriveFont(20f));
+        send.setFont(customFont.deriveFont(15f));
         send.setBounds(1115, 880, 65, 65);
 
         heroSheet = new JLabel();
