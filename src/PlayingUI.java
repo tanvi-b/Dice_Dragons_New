@@ -16,14 +16,13 @@ public class PlayingUI extends JPanel {
     private ArrayList<BufferedImage> heroSheets;
     private BufferedImage background;
     private Font customFont;
-    private static boolean state = false;
     private Font customBoldFont;
-    private static JLabel heroSheet;
     private static boolean wizardState;
     private static boolean clericState;
     private static boolean warriorState;
     private static boolean rangerState;
     private static boolean rogueState;
+
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -39,7 +38,6 @@ public class PlayingUI extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
-        //might need to change index for actual number to variable
         g.drawImage(dragonSheets.get(0), 850, 200, 350, 450, this);
         if(warriorState == true)
             g.drawImage(heroSheets.get(4), 400, 450, 400, 500, this);
@@ -108,7 +106,7 @@ public class PlayingUI extends JPanel {
 
         JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(10, 610, 360, 280);
+        dragonScrollBar.setBounds(10, 610, 360, 290);
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
@@ -123,9 +121,6 @@ public class PlayingUI extends JPanel {
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(1115, 880, 65, 65);
-
-        heroSheet = new JLabel();
-        heroSheet.setBounds(500,400, 600,500);
 
         //chat method
         /*
@@ -149,8 +144,6 @@ public class PlayingUI extends JPanel {
         add(chatBox);
         add(messageText);
         add(send);
-        add(heroSheet);
-
     }
 
     private void loadFonts() {
@@ -179,6 +172,23 @@ public class PlayingUI extends JPanel {
             heroSheets.add(ImageIO.read(new File("images/rogue.png")));
             heroSheets.add(ImageIO.read(new File("images/warrior.png")));
             heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+
+            //reading images - might make into array lists later
+            ImageIO.read(new File("images/tokenBlue.png"));
+            ImageIO.read(new File("images/tokenGreen.png"));
+            ImageIO.read(new File("images/tokenRed.png"));
+            ImageIO.read(new File("images/tokenYellow.png"));
+            ImageIO.read(new File("images/WeaponBlue.png"));
+            ImageIO.read(new File("images/WeaponGreen.png"));
+            ImageIO.read(new File("images/WeaponPurple.png"));
+            ImageIO.read(new File("images/WeaponRed.png"));
+            ImageIO.read(new File("images/WeaponTeal.png"));
+            ImageIO.read(new File("images/dice1.png"));
+            ImageIO.read(new File("images/dice2.png"));
+            ImageIO.read(new File("images/dice3.png"));
+            ImageIO.read(new File("images/dice4.png"));
+            ImageIO.read(new File("images/dice5.png"));
+            ImageIO.read(new File("images/dice6.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -186,22 +196,15 @@ public class PlayingUI extends JPanel {
 
     public static void displayPlayerSheet(String heroes){
         int selectionOfHero = Integer.parseInt(heroes);
-        if(selectionOfHero == 0){
+        if(selectionOfHero == 0)
             warriorState = true;
-        }
-        if(selectionOfHero == 1){
+        if(selectionOfHero == 1)
             wizardState = true;
-        }
-        if(selectionOfHero == 2){
+        if(selectionOfHero == 2)
             clericState = true;
-        }
-        if(selectionOfHero == 3){
+        if(selectionOfHero == 3)
             rangerState = true;
-        }
-        if(selectionOfHero == 4){
+        if(selectionOfHero == 4)
             rogueState = true;
-        }
-
     }
 }
-
