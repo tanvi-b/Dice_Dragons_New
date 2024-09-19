@@ -16,14 +16,13 @@ public class PlayingUI extends JPanel {
     private ArrayList<BufferedImage> heroSheets;
     private BufferedImage background;
     private Font customFont;
-    private static boolean state = false;
     private Font customBoldFont;
-    private static JLabel heroSheet;
     private static boolean wizardState;
     private static boolean clericState;
     private static boolean warriorState;
     private static boolean rangerState;
     private static boolean rogueState;
+
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
@@ -123,9 +122,6 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(1115, 880, 65, 65);
 
-        heroSheet = new JLabel();
-        heroSheet.setBounds(500,400, 600,500);
-
         //chat method
         /*
         send.addActionListener(new ActionListener() {
@@ -148,8 +144,6 @@ public class PlayingUI extends JPanel {
         add(chatBox);
         add(messageText);
         add(send);
-        add(heroSheet);
-
     }
 
     private void loadFonts() {
@@ -178,6 +172,23 @@ public class PlayingUI extends JPanel {
             heroSheets.add(ImageIO.read(new File("images/rogue.png")));
             heroSheets.add(ImageIO.read(new File("images/warrior.png")));
             heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+
+            //reading images - might make into array lists later
+            ImageIO.read(new File("images/tokenBlue.png"));
+            ImageIO.read(new File("images/tokenGreen.png"));
+            ImageIO.read(new File("images/tokenRed.png"));
+            ImageIO.read(new File("images/tokenYellow.png"));
+            ImageIO.read(new File("images/WeaponBlue.png"));
+            ImageIO.read(new File("images/WeaponGreen.png"));
+            ImageIO.read(new File("images/WeaponPurple.png"));
+            ImageIO.read(new File("images/WeaponRed.png"));
+            ImageIO.read(new File("images/WeaponTeal.png"));
+            ImageIO.read(new File("images/dice1.png"));
+            ImageIO.read(new File("images/dice2.png"));
+            ImageIO.read(new File("images/dice3.png"));
+            ImageIO.read(new File("images/dice4.png"));
+            ImageIO.read(new File("images/dice5.png"));
+            ImageIO.read(new File("images/dice6.png"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -185,22 +196,15 @@ public class PlayingUI extends JPanel {
 
     public static void displayPlayerSheet(String heroes){
         int selectionOfHero = Integer.parseInt(heroes);
-        if(selectionOfHero == 0){
+        if(selectionOfHero == 0)
             warriorState = true;
-        }
-        if(selectionOfHero == 1){
+        if(selectionOfHero == 1)
             wizardState = true;
-        }
-        if(selectionOfHero == 2){
+        if(selectionOfHero == 2)
             clericState = true;
-        }
-        if(selectionOfHero == 3){
+        if(selectionOfHero == 3)
             rangerState = true;
-        }
-        if(selectionOfHero == 4){
+        if(selectionOfHero == 4)
             rogueState = true;
-        }
-
     }
 }
-
