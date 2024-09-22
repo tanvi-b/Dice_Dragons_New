@@ -39,11 +39,15 @@ public class ServerListener implements Runnable {
                         game.toString();
 
                         if (game != null) {
-                            Hero newHero = new Hero(classType, characterName);
+                            Hero newHero = new Hero(classType, characterName, os);
                             game.getHeroes().add(newHero);
                             System.out.println("Current Games: " + currentGames.toString());
-                            //LobbyUI.refreshLobby(game);
-                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, playerInfo[0], playerInfo[1]));
+                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, playerInfo[1]));
+                            for (int i = 0; i<game.getHeroes().size(); i++)
+                            {
+                                if (!game.getHeroes().get(i).heroName.equals(newHero.heroName))
+                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, null), game.getHeroes().get(i).os);
+                            }
                         }
                     } else if (validationResponse.equals("invalidAccessCode")) {
                         sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
@@ -67,7 +71,7 @@ public class ServerListener implements Runnable {
                     }
 
                     //creating game object
-                    Game newGame = new Game(os, is);
+                    Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
 
                     String playerEntry = (String) cfc.getData();
@@ -77,7 +81,7 @@ public class ServerListener implements Runnable {
                     int classType = Integer.parseInt(playerInfo[2]);
                     String characterName = playerInfo[1];
 
-                    Hero hostHero = new Hero(classType, characterName);
+                    Hero hostHero = new Hero(classType, characterName, os);
                     System.out.println("Host Hero Created: " + hostHero);
 
                     newGame.getHeroes().add(hostHero);
@@ -85,7 +89,7 @@ public class ServerListener implements Runnable {
                     System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
                     //LobbyUI.refreshLobby(newGame);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), playerInfo[1]));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, playerInfo[1]));
                 }
             }
         } catch (Exception e) {
@@ -123,8 +127,21 @@ public class ServerListener implements Runnable {
     {
         //sends to one specific client
         try {
+            os.reset();
             os.writeObject(cfs);
             os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void sendCommand (CommandFromServer cfs, ObjectOutputStream hero_Os)
+    {
+        //sends to one specific client
+        try {
+            hero_Os.reset();
+            hero_Os.writeObject(cfs);
+            hero_Os.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

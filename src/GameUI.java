@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.Serializable;
 
 //dragon face is on dice side 5
 
-public class GameUI extends JFrame {
+public class GameUI extends JFrame implements Serializable {
     //might need to make the JPanels attributes to get access in other classes?
     Game game;
     public JPanel mainPanel;
