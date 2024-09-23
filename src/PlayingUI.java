@@ -54,13 +54,13 @@ public class PlayingUI extends JPanel {
     private void addComponents() {
 
         JLabel turn = new JLabel("Turn: ");
-        turn.setFont(customFont.deriveFont(60f));
-        turn.setBounds(450, 75, 500, 90);
+        turn.setFont(customFont.deriveFont(40f));
+        turn.setBounds(450, 20, 500, 50);
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(customFont.deriveFont(30f));
-        rules.setBounds(970, 80, 80, 80);
+        rules.setFont(customFont.deriveFont(20f));
+        rules.setBounds(970, 20, 50, 50);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setOpaque(true);
 
@@ -72,8 +72,8 @@ public class PlayingUI extends JPanel {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(customFont.deriveFont(30f));
-        guide.setBounds(1070, 80, 80, 80);
+        guide.setFont(customFont.deriveFont(20f));
+        guide.setBounds(1050, 20, 50, 50);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
 
@@ -84,6 +84,8 @@ public class PlayingUI extends JPanel {
             }
         });
 
+
+        /*
         JLabel pointsText = new JLabel("Hero's Updates");
         pointsText.setFont(customFont.deriveFont(30f));
         pointsText.setBounds(10, 75, 360, 95);
@@ -104,9 +106,11 @@ public class PlayingUI extends JPanel {
 
         JList<String> dragonUpdates = new JList<>();
 
-        JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
+        JScrollPane dragonScrollBar = new JScrollPane(dragonUpdates);
         dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         dragonScrollBar.setBounds(10, 610, 360, 290);
+
+         */
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
@@ -137,10 +141,10 @@ public class PlayingUI extends JPanel {
         add(turn);
         add(rules);
         add(guide);
-        add(pointsText);
-        add(pointsScrollBar);
-        add(dragonScrollBar);
-        add(dragonsText);
+        //add(pointsText);
+        //add(pointsScrollBar);
+        //add(dragonScrollBar);
+        //add(dragonsText);
         add(chatBox);
         add(messageText);
         add(send);
