@@ -8,18 +8,11 @@ public class CommandFromServer implements Serializable {
     // Command list
     public static final int ACCESS_CODE = 0;
     public static final int MAKE_HERO= 1;
-
-
     public static final int INVALID_ACCESS_CODE = 2;
     public static final int INVALID_NAME = 3;
-
     public static final int INVALID_CLASS = 4;
-
     public static final int MAX_PLAYERS = 5;
-
-    //public static final int CHAT;
-    //public static final int DISCONNECT;
-
+    public static final int NEW_PLAYER= 6;
 
     public CommandFromServer(int command, Object data, String player) {
         this.command = command;
