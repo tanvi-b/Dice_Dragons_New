@@ -14,6 +14,15 @@ public class PlayingUI extends JPanel {
     private JPanel mainPanel;
     private ArrayList<BufferedImage> dragonSheets;
     private ArrayList<BufferedImage> heroSheets;
+    private ArrayList<BufferedImage> warriorTokens;
+    private ArrayList<BufferedImage> wizardTokens;
+    private ArrayList<BufferedImage> clericTokens;
+    private ArrayList<BufferedImage> rangerTokens;
+    private ArrayList<BufferedImage> rogueTokens;
+    private ArrayList<BufferedImage> dragonTokens;
+    private ArrayList<BufferedImage> poisonTokens;
+    private ArrayList<BufferedImage> pinnedTokens;
+    private ArrayList<BufferedImage> blessedTokens;
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
@@ -29,6 +38,15 @@ public class PlayingUI extends JPanel {
         this.game = game;
         dragonSheets = new ArrayList<>();
         heroSheets = new ArrayList<>();
+        warriorTokens = new ArrayList<>();
+        wizardTokens = new ArrayList<>();
+        clericTokens = new ArrayList<>();
+        rangerTokens = new ArrayList<>();
+        rogueTokens = new ArrayList<>();
+        dragonTokens = new ArrayList<>();
+        poisonTokens = new ArrayList<>();
+        pinnedTokens = new ArrayList<>();
+        blessedTokens = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
@@ -54,13 +72,13 @@ public class PlayingUI extends JPanel {
     private void addComponents() {
 
         JLabel turn = new JLabel("Turn: ");
-        turn.setFont(customFont.deriveFont(40f));
-        turn.setBounds(450, 20, 500, 50);
+        turn.setFont(customFont.deriveFont(60f));
+        turn.setBounds(450, 75, 500, 90);
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(customFont.deriveFont(20f));
-        rules.setBounds(970, 20, 50, 50);
+        rules.setFont(customFont.deriveFont(30f));
+        rules.setBounds(970, 80, 80, 80);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setOpaque(true);
 
@@ -72,8 +90,8 @@ public class PlayingUI extends JPanel {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(customFont.deriveFont(20f));
-        guide.setBounds(1050, 20, 50, 50);
+        guide.setFont(customFont.deriveFont(30f));
+        guide.setBounds(1070, 80, 80, 80);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
 
@@ -83,34 +101,6 @@ public class PlayingUI extends JPanel {
                 //cardLayout.show(mainPanel, "DragonGuideScreen");
             }
         });
-
-
-        /*
-        JLabel pointsText = new JLabel("Hero's Updates");
-        pointsText.setFont(customFont.deriveFont(30f));
-        pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setHorizontalAlignment(JLabel.CENTER);
-        pointsText.setOpaque(true);
-
-        JList<String> heroUpdates = new JList<>();
-
-        JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
-        pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        pointsScrollBar.setBounds(10, 190, 360, 280);
-
-        JLabel dragonsText = new JLabel("Dragon's Updates");
-        dragonsText.setFont(customFont.deriveFont(30f));
-        dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setHorizontalAlignment(JLabel.CENTER);
-        dragonsText.setOpaque(true);
-
-        JList<String> dragonUpdates = new JList<>();
-
-        JScrollPane dragonScrollBar = new JScrollPane(dragonUpdates);
-        dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(10, 610, 360, 290);
-
-         */
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
@@ -141,10 +131,6 @@ public class PlayingUI extends JPanel {
         add(turn);
         add(rules);
         add(guide);
-        //add(pointsText);
-        //add(pointsScrollBar);
-        //add(dragonScrollBar);
-        //add(dragonsText);
         add(chatBox);
         add(messageText);
         add(send);
@@ -177,16 +163,18 @@ public class PlayingUI extends JPanel {
             heroSheets.add(ImageIO.read(new File("images/warrior.png")));
             heroSheets.add(ImageIO.read(new File("images/wizard.png")));
 
-            //reading images - might make into array lists later
-            ImageIO.read(new File("images/tokenBlue.png"));
-            ImageIO.read(new File("images/tokenGreen.png"));
-            ImageIO.read(new File("images/tokenRed.png"));
-            ImageIO.read(new File("images/tokenYellow.png"));
-            ImageIO.read(new File("images/WeaponBlue.png"));
-            ImageIO.read(new File("images/WeaponGreen.png"));
-            ImageIO.read(new File("images/WeaponPurple.png"));
-            ImageIO.read(new File("images/WeaponRed.png"));
-            ImageIO.read(new File("images/WeaponTeal.png"));
+            //for now, only added one image into arraylist - can change later - some tokens are backwards?
+            warriorTokens.add(ImageIO.read(new File("images/WeaponBlue.png")));
+            wizardTokens.add(ImageIO.read(new File("images/WeaponRed.png")));
+            clericTokens.add(ImageIO.read(new File("images/WeaponTeal.png")));
+            rangerTokens.add(ImageIO.read(new File("images/WeaponGreen.png")));
+            rogueTokens.add(ImageIO.read(new File("images/WeaponPurple.png")));
+            dragonTokens.add(ImageIO.read(new File("images/tokenYellow.png")));
+            poisonTokens.add(ImageIO.read(new File("images/tokenGreen.png")));
+            pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
+            blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
+
+            //dice faces
             ImageIO.read(new File("images/dice1.png"));
             ImageIO.read(new File("images/dice2.png"));
             ImageIO.read(new File("images/dice3.png"));
