@@ -56,37 +56,32 @@ public class PlayingUI extends JPanel {
         addComponents();
     }
 
-    public void paintComponent(Graphics g) {
+   public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
-        g.drawImage(dragonSheets.get(0), 850, 200, 350, 450, this);
-        if(warriorState == true) {
-            g.drawImage(heroSheets.get(4), 400, 450, 400, 500, this);
-        }
-        if(wizardState == true) {
-            g.drawImage(heroSheets.get(5), 400, 450, 400, 500, this);
-        }
-        if(clericState == true) {
-            g.drawImage(heroSheets.get(0), 400, 450, 400, 500, this);
-        }
-        if(rogueState == true) {
-            g.drawImage(heroSheets.get(3), 400, 450, 400, 500, this);
-        }
-        if(rangerState == true) {
-            g.drawImage(heroSheets.get(2), 400, 450, 400, 500, this);
-        }
+        g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
+        if(warriorState == true)
+            g.drawImage(heroSheets.get(4), 190, 400, 450, 550, this);
+        if(wizardState == true)
+            g.drawImage(heroSheets.get(5), 190, 400, 450, 550, this);
+        if(clericState == true)
+            g.drawImage(heroSheets.get(0), 190, 400, 450, 550, this);
+        if(rogueState == true)
+            g.drawImage(heroSheets.get(3), 190, 400, 450, 550, this);
+        if(rangerState == true)
+            g.drawImage(heroSheets.get(2), 190, 400, 450, 550, this);
     }
 
     private void addComponents() {
 
         JLabel turn = new JLabel("Turn: ");
-        turn.setFont(customFont.deriveFont(60f));
-        turn.setBounds(450, 75, 500, 90);
+        turn.setFont(customFont.deriveFont(28f));
+        turn.setBounds(450, 20, 400, 60);
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(customFont.deriveFont(30f));
-        rules.setBounds(970, 80, 80, 80);
+        rules.setFont(customFont.deriveFont(20f));
+        rules.setBounds(900, 20, 60, 60);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setOpaque(true);
 
@@ -98,8 +93,8 @@ public class PlayingUI extends JPanel {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(customFont.deriveFont(30f));
-        guide.setBounds(1070, 80, 80, 80);
+        guide.setFont(customFont.deriveFont(20f));
+        guide.setBounds(990, 20, 60, 60);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
 
@@ -112,17 +107,17 @@ public class PlayingUI extends JPanel {
 
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
-        chatBox.setBounds(870, 720, 310, 150);
+        chatBox.setBounds(20, 20, 270, 150);
 
         JTextField messageText = new JTextField();
         messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        messageText.setBounds(870, 880, 240, 65);
+        messageText.setBounds(20, 180, 200, 65);
         messageText.setBackground(Color.white);
         messageText.setOpaque(true);
 
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
-        send.setBounds(1115, 880, 65, 65);
+        send.setBounds(225, 180, 65, 65);
 
         //chat method
         /*
