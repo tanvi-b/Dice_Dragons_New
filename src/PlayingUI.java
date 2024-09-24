@@ -60,16 +60,19 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        if(warriorState == true)
-            g.drawImage(heroSheets.get(4), 190, 400, 450, 550, this);
-        if(wizardState == true)
-            g.drawImage(heroSheets.get(5), 190, 400, 450, 550, this);
-        if(clericState == true)
-            g.drawImage(heroSheets.get(0), 190, 400, 450, 550, this);
-        if(rogueState == true)
-            g.drawImage(heroSheets.get(3), 190, 400, 450, 550, this);
-        if(rangerState == true)
-            g.drawImage(heroSheets.get(2), 190, 400, 450, 550, this);
+        for (int i = 0; i< heroSheets.size(); i++)
+           g.drawImage(heroSheets.get(i), 190+i*400, 400, 200, 200, this);
+
+//        if(warriorState == true)
+//            g.drawImage(heroSheets.get(4), 190, 400, 450, 550, this);
+//        if(wizardState == true)
+//            g.drawImage(heroSheets.get(5), 190, 400, 450, 550, this);
+//        if(clericState == true)
+//            g.drawImage(heroSheets.get(0), 190, 400, 450, 550, this);
+//        if(rogueState == true)
+//            g.drawImage(heroSheets.get(3), 190, 400, 450, 550, this);
+//        if(rangerState == true)
+//            g.drawImage(heroSheets.get(2), 190, 400, 450, 550, this);
     }
 
     private void addComponents() {
@@ -201,42 +204,43 @@ public class PlayingUI extends JPanel {
             rogueState = true;
     }
 
-    public static void addPlayerSheet (String currentHero)
+    public static void addPlayerSheet (ArrayList<Hero> currentHeroes)
     {
-        int selectionOfHero = Integer.parseInt(currentHero);
-        if (selectionOfHero==0) {
-            try {
-                heroSheets.add(ImageIO.read(new File("images/warrior.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+        for (int i = 0; i<currentHeroes.size(); i++) {
+            if (currentHeroes.get(i).classType == 0) {
+                try {
+                    heroSheets.add(ImageIO.read(new File("images/warrior.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
-        if (selectionOfHero==1) {
-            try {
-                heroSheets.add(ImageIO.read(new File("images/wizard.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (currentHeroes.get(i).classType == 1) {
+                try {
+                    heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
-        if (selectionOfHero==2) {
-            try {
-                heroSheets.add(ImageIO.read(new File("images/cleric.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (currentHeroes.get(i).classType == 2) {
+                try {
+                    heroSheets.add(ImageIO.read(new File("images/cleric.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
-        if (selectionOfHero==3) {
-            try {
-                heroSheets.add(ImageIO.read(new File("images/ranger.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (currentHeroes.get(i).classType == 3) {
+                try {
+                    heroSheets.add(ImageIO.read(new File("images/ranger.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
-        if (selectionOfHero==4) {
-            try {
-                heroSheets.add(ImageIO.read(new File("images/rogue.png")));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (currentHeroes.get(i).classType == 4) {
+                try {
+                    heroSheets.add(ImageIO.read(new File("images/rogue.png")));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
