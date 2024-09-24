@@ -32,16 +32,17 @@ public class Game implements Runnable, Serializable {
                 CommandFromServer cfs = (CommandFromServer) is.readObject();
 
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
-                    System.out.println(ServerListener.currentGames);
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.displayPlayerSheet(currentHero);
+                    //PlayingUI.addPlayerSheet(currentHero);
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.displayPlayerSheet(currentHero);
+                    //PlayingUI.addPlayerSheet(currentHero);
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -59,10 +60,10 @@ public class Game implements Runnable, Serializable {
                 else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
                     JoinUI.maxPlayers();
                 }
-//                if(cfs.getCommand() == CommandFromServer.CHAT)
-//                {
-//                    game.addToChat(cfs.getMessage());
-//                }
+                else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
+                {
+                    //PlayingUI.refreshChat(cfs.getMessage());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -107,7 +108,6 @@ public class Game implements Runnable, Serializable {
     {
         currentHero = name;
     }
-
 
     public GameUI getGameUI() {
         return gameUI;
