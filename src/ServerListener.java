@@ -9,16 +9,11 @@ public class ServerListener implements Runnable {
     private ObjectInputStream is;
     private ObjectOutputStream os;
     private int accessCode;
-    public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
-
     static Map<String, Game> currentGames = new HashMap<>();
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
-        synchronized (outs) {
-            outs.add(os);
-        }
     }
 
     @Override
@@ -88,8 +83,12 @@ public class ServerListener implements Runnable {
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
                     System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
-                    //LobbyUI.refreshLobby(newGame);
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, playerInfo[1]));
+                }
+
+                if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE)
+                {
+
                 }
             }
         } catch (Exception e) {
@@ -146,16 +145,4 @@ public class ServerListener implements Runnable {
             e.printStackTrace();
         }
     }
-
-//    private void sendCommand (CommandFromServer cfs) {
-//        //sends to all clients
-//        for (ObjectOutputStream out : outs) {
-//            try {
-//                out.writeObject(cfs);
-//                out.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 }

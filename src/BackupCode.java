@@ -83,3 +83,15 @@
 //add(pointsScrollBar);
 //add(dragonScrollBar);
 //add(dragonsText);
+
+//    private void sendCommand (CommandFromServer cfs) {
+//        //sends to all clients
+//        for (ObjectOutputStream out : outs) {
+//            try {
+//                out.writeObject(cfs);
+//                out.flush();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
