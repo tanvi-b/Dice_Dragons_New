@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class PlayingUI extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private ArrayList<BufferedImage> dragonSheets;
-    private static Map<String, BufferedImage> heroSheets = new HashMap<>();
+    private static ArrayList<String> heroSheets = new ArrayList<>();
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> warriorTokens;
     private ArrayList<BufferedImage> wizardTokens;
@@ -35,13 +37,14 @@ public class PlayingUI extends JPanel {
     private static boolean warriorState;
     private static boolean rangerState;
     private static boolean rogueState;
+    //private static int indexOfSheet;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
         dragonSheets = new ArrayList<>();
-        heroSheets = new HashMap<>();
+        heroSheets = new ArrayList<>();
         diceFaces = new ArrayList<>();
         warriorTokens = new ArrayList<>();
         wizardTokens = new ArrayList<>();
@@ -63,19 +66,31 @@ public class PlayingUI extends JPanel {
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
         if(warriorState == true) {
-            g.drawImage(heroSheets.get("warrior"), 190, 400, 450, 550, this);
+            try {
+                g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             for (int i = 0; i < 3; i++) {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
         }
         if(wizardState == true) {
-            g.drawImage(heroSheets.get("wizard"), 190, 400, 450, 550, this);
+            try {
+                g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             for (int i = 0; i < 3; i++) {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
         }
         if(clericState == true) {
-            g.drawImage(heroSheets.get("cleric"), 190, 400, 450, 550, this);
+            try {
+                g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             for (int i = 0; i < 5; i++)
                 g.drawImage(blessedTokens.get(0), -105, 295 + (i*50), 325, 250, this);
             for (int i = 0; i < 3; i++) {
@@ -83,13 +98,21 @@ public class PlayingUI extends JPanel {
             }
         }
        if(rangerState == true) {
-           g.drawImage(heroSheets.get("ranger"), 190, 400, 450, 550, this);
+           try {
+               g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
+           } catch (IOException e) {
+               throw new RuntimeException(e);
+           }
            for (int i = 0; i < 3; i++) {
                g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
            }
        }
         if(rogueState == true) {
-            g.drawImage(heroSheets.get("rogue"), 190, 400, 450, 550, this);
+            try {
+                g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
             }
@@ -154,12 +177,39 @@ public class PlayingUI extends JPanel {
         });
          */
 
+        JLabel currentPlayerSheet = new JLabel("Player");
+        currentPlayerSheet.setFont(customFont.deriveFont(30f));
+        currentPlayerSheet.setBounds(160, 355, 500, 50);
+        currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
+        currentPlayerSheet.setOpaque(false);
+
+        BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        next.setBounds(525, 370, 100, 25);
+
+        BasicArrowButton previous = new BasicArrowButton(BasicArrowButton.WEST);
+        previous.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        previous.setBounds(200, 370, 100, 25);
+
         add(turn);
         add(rules);
         add(guide);
         add(chatBox);
         add(messageText);
         add(send);
+        add(currentPlayerSheet);
+        add(next);
+        add(previous);
     }
 
     private static void refreshChat(String message)
@@ -229,39 +279,19 @@ public class PlayingUI extends JPanel {
         heroSheets.clear();
         for (int i = 0; i<currentHeroes.size(); i++) {
             if (currentHeroes.get(i).classType == 0) {
-                try {
-                    heroSheets.put("warrior", ImageIO.read(new File("images/warrior.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                heroSheets.add("warrior");
             }
             if (currentHeroes.get(i).classType == 1) {
-                try {
-                    heroSheets.put("wizard", ImageIO.read(new File("images/wizard.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                heroSheets.add("wizard");
             }
             if (currentHeroes.get(i).classType == 2) {
-                try {
-                    heroSheets.put("cleric", ImageIO.read(new File("images/cleric.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                heroSheets.add("cleric");
             }
             if (currentHeroes.get(i).classType == 3) {
-                try {
-                    heroSheets.put("ranger", ImageIO.read(new File("images/ranger.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                heroSheets.add("ranger");
             }
             if (currentHeroes.get(i).classType == 4) {
-                try {
-                    heroSheets.put("rogue", ImageIO.read(new File("images/rogue.png")));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                heroSheets.add("rogue");
             }
         }
     }
