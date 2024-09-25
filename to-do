@@ -6,11 +6,5 @@ Prisha
 --> Dragon sheets
 
 Tanvi 
---> Passing information after begin/create game
---> Finish join player for server 
-
-
-- showing names on jlist in lobby ui
-- showing dragon sheets in playing ui
-- showing hero sheets in playing ui(DONE)
-----> Prisha will push code of hero sheets in class
+--> fill in field on top of sheet w/ player name
+--> fill in fields on sheet
