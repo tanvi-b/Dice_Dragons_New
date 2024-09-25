@@ -32,11 +32,7 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
-    private static boolean wizardState;
-    private static boolean clericState;
-    private static boolean warriorState;
-    private static boolean rangerState;
-    private static boolean rogueState;
+    private static String heroClass;
     //private static int indexOfSheet;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
@@ -65,7 +61,7 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        if(warriorState == true) {
+        if(heroClass.equals("warrior")) {
             try {
                 g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -75,7 +71,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
         }
-        if(wizardState == true) {
+        if(heroClass.equals("wizard")) {
             try {
                 g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -85,7 +81,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
         }
-        if(clericState == true) {
+        if(heroClass.equals("cleric")) {
             try {
                 g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -97,7 +93,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
         }
-       if(rangerState == true) {
+       if(heroClass.equals("ranger")) {
            try {
                g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
            } catch (IOException e) {
@@ -107,7 +103,7 @@ public class PlayingUI extends JPanel {
                g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
            }
        }
-        if(rogueState == true) {
+        if(heroClass.equals("rogue")) {
             try {
                 g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -187,7 +183,12 @@ public class PlayingUI extends JPanel {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int i = heroSheets.indexOf(heroClass);
+                if (i+1<=heroSheets.size()-1)
+                {
+                    heroClass = heroSheets.get(i+1);
+                    repaint();
+                }
             }
         });
         next.setBounds(525, 370, 100, 25);
@@ -196,7 +197,12 @@ public class PlayingUI extends JPanel {
         previous.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                int i = heroSheets.indexOf(heroClass);
+                if (i-1>=0)
+                {
+                    heroClass = heroSheets.get(i-1);
+                    repaint();
+                }
             }
         });
         previous.setBounds(200, 370, 100, 25);
@@ -263,15 +269,15 @@ public class PlayingUI extends JPanel {
     public static void displayPlayerSheet(String heroes){
         int selectionOfHero = Integer.parseInt(heroes);
         if(selectionOfHero == 0)
-            warriorState = true;
+            heroClass = "warrior";
         if(selectionOfHero == 1)
-            wizardState = true;
+            heroClass = "wizard";
         if(selectionOfHero == 2)
-            clericState = true;
+            heroClass = "cleric";
         if(selectionOfHero == 3)
-            rangerState = true;
+            heroClass = "ranger";
         if(selectionOfHero == 4)
-            rogueState = true;
+            heroClass = "rogue";
     }
 
     public static void addPlayerSheet (ArrayList<Hero> currentHeroes)
