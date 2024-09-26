@@ -37,11 +37,11 @@ public class ServerListener implements Runnable {
                             Hero newHero = new Hero(classType, characterName, os);
                             game.getHeroes().add(newHero);
                             System.out.println("Current Games: " + currentGames.toString());
-                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, playerInfo[1]));
+                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, newHero));
                             for (int i = 0; i<game.getHeroes().size(); i++)
                             {
                                 if (!game.getHeroes().get(i).heroName.equals(newHero.heroName))
-                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, null), game.getHeroes().get(i).os);
+                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, newHero), game.getHeroes().get(i).os);
                             }
                         }
                     } else if (validationResponse.equals("invalidAccessCode")) {
@@ -83,7 +83,7 @@ public class ServerListener implements Runnable {
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
                     System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, playerInfo[1]));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
                 }
 
                 if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE)

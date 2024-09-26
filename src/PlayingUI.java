@@ -33,6 +33,7 @@ public class PlayingUI extends JPanel {
     private Font customFont;
     private Font customBoldFont;
     private static String heroClass;
+    private static JLabel currentPlayerSheet;
     //private static int indexOfSheet;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
@@ -173,7 +174,7 @@ public class PlayingUI extends JPanel {
         });
          */
 
-        JLabel currentPlayerSheet = new JLabel("Player");
+        currentPlayerSheet = new JLabel("Player");
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
         currentPlayerSheet.setBounds(160, 355, 500, 50);
         currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
@@ -300,5 +301,10 @@ public class PlayingUI extends JPanel {
                 heroSheets.add("rogue");
             }
         }
+    }
+
+    public static void setNameTopOfSheet (Hero hero)
+    {
+        currentPlayerSheet.setText(hero.heroName);
     }
 }

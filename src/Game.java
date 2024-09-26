@@ -36,6 +36,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addPlayerSheet(((Game) cfs.getData()).getHeroes());
                     PlayingUI.displayPlayerSheet(currentHero);
+                    PlayingUI.setNameTopOfSheet((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -43,6 +44,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addPlayerSheet(((Game) cfs.getData()).getHeroes());
                     PlayingUI.displayPlayerSheet(currentHero);
+                    PlayingUI.setNameTopOfSheet((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
