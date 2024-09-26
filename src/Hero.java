@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Hero extends Player {
+    int level;
     boolean flee;
     int classType; //warrior = 0, wizard = 1, cleric = 2, ranger = 3, rogue = 4
     String heroName;

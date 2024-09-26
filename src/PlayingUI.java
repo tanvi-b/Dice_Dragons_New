@@ -17,8 +17,9 @@ public class PlayingUI extends JPanel {
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private static ArrayList<Hero> gameHeroes;
     private ArrayList<BufferedImage> dragonSheets;
-    private static ArrayList<String> heroSheets = new ArrayList<>();
+    private static ArrayList<Integer> heroSheets = new ArrayList<>();
     private ArrayList<BufferedImage> diceFaces;
     private ArrayList<BufferedImage> warriorTokens;
     private ArrayList<BufferedImage> wizardTokens;
@@ -32,14 +33,21 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
-    private static String heroClass;
+    private static int heroClass;
+
     private static JLabel currentPlayerSheet;
-    //private static int indexOfSheet;
+    private static JLabel characterNameText;
+    private static JLabel armorClassText;
+    private static JLabel hitPointsText;
+    private static JLabel levelText;
+    private static JLabel expText;
+    private static JLabel goldText;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
+        gameHeroes = new ArrayList<>();
         dragonSheets = new ArrayList<>();
         heroSheets = new ArrayList<>();
         diceFaces = new ArrayList<>();
@@ -62,7 +70,7 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        if(heroClass.equals("warrior")) {
+        if(heroClass==0) {
             try {
                 g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -72,7 +80,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
         }
-        if(heroClass.equals("wizard")) {
+        if(heroClass==1) {
             try {
                 g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -82,7 +90,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
         }
-        if(heroClass.equals("cleric")) {
+        if(heroClass==2) {
             try {
                 g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -94,7 +102,7 @@ public class PlayingUI extends JPanel {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
         }
-       if(heroClass.equals("ranger")) {
+       if(heroClass==3) {
            try {
                g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
            } catch (IOException e) {
@@ -104,7 +112,7 @@ public class PlayingUI extends JPanel {
                g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
            }
        }
-        if(heroClass.equals("rogue")) {
+        if(heroClass==4) {
             try {
                 g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -180,6 +188,42 @@ public class PlayingUI extends JPanel {
         currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
         currentPlayerSheet.setOpaque(false);
 
+        characterNameText = new JLabel("Testing");
+        characterNameText.setFont(customFont.deriveFont(17f));
+        //characterNameText.setBounds(160, 355, 500, 50);
+        characterNameText.setHorizontalAlignment(SwingConstants.CENTER);
+        characterNameText.setOpaque(false);
+
+        armorClassText = new JLabel("0");
+        armorClassText.setFont(customFont.deriveFont(17f));
+        //armorClassText.setBounds(160, 355, 500, 50);
+        armorClassText.setHorizontalAlignment(SwingConstants.CENTER);
+        armorClassText.setOpaque(false);
+
+        hitPointsText = new JLabel("0");
+        hitPointsText.setFont(customFont.deriveFont(17f));
+        //hitPointsText.setBounds(160, 355, 500, 50);
+        hitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
+        hitPointsText.setOpaque(false);
+
+        levelText = new JLabel("0");
+        levelText.setFont(customFont.deriveFont(15f));
+        //levelText.setBounds(160, 355, 500, 50);
+        levelText.setHorizontalAlignment(SwingConstants.CENTER);
+        levelText.setOpaque(false);
+
+        expText = new JLabel("0");
+        expText.setFont(customFont.deriveFont(15f));
+        //expText.setBounds(160, 355, 500, 50);
+        expText.setHorizontalAlignment(SwingConstants.CENTER);
+        expText.setOpaque(false);
+
+        goldText = new JLabel("0");
+        goldText.setFont(customFont.deriveFont(15f));
+        //goldText.setBounds(160, 355, 500, 50);
+        goldText.setHorizontalAlignment(SwingConstants.CENTER);
+        goldText.setOpaque(false);
+
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
@@ -189,6 +233,11 @@ public class PlayingUI extends JPanel {
                 {
                     heroClass = heroSheets.get(i+1);
                     repaint();
+                }
+                for (Hero hero: gameHeroes)
+                {
+                    if (hero.classType==heroClass)
+                        setNameTopOfSheet(hero);
                 }
             }
         });
@@ -204,6 +253,11 @@ public class PlayingUI extends JPanel {
                     heroClass = heroSheets.get(i-1);
                     repaint();
                 }
+                for (Hero hero: gameHeroes)
+                {
+                    if (hero.classType==heroClass)
+                        setNameTopOfSheet(hero);
+                }
             }
         });
         previous.setBounds(200, 370, 100, 25);
@@ -215,6 +269,12 @@ public class PlayingUI extends JPanel {
         add(messageText);
         add(send);
         add(currentPlayerSheet);
+        add(characterNameText);
+        add (armorClassText);
+        add(hitPointsText);
+        add(levelText);
+        add(expText);
+        add(goldText);
         add(next);
         add(previous);
     }
@@ -269,42 +329,36 @@ public class PlayingUI extends JPanel {
 
     public static void displayPlayerSheet(String heroes){
         int selectionOfHero = Integer.parseInt(heroes);
-        if(selectionOfHero == 0)
-            heroClass = "warrior";
-        if(selectionOfHero == 1)
-            heroClass = "wizard";
-        if(selectionOfHero == 2)
-            heroClass = "cleric";
-        if(selectionOfHero == 3)
-            heroClass = "ranger";
-        if(selectionOfHero == 4)
-            heroClass = "rogue";
+        heroClass = selectionOfHero;
     }
 
     public static void addPlayerSheet (ArrayList<Hero> currentHeroes)
     {
         heroSheets.clear();
-        for (int i = 0; i<currentHeroes.size(); i++) {
-            if (currentHeroes.get(i).classType == 0) {
-                heroSheets.add("warrior");
-            }
-            if (currentHeroes.get(i).classType == 1) {
-                heroSheets.add("wizard");
-            }
-            if (currentHeroes.get(i).classType == 2) {
-                heroSheets.add("cleric");
-            }
-            if (currentHeroes.get(i).classType == 3) {
-                heroSheets.add("ranger");
-            }
-            if (currentHeroes.get(i).classType == 4) {
-                heroSheets.add("rogue");
-            }
-        }
+        for (int i = 0; i<currentHeroes.size(); i++)
+            heroSheets.add(currentHeroes.get(i).classType);
+    }
+
+    public static void addHeroes (ArrayList<Hero> currentHeroes)
+    {
+        gameHeroes.clear();
+        for (int i = 0; i<currentHeroes.size(); i++)
+            gameHeroes.add(currentHeroes.get(i));
     }
 
     public static void setNameTopOfSheet (Hero hero)
     {
         currentPlayerSheet.setText(hero.heroName);
+    }
+
+    public static void setFields (Hero hero)
+    {
+        currentPlayerSheet.setText(hero.heroName);
+        characterNameText.setText(hero.heroName);
+        armorClassText.setText(String.valueOf(hero.armorClass));
+        hitPointsText.setText(String.valueOf(hero.hitPoints));
+        levelText.setText(String.valueOf(hero.level));
+        expText.setText(String.valueOf(hero.exp));
+        goldText.setText(String.valueOf(hero.gold));
     }
 }

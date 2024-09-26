@@ -35,6 +35,7 @@ public class ServerListener implements Runnable {
 
                         if (game != null) {
                             Hero newHero = new Hero(classType, characterName, os);
+                            setHeroValues(newHero);
                             game.getHeroes().add(newHero);
                             System.out.println("Current Games: " + currentGames.toString());
                             sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, newHero));
@@ -77,6 +78,7 @@ public class ServerListener implements Runnable {
                     String characterName = playerInfo[1];
 
                     Hero hostHero = new Hero(classType, characterName, os);
+                    setHeroValues(hostHero);
                     System.out.println("Host Hero Created: " + hostHero);
 
                     newGame.getHeroes().add(hostHero);
@@ -93,6 +95,50 @@ public class ServerListener implements Runnable {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setHeroValues(Hero hero)
+    {
+        if (hero.classType==0)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=23;
+            hero.level = 1;
+            hero.exp = 0;
+            hero.gold = 0;
+        }
+        if (hero.classType==1)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=22;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+        }
+        if (hero.classType==2)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=24;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+        }
+        if (hero.classType==3)
+        {
+            hero.armorClass=1;
+            hero.hitPoints=21;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+        }
+        if (hero.classType==4)
+        {
+            hero.armorClass=1;
+            hero.hitPoints=19;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
         }
     }
 
