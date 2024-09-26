@@ -35,24 +35,21 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.addPlayerSheet(((Game) cfs.getData()).getHeroes());
                     PlayingUI.displayPlayerSheet(currentHero);
-                    PlayingUI.setNameTopOfSheet((Hero) cfs.getPlayer());
+                    PlayingUI.setFields((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.addPlayerSheet(((Game) cfs.getData()).getHeroes());
                     PlayingUI.displayPlayerSheet(currentHero);
-                    PlayingUI.setNameTopOfSheet((Hero) cfs.getPlayer());
+                    PlayingUI.setFields((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.addPlayerSheet(((Game) cfs.getData()).getHeroes());
                 }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();

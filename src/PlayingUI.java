@@ -182,45 +182,46 @@ public class PlayingUI extends JPanel {
         });
          */
 
-        currentPlayerSheet = new JLabel("Player");
+        currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
         currentPlayerSheet.setBounds(160, 355, 500, 50);
         currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
         currentPlayerSheet.setOpaque(false);
 
-        characterNameText = new JLabel("Testing");
+        characterNameText = new JLabel();
         characterNameText.setFont(customFont.deriveFont(17f));
-        //characterNameText.setBounds(160, 355, 500, 50);
+        characterNameText.setBounds(375, 440, 100, 30);
         characterNameText.setHorizontalAlignment(SwingConstants.CENTER);
         characterNameText.setOpaque(false);
 
-        armorClassText = new JLabel("0");
+        armorClassText = new JLabel();
         armorClassText.setFont(customFont.deriveFont(17f));
-        //armorClassText.setBounds(160, 355, 500, 50);
+        armorClassText.setBounds(258, 505, 35, 45);
         armorClassText.setHorizontalAlignment(SwingConstants.CENTER);
         armorClassText.setOpaque(false);
+        //for now box use x = 295
 
-        hitPointsText = new JLabel("0");
+        hitPointsText = new JLabel();
         hitPointsText.setFont(customFont.deriveFont(17f));
-        //hitPointsText.setBounds(160, 355, 500, 50);
+        hitPointsText.setBounds(348, 505, 35, 45);
         hitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
         hitPointsText.setOpaque(false);
 
         levelText = new JLabel("0");
         levelText.setFont(customFont.deriveFont(15f));
-        //levelText.setBounds(160, 355, 500, 50);
+        levelText.setBounds(455, 505, 20, 20);
         levelText.setHorizontalAlignment(SwingConstants.CENTER);
         levelText.setOpaque(false);
 
         expText = new JLabel("0");
         expText.setFont(customFont.deriveFont(15f));
-        //expText.setBounds(160, 355, 500, 50);
+        expText.setBounds(455, 545, 20, 20);
         expText.setHorizontalAlignment(SwingConstants.CENTER);
         expText.setOpaque(false);
 
         goldText = new JLabel("0");
         goldText.setFont(customFont.deriveFont(15f));
-        //goldText.setBounds(160, 355, 500, 50);
+        goldText.setBounds(455, 582, 20, 20);
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
@@ -237,7 +238,7 @@ public class PlayingUI extends JPanel {
                 for (Hero hero: gameHeroes)
                 {
                     if (hero.classType==heroClass)
-                        setNameTopOfSheet(hero);
+                        setFields(hero);
                 }
             }
         });
@@ -256,7 +257,7 @@ public class PlayingUI extends JPanel {
                 for (Hero hero: gameHeroes)
                 {
                     if (hero.classType==heroClass)
-                        setNameTopOfSheet(hero);
+                        setFields(hero);
                 }
             }
         });
@@ -332,23 +333,14 @@ public class PlayingUI extends JPanel {
         heroClass = selectionOfHero;
     }
 
-    public static void addPlayerSheet (ArrayList<Hero> currentHeroes)
-    {
-        heroSheets.clear();
-        for (int i = 0; i<currentHeroes.size(); i++)
-            heroSheets.add(currentHeroes.get(i).classType);
-    }
-
     public static void addHeroes (ArrayList<Hero> currentHeroes)
     {
         gameHeroes.clear();
-        for (int i = 0; i<currentHeroes.size(); i++)
+        heroSheets.clear();
+        for (int i = 0; i<currentHeroes.size(); i++) {
+            heroSheets.add(currentHeroes.get(i).classType);
             gameHeroes.add(currentHeroes.get(i));
-    }
-
-    public static void setNameTopOfSheet (Hero hero)
-    {
-        currentPlayerSheet.setText(hero.heroName);
+        }
     }
 
     public static void setFields (Hero hero)
