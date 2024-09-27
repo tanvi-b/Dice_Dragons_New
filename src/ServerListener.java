@@ -87,10 +87,16 @@ public class ServerListener implements Runnable {
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
                 }
 
-                if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE)
-                {
-
-                }
+                if(cfc.getCommand() == CommandFromClient.SEND_MESSAGE){
+                    String message  = (String) cfc.getData();
+                    Game game = currentGames.get(String.valueOf(accessCode));
+                    game.getMessagesChat().add(message);
+                    if(game != null){
+                            for (int i = 0; i < game.getHeroes().size(); i++) {
+                                sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, game, message), game.getHeroes().get(i).os);
+                        }
+                    }
+                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
