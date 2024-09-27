@@ -66,7 +66,7 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
                 {
-                    //PlayingUI.refreshChat(cfs.getMessage());
+                     PlayingUI.refreshChat(((Game) cfs.getData()).getMessagesChat());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
