@@ -90,6 +90,17 @@ public class Game implements Runnable, Serializable {
         }
     }
 
+     public void sendMessage (ObjectOutputStream os, String text) {
+        try{
+                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, null);
+                os.writeObject(cfc);
+                os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
     public void playerHost(ObjectOutputStream os, String info, String player)  {
         try
         {
