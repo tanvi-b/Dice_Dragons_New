@@ -13,10 +13,9 @@ public class Game implements Runnable, Serializable {
     int level;
     private ObjectOutputStream os;
     private ObjectInputStream is;
-    public String currentHero;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-
+    ArrayList<Integer> diceRolled;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -24,6 +23,7 @@ public class Game implements Runnable, Serializable {
         this.is = is;
         level = 0;
         heroes = new ArrayList<>();
+        diceRolled = new ArrayList<>();
     }
 
     public void run() {
@@ -35,7 +35,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.displayPlayerSheet(currentHero);
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
@@ -43,7 +42,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.displayPlayerSheet(currentHero);
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
@@ -100,16 +98,6 @@ public class Game implements Runnable, Serializable {
         catch (IOException e){
             e.printStackTrace();
         }
-    }
-
-    public void heroSheetJoin ( String name)
-    {
-        currentHero = name;
-    }
-
-    public void heroSheetJoinForHost (String name)
-    {
-        currentHero = name;
     }
 
     public GameUI getGameUI() {

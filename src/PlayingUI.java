@@ -9,9 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.Buffer;
 import java.sql.Array;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class PlayingUI extends JPanel {
     public static Game game;
@@ -34,7 +32,7 @@ public class PlayingUI extends JPanel {
     private Font customFont;
     private Font customBoldFont;
     private static int heroClass;
-
+    private static JLabel turn;
     private static JLabel currentPlayerSheet;
     private static JLabel characterNameText;
     private static JLabel armorClassText;
@@ -70,7 +68,12 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        if(heroClass==0) {
+        //all players should see same dice so will need to change
+        Random random = new Random();
+        for (int i = 0; i < 5; i++)
+           g.drawImage(diceFaces.get(random.nextInt(diceFaces.size())), 450 + i*125, 100, 100, 100, this);
+
+       if(heroClass==0) {
             try {
                 g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -125,7 +128,7 @@ public class PlayingUI extends JPanel {
     }
 
     private void addComponents() {
-        JLabel turn = new JLabel("Turn: ");
+        turn = new JLabel("Turn: ");
         turn.setFont(customFont.deriveFont(28f));
         turn.setBounds(450, 20, 400, 60);
         turn.setOpaque(true);
@@ -181,6 +184,66 @@ public class PlayingUI extends JPanel {
             }
         });
          */
+
+        JButton roll1 = new JButton("Roll");
+        roll1.setFont(customFont.deriveFont(20f));
+        roll1.setBounds(450, 210, 100, 20);
+        roll1.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll1.setOpaque(true);
+
+        JButton keep1 = new JButton("Keep");
+        keep1.setFont(customFont.deriveFont(20f));
+        keep1.setBounds(450, 235, 100, 20);
+        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep1.setOpaque(true);
+
+        JButton roll2 = new JButton("Roll");
+        roll2.setFont(customFont.deriveFont(20f));
+        roll2.setBounds(575, 210, 100, 20);
+        roll2.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll2.setOpaque(true);
+
+        JButton keep2 = new JButton("Keep");
+        keep2.setFont(customFont.deriveFont(20f));
+        keep2.setBounds(575, 235, 100, 20);
+        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep2.setOpaque(true);
+
+        JButton roll3 = new JButton("Roll");
+        roll3.setFont(customFont.deriveFont(20f));
+        roll3.setBounds(700, 210, 100, 20);
+        roll3.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll3.setOpaque(true);
+
+        JButton keep3 = new JButton("Keep");
+        keep3.setFont(customFont.deriveFont(20f));
+        keep3.setBounds(700, 235, 100, 20);
+        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep3.setOpaque(true);
+
+        JButton roll4 = new JButton("Roll");
+        roll4.setFont(customFont.deriveFont(20f));
+        roll4.setBounds(825, 210, 100, 20);
+        roll4.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll4.setOpaque(true);
+
+        JButton keep4 = new JButton("Keep");
+        keep4.setFont(customFont.deriveFont(20f));
+        keep4.setBounds(825, 235, 100, 20);
+        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep4.setOpaque(true);
+
+        JButton roll5 = new JButton("Roll");
+        roll5.setFont(customFont.deriveFont(20f));
+        roll5.setBounds(950, 210, 100, 20);
+        roll5.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll5.setOpaque(true);
+
+        JButton keep5 = new JButton("Keep");
+        keep5.setFont(customFont.deriveFont(20f));
+        keep5.setBounds(950, 235, 100, 20);
+        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep5.setOpaque(true);
 
         currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
@@ -269,6 +332,16 @@ public class PlayingUI extends JPanel {
         add(chatBox);
         add(messageText);
         add(send);
+        add(roll1);
+        add(keep1);
+        add(roll2);
+        add(keep2);
+        add(roll3);
+        add(keep3);
+        add(roll4);
+        add(keep4);
+        add(roll5);
+        add(keep5);
         add(currentPlayerSheet);
         add(characterNameText);
         add (armorClassText);
@@ -328,11 +401,6 @@ public class PlayingUI extends JPanel {
         }
     }
 
-    public static void displayPlayerSheet(String heroes){
-        int selectionOfHero = Integer.parseInt(heroes);
-        heroClass = selectionOfHero;
-    }
-
     public static void addHeroes (ArrayList<Hero> currentHeroes)
     {
         gameHeroes.clear();
@@ -341,10 +409,18 @@ public class PlayingUI extends JPanel {
             heroSheets.add(currentHeroes.get(i).classType);
             gameHeroes.add(currentHeroes.get(i));
         }
+        Collections.sort(gameHeroes, new Comparator<Hero>() {
+            @Override
+            public int compare(Hero h1, Hero h2) {
+                return Integer.compare(h1.incentiveOrder, h2.incentiveOrder);
+            }
+        });
+        turn.setText("Turn: " + gameHeroes.get(0).heroName);
     }
 
     public static void setFields (Hero hero)
     {
+        heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
         armorClassText.setText(String.valueOf(hero.armorClass));

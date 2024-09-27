@@ -107,6 +107,7 @@ public class ServerListener implements Runnable {
             hero.level = 1;
             hero.exp = 0;
             hero.gold = 0;
+            hero.incentiveOrder = 5;
         }
         if (hero.classType==1)
         {
@@ -115,6 +116,7 @@ public class ServerListener implements Runnable {
             hero.level=1;
             hero.exp = 0;
             hero.gold = 0;
+            hero.incentiveOrder = 4;
         }
         if (hero.classType==2)
         {
@@ -123,6 +125,7 @@ public class ServerListener implements Runnable {
             hero.level=1;
             hero.exp = 0;
             hero.gold = 0;
+            hero.incentiveOrder = 6;
         }
         if (hero.classType==3)
         {
@@ -131,6 +134,7 @@ public class ServerListener implements Runnable {
             hero.level=1;
             hero.exp = 0;
             hero.gold = 0;
+            hero.incentiveOrder = 2;
         }
         if (hero.classType==4)
         {
@@ -139,6 +143,7 @@ public class ServerListener implements Runnable {
             hero.level=1;
             hero.exp = 0;
             hero.gold = 0;
+            hero.incentiveOrder = 1;
         }
     }
 
