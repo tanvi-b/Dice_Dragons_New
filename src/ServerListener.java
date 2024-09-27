@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
@@ -69,6 +66,8 @@ public class ServerListener implements Runnable {
                     //creating game object
                     Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
+                    newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
+                            random.nextInt(6),random.nextInt(6),random.nextInt(6))));
 
                     String playerEntry = (String) cfc.getData();
                     System.out.println("Player Entry: " + playerEntry);

@@ -40,6 +40,7 @@ public class PlayingUI extends JPanel {
     private static JLabel levelText;
     private static JLabel expText;
     private static JLabel goldText;
+    private static ArrayList<Integer> diceRolled;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -58,6 +59,7 @@ public class PlayingUI extends JPanel {
         poisonTokens = new ArrayList<>();
         pinnedTokens = new ArrayList<>();
         blessedTokens = new ArrayList<>();
+        diceRolled = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
@@ -68,10 +70,8 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        //all players should see same dice so will need to change
-        Random random = new Random();
-        for (int i = 0; i < 5; i++)
-           g.drawImage(diceFaces.get(random.nextInt(diceFaces.size())), 450 + i*125, 100, 100, 100, this);
+        for (int i = 0; i < diceRolled.size(); i++)
+           g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
 
        if(heroClass==0) {
             try {
@@ -428,5 +428,11 @@ public class PlayingUI extends JPanel {
         levelText.setText(String.valueOf(hero.level));
         expText.setText(String.valueOf(hero.exp));
         goldText.setText(String.valueOf(hero.gold));
+    }
+
+    public static void getDice (ArrayList<Integer> diceFromHost)
+    {
+        for (int i = 0; i< diceFromHost.size(); i++)
+            diceRolled.add(diceFromHost.get(i));
     }
 }

@@ -36,6 +36,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -43,6 +44,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -155,5 +157,13 @@ public class Game implements Runnable, Serializable {
 
     public void setDragons(ArrayList<Dragon> dragons) {
         this.dragons = dragons;
+    }
+
+    public ArrayList<Integer> getDiceRolled() {
+        return diceRolled;
+    }
+
+    public void setDiceRolled(ArrayList<Integer> diceRolled) {
+        this.diceRolled = diceRolled;
     }
 }
