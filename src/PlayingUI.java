@@ -142,7 +142,7 @@ public class PlayingUI extends JPanel {
         rules.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //cardLayout.show(mainPanel, "PlayerRulesScreen");
+                cardLayout.show(mainPanel, "PlayerRulesScreen");
             }
         });
 
@@ -155,7 +155,7 @@ public class PlayingUI extends JPanel {
         guide.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //cardLayout.show(mainPanel, "DragonGuideScreen");
+                cardLayout.show(mainPanel, "DragonGuideScreen");
             }
         });
 
