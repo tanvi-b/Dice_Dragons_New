@@ -16,6 +16,7 @@ public class Game implements Runnable, Serializable {
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     ArrayList<Integer> diceRolled;
+    ArrayList<String> messages;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -136,6 +137,14 @@ public class Game implements Runnable, Serializable {
 
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
+    }
+    
+    public ArrayList<String> getMessagesChat(){
+        return messages;
+    }
+
+    public void setChat(ArrayList<String> chat){
+        this.messages = chat;
     }
 
     public int getLevel() {
