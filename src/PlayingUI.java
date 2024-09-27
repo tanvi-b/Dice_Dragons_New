@@ -173,17 +173,14 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
 
-        //chat method
-        /*
-        send.addActionListener(new ActionListener() {
+         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String acc = characterName + ": " + messageText.getText();
-                ///will need to implement following method
-                //sendMessage(os,name+ ": " + input.getText());
+                acc = messageText.getText();
                 messageText.setText("");
+                //to send to other clients
+                PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
-         */
 
         JButton roll1 = new JButton("Roll");
         roll1.setFont(customFont.deriveFont(20f));
@@ -353,9 +350,12 @@ public class PlayingUI extends JPanel {
         add(previous);
     }
 
-    private static void refreshChat(String message)
-    {
-
+   public static void refreshChat(ArrayList<String> text) throws IOException {
+        chat.clear();
+        for(int i =0; i<text.size(); i++){
+            chat.addElement(text.get(i));
+        }
+        messages.ensureIndexIsVisible(chat.getSize()-1);
     }
 
     private void loadFonts() {
