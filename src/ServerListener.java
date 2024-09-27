@@ -9,16 +9,11 @@ public class ServerListener implements Runnable {
     private ObjectInputStream is;
     private ObjectOutputStream os;
     private int accessCode;
-    public static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
-
     static Map<String, Game> currentGames = new HashMap<>();
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
-        synchronized (outs) {
-            outs.add(os);
-        }
     }
 
     @Override
@@ -39,11 +34,16 @@ public class ServerListener implements Runnable {
                         game.toString();
 
                         if (game != null) {
-                            Hero newHero = new Hero(classType, characterName);
+                            Hero newHero = new Hero(classType, characterName, os);
+                            setHeroValues(newHero);
                             game.getHeroes().add(newHero);
                             System.out.println("Current Games: " + currentGames.toString());
-                            //LobbyUI.refreshLobby(game);
-                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, playerInfo[0], playerInfo[1]));
+                            sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, newHero));
+                            for (int i = 0; i<game.getHeroes().size(); i++)
+                            {
+                                if (!game.getHeroes().get(i).heroName.equals(newHero.heroName))
+                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, newHero), game.getHeroes().get(i).os);
+                            }
                         }
                     } else if (validationResponse.equals("invalidAccessCode")) {
                         sendCommand(new CommandFromServer(CommandFromServer.INVALID_ACCESS_CODE, null, null));
@@ -67,7 +67,7 @@ public class ServerListener implements Runnable {
                     }
 
                     //creating game object
-                    Game newGame = new Game(os, is);
+                    Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
 
                     String playerEntry = (String) cfc.getData();
@@ -77,19 +77,73 @@ public class ServerListener implements Runnable {
                     int classType = Integer.parseInt(playerInfo[2]);
                     String characterName = playerInfo[1];
 
-                    Hero hostHero = new Hero(classType, characterName);
+                    Hero hostHero = new Hero(classType, characterName, os);
+                    setHeroValues(hostHero);
                     System.out.println("Host Hero Created: " + hostHero);
 
                     newGame.getHeroes().add(hostHero);
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
                     System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
-                    //LobbyUI.refreshLobby(newGame);
-                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, String.valueOf(accessCode), playerInfo[1]));
+                    sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
+                }
+
+                if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE)
+                {
+
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void setHeroValues(Hero hero)
+    {
+        if (hero.classType==0)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=23;
+            hero.level = 1;
+            hero.exp = 0;
+            hero.gold = 0;
+            hero.incentiveOrder = 5;
+        }
+        if (hero.classType==1)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=22;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+            hero.incentiveOrder = 4;
+        }
+        if (hero.classType==2)
+        {
+            hero.armorClass=0;
+            hero.hitPoints=24;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+            hero.incentiveOrder = 6;
+        }
+        if (hero.classType==3)
+        {
+            hero.armorClass=1;
+            hero.hitPoints=21;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+            hero.incentiveOrder = 2;
+        }
+        if (hero.classType==4)
+        {
+            hero.armorClass=1;
+            hero.hitPoints=19;
+            hero.level=1;
+            hero.exp = 0;
+            hero.gold = 0;
+            hero.incentiveOrder = 1;
         }
     }
 
@@ -123,6 +177,7 @@ public class ServerListener implements Runnable {
     {
         //sends to one specific client
         try {
+            os.reset();
             os.writeObject(cfs);
             os.flush();
         } catch (IOException e) {
@@ -130,15 +185,15 @@ public class ServerListener implements Runnable {
         }
     }
 
-//    private void sendCommand (CommandFromServer cfs) {
-//        //sends to all clients
-//        for (ObjectOutputStream out : outs) {
-//            try {
-//                out.writeObject(cfs);
-//                out.flush();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    private void sendCommand (CommandFromServer cfs, ObjectOutputStream hero_Os)
+    {
+        //sends to one specific client
+        try {
+            hero_Os.reset();
+            hero_Os.writeObject(cfs);
+            hero_Os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

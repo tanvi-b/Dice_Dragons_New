@@ -1,67 +1,141 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.Buffer;
+import java.sql.Array;
+import java.util.*;
 
 public class PlayingUI extends JPanel {
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private static ArrayList<Hero> gameHeroes;
     private ArrayList<BufferedImage> dragonSheets;
-    private ArrayList<BufferedImage> heroSheets;
+    private static ArrayList<Integer> heroSheets = new ArrayList<>();
+    private ArrayList<BufferedImage> diceFaces;
+    private ArrayList<BufferedImage> warriorTokens;
+    private ArrayList<BufferedImage> wizardTokens;
+    private ArrayList<BufferedImage> clericTokens;
+    private ArrayList<BufferedImage> rangerTokens;
+    private ArrayList<BufferedImage> rogueTokens;
+    private ArrayList<BufferedImage> dragonTokens;
+    private ArrayList<BufferedImage> poisonTokens;
+    private ArrayList<BufferedImage> pinnedTokens;
+    private ArrayList<BufferedImage> blessedTokens;
     private BufferedImage background;
     private Font customFont;
-    private static boolean state = false;
     private Font customBoldFont;
-    private static JLabel heroSheet;
-    private static boolean wizardState;
-    private static boolean clericState;
-    private static boolean warriorState;
-    private static boolean rangerState;
-    private static boolean rogueState;
+    private static int heroClass;
+    private static JLabel turn;
+    private static JLabel currentPlayerSheet;
+    private static JLabel characterNameText;
+    private static JLabel armorClassText;
+    private static JLabel hitPointsText;
+    private static JLabel levelText;
+    private static JLabel expText;
+    private static JLabel goldText;
+
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
+        gameHeroes = new ArrayList<>();
         dragonSheets = new ArrayList<>();
         heroSheets = new ArrayList<>();
+        diceFaces = new ArrayList<>();
+        warriorTokens = new ArrayList<>();
+        wizardTokens = new ArrayList<>();
+        clericTokens = new ArrayList<>();
+        rangerTokens = new ArrayList<>();
+        rogueTokens = new ArrayList<>();
+        dragonTokens = new ArrayList<>();
+        poisonTokens = new ArrayList<>();
+        pinnedTokens = new ArrayList<>();
+        blessedTokens = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
         addComponents();
     }
 
-    public void paintComponent(Graphics g) {
+   public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
-        g.drawImage(dragonSheets.get(0), 850, 200, 350, 450, this);
-        if(warriorState == true)
-            g.drawImage(heroSheets.get(4), 400, 450, 400, 500, this);
-        if(wizardState == true)
-            g.drawImage(heroSheets.get(5), 400, 450, 400, 500, this);
-        if(clericState == true)
-            g.drawImage(heroSheets.get(0), 400, 450, 400, 500, this);
-        if(rogueState == true)
-            g.drawImage(heroSheets.get(3), 400, 450, 400, 500, this);
-        if(rangerState == true)
-            g.drawImage(heroSheets.get(2), 400, 450, 400, 500, this);
+        g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
+        //all players should see same dice so will need to change
+        Random random = new Random();
+        for (int i = 0; i < 5; i++)
+           g.drawImage(diceFaces.get(random.nextInt(diceFaces.size())), 450 + i*125, 100, 100, 100, this);
+
+       if(heroClass==0) {
+            try {
+                g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 3; i++) {
+                g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
+            }
+        }
+        if(heroClass==1) {
+            try {
+                g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 3; i++) {
+                g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
+            }
+        }
+        if(heroClass==2) {
+            try {
+                g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 5; i++)
+                g.drawImage(blessedTokens.get(0), -105, 295 + (i*50), 325, 250, this);
+            for (int i = 0; i < 3; i++) {
+                g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
+            }
+        }
+       if(heroClass==3) {
+           try {
+               g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
+           } catch (IOException e) {
+               throw new RuntimeException(e);
+           }
+           for (int i = 0; i < 3; i++) {
+               g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
+           }
+       }
+        if(heroClass==4) {
+            try {
+                g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 3; i++) {
+                g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
+            }
+        }
     }
 
     private void addComponents() {
-
-        JLabel turn = new JLabel("Turn: ");
-        turn.setFont(customFont.deriveFont(60f));
-        turn.setBounds(450, 75, 500, 90);
+        turn = new JLabel("Turn: ");
+        turn.setFont(customFont.deriveFont(28f));
+        turn.setBounds(450, 20, 400, 60);
         turn.setOpaque(true);
 
         JButton rules = new JButton("Rules");
-        rules.setFont(customFont.deriveFont(30f));
-        rules.setBounds(970, 80, 80, 80);
+        rules.setFont(customFont.deriveFont(20f));
+        rules.setBounds(900, 20, 60, 60);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setOpaque(true);
 
@@ -73,8 +147,8 @@ public class PlayingUI extends JPanel {
         });
 
         JButton guide = new JButton("Guide");
-        guide.setFont(customFont.deriveFont(30f));
-        guide.setBounds(1070, 80, 80, 80);
+        guide.setFont(customFont.deriveFont(20f));
+        guide.setBounds(990, 20, 60, 60);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
 
@@ -85,46 +159,19 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        JLabel pointsText = new JLabel("Hero's Updates");
-        pointsText.setFont(customFont.deriveFont(30f));
-        pointsText.setBounds(10, 75, 360, 95);
-        pointsText.setHorizontalAlignment(JLabel.CENTER);
-        pointsText.setOpaque(true);
-
-        JList<String> heroUpdates = new JList<>();
-
-        JScrollPane pointsScrollBar = new JScrollPane(heroUpdates);
-        pointsScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        pointsScrollBar.setBounds(10, 190, 360, 280);
-
-        JLabel dragonsText = new JLabel("Dragon's Updates");
-        dragonsText.setFont(customFont.deriveFont(30f));
-        dragonsText.setBounds(10, 500, 360, 95);
-        dragonsText.setHorizontalAlignment(JLabel.CENTER);
-        dragonsText.setOpaque(true);
-
-        JList<String> dragonUpdates = new JList<>();
-
-        JScrollPane dragonScrollBar = new JScrollPane(heroUpdates);
-        dragonScrollBar.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        dragonScrollBar.setBounds(10, 610, 360, 280);
-
         JList<String> messages = new JList<>();
         JScrollPane chatBox = new JScrollPane(messages);
-        chatBox.setBounds(870, 720, 310, 150);
+        chatBox.setBounds(20, 20, 270, 200);
 
         JTextField messageText = new JTextField();
         messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
-        messageText.setBounds(870, 880, 240, 65);
+        messageText.setBounds(20, 230, 200, 65);
         messageText.setBackground(Color.white);
         messageText.setOpaque(true);
 
         JButton send = new JButton("Send");
-        send.setFont(customFont.deriveFont(20f));
-        send.setBounds(1115, 880, 65, 65);
-
-        heroSheet = new JLabel();
-        heroSheet.setBounds(500,400, 600,500);
+        send.setFont(customFont.deriveFont(15f));
+        send.setBounds(225, 230, 65, 65);
 
         //chat method
         /*
@@ -138,17 +185,176 @@ public class PlayingUI extends JPanel {
         });
          */
 
+        JButton roll1 = new JButton("Roll");
+        roll1.setFont(customFont.deriveFont(20f));
+        roll1.setBounds(450, 210, 100, 20);
+        roll1.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll1.setOpaque(true);
+
+        JButton keep1 = new JButton("Keep");
+        keep1.setFont(customFont.deriveFont(20f));
+        keep1.setBounds(450, 235, 100, 20);
+        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep1.setOpaque(true);
+
+        JButton roll2 = new JButton("Roll");
+        roll2.setFont(customFont.deriveFont(20f));
+        roll2.setBounds(575, 210, 100, 20);
+        roll2.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll2.setOpaque(true);
+
+        JButton keep2 = new JButton("Keep");
+        keep2.setFont(customFont.deriveFont(20f));
+        keep2.setBounds(575, 235, 100, 20);
+        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep2.setOpaque(true);
+
+        JButton roll3 = new JButton("Roll");
+        roll3.setFont(customFont.deriveFont(20f));
+        roll3.setBounds(700, 210, 100, 20);
+        roll3.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll3.setOpaque(true);
+
+        JButton keep3 = new JButton("Keep");
+        keep3.setFont(customFont.deriveFont(20f));
+        keep3.setBounds(700, 235, 100, 20);
+        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep3.setOpaque(true);
+
+        JButton roll4 = new JButton("Roll");
+        roll4.setFont(customFont.deriveFont(20f));
+        roll4.setBounds(825, 210, 100, 20);
+        roll4.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll4.setOpaque(true);
+
+        JButton keep4 = new JButton("Keep");
+        keep4.setFont(customFont.deriveFont(20f));
+        keep4.setBounds(825, 235, 100, 20);
+        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep4.setOpaque(true);
+
+        JButton roll5 = new JButton("Roll");
+        roll5.setFont(customFont.deriveFont(20f));
+        roll5.setBounds(950, 210, 100, 20);
+        roll5.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll5.setOpaque(true);
+
+        JButton keep5 = new JButton("Keep");
+        keep5.setFont(customFont.deriveFont(20f));
+        keep5.setBounds(950, 235, 100, 20);
+        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep5.setOpaque(true);
+
+        currentPlayerSheet = new JLabel();
+        currentPlayerSheet.setFont(customFont.deriveFont(30f));
+        currentPlayerSheet.setBounds(160, 355, 500, 50);
+        currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
+        currentPlayerSheet.setOpaque(false);
+
+        characterNameText = new JLabel();
+        characterNameText.setFont(customFont.deriveFont(17f));
+        characterNameText.setBounds(375, 440, 100, 30);
+        characterNameText.setHorizontalAlignment(SwingConstants.CENTER);
+        characterNameText.setOpaque(false);
+
+        armorClassText = new JLabel();
+        armorClassText.setFont(customFont.deriveFont(17f));
+        armorClassText.setBounds(258, 505, 35, 45);
+        armorClassText.setHorizontalAlignment(SwingConstants.CENTER);
+        armorClassText.setOpaque(false);
+        //for now box use x = 295
+
+        hitPointsText = new JLabel();
+        hitPointsText.setFont(customFont.deriveFont(17f));
+        hitPointsText.setBounds(348, 505, 35, 45);
+        hitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
+        hitPointsText.setOpaque(false);
+
+        levelText = new JLabel("0");
+        levelText.setFont(customFont.deriveFont(15f));
+        levelText.setBounds(455, 505, 20, 20);
+        levelText.setHorizontalAlignment(SwingConstants.CENTER);
+        levelText.setOpaque(false);
+
+        expText = new JLabel("0");
+        expText.setFont(customFont.deriveFont(15f));
+        expText.setBounds(455, 545, 20, 20);
+        expText.setHorizontalAlignment(SwingConstants.CENTER);
+        expText.setOpaque(false);
+
+        goldText = new JLabel("0");
+        goldText.setFont(customFont.deriveFont(15f));
+        goldText.setBounds(455, 582, 20, 20);
+        goldText.setHorizontalAlignment(SwingConstants.CENTER);
+        goldText.setOpaque(false);
+
+        BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
+        next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = heroSheets.indexOf(heroClass);
+                if (i+1<=heroSheets.size()-1)
+                {
+                    heroClass = heroSheets.get(i+1);
+                    repaint();
+                }
+                for (Hero hero: gameHeroes)
+                {
+                    if (hero.classType==heroClass)
+                        setFields(hero);
+                }
+            }
+        });
+        next.setBounds(525, 370, 100, 25);
+
+        BasicArrowButton previous = new BasicArrowButton(BasicArrowButton.WEST);
+        previous.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int i = heroSheets.indexOf(heroClass);
+                if (i-1>=0)
+                {
+                    heroClass = heroSheets.get(i-1);
+                    repaint();
+                }
+                for (Hero hero: gameHeroes)
+                {
+                    if (hero.classType==heroClass)
+                        setFields(hero);
+                }
+            }
+        });
+        previous.setBounds(200, 370, 100, 25);
+
         add(turn);
         add(rules);
         add(guide);
-        add(pointsText);
-        add(pointsScrollBar);
-        add(dragonScrollBar);
-        add(dragonsText);
         add(chatBox);
         add(messageText);
         add(send);
-        add(heroSheet);
+        add(roll1);
+        add(keep1);
+        add(roll2);
+        add(keep2);
+        add(roll3);
+        add(keep3);
+        add(roll4);
+        add(keep4);
+        add(roll5);
+        add(keep5);
+        add(currentPlayerSheet);
+        add(characterNameText);
+        add (armorClassText);
+        add(hitPointsText);
+        add(levelText);
+        add(expText);
+        add(goldText);
+        add(next);
+        add(previous);
+    }
+
+    private static void refreshChat(String message)
+    {
 
     }
 
@@ -172,45 +378,55 @@ public class PlayingUI extends JPanel {
             dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
-            heroSheets.add(ImageIO.read(new File("images/cleric.png")));
-            heroSheets.add(ImageIO.read(new File("images/custom hero.png")));
-            heroSheets.add(ImageIO.read(new File("images/ranger.png")));
-            heroSheets.add(ImageIO.read(new File("images/rogue.png")));
-            heroSheets.add(ImageIO.read(new File("images/warrior.png")));
-            heroSheets.add(ImageIO.read(new File("images/wizard.png")));
+
+            //for now, only added one image into arraylist - can change later
+            warriorTokens.add(ImageIO.read(new File("images/WeaponBlue.png")));
+            wizardTokens.add(ImageIO.read(new File("images/WeaponRed.png")));
+            clericTokens.add(ImageIO.read(new File("images/WeaponTeal.png")));
+            rangerTokens.add(ImageIO.read(new File("images/WeaponGreen.png")));
+            rogueTokens.add(ImageIO.read(new File("images/WeaponPurple.png")));
+            dragonTokens.add(ImageIO.read(new File("images/tokenYellow.png")));
+            poisonTokens.add(ImageIO.read(new File("images/tokenGreen.png")));
+            pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
+            blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
+
+            diceFaces.add(ImageIO.read(new File("images/dice1.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice2.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice3.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice4.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice5.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public static void displayPlayerSheet(String heroes){
-        /*
-        System.out.println("BRUH");
-        System.out.println(heroes.toString());
-        System.out.println("I WORK PRISHA");
-         */
-
-        int selectionOfHero = Integer.parseInt(heroes);
-        if(selectionOfHero == 0){
-            warriorState = true;
+    public static void addHeroes (ArrayList<Hero> currentHeroes)
+    {
+        gameHeroes.clear();
+        heroSheets.clear();
+        for (int i = 0; i<currentHeroes.size(); i++) {
+            heroSheets.add(currentHeroes.get(i).classType);
+            gameHeroes.add(currentHeroes.get(i));
         }
-        if(selectionOfHero == 1){
-            wizardState = true;
-        }
-        if(selectionOfHero == 2){
-            clericState = true;
-        }
-        if(selectionOfHero == 3){
-            rangerState = true;
-        }
-        if(selectionOfHero == 4){
-            rogueState = true;
-        }
-
+        Collections.sort(gameHeroes, new Comparator<Hero>() {
+            @Override
+            public int compare(Hero h1, Hero h2) {
+                return Integer.compare(h1.incentiveOrder, h2.incentiveOrder);
+            }
+        });
+        turn.setText("Turn: " + gameHeroes.get(0).heroName);
     }
 
-
-
-
+    public static void setFields (Hero hero)
+    {
+        heroClass = hero.classType;
+        currentPlayerSheet.setText(hero.heroName);
+        characterNameText.setText(hero.heroName);
+        armorClassText.setText(String.valueOf(hero.armorClass));
+        hitPointsText.setText(String.valueOf(hero.hitPoints));
+        levelText.setText(String.valueOf(hero.level));
+        expText.setText(String.valueOf(hero.exp));
+        goldText.setText(String.valueOf(hero.gold));
+    }
 }
-

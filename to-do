@@ -1,16 +1,7 @@
-To-Do by 9/16
+To-Do by 10/1
 
 Prisha
---> Networking: Player sheets, access code showing, wait for players to fully join
---> Lobby screen + countdown timer
---> Dragon sheets
+--> chat
 
 Tanvi 
---> Passing information after begin/create game
---> Finish join player for server 
-
-
-- showing names on jlist in lobby ui
-- showing dragon sheets in playing ui
-- showing hero sheets in playing ui(DONE)
-----> Prisha will push code of hero sheets in class
+--> each player should see same random dice

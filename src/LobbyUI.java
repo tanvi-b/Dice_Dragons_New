@@ -1,26 +1,27 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class LobbyUI extends JPanel {
     private BufferedImage loginBackground;
     private Font customFont;
     private Font customBoldFont;
-    private JPanel mainPanel;
-    private CardLayout cardLayout;
+    private static JPanel mainPanel;
+    private static CardLayout cardLayout;
 
     public static Game game;
     private static DefaultListModel<String> playersModel = new DefaultListModel<>();
     public static JList<String> userNames = new JList<>(playersModel);
     private static JLabel accessCodeShow;
+    private static JLabel countdownLabel;
+    private static Timer countdownTimer;
+    private static int countdown = 3;
 
     public LobbyUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -47,43 +48,28 @@ public class LobbyUI extends JPanel {
 
         JLabel playersJoined = new JLabel("Players Joined");
         playersJoined.setFont(customFont.deriveFont(60f));
-        playersJoined.setBounds(350, 200, 500, 75);
+        playersJoined.setBounds(350, 150, 500, 75);
         playersJoined.setHorizontalAlignment(SwingConstants.CENTER);
         playersJoined.setOpaque(true);
 
         JScrollPane playersScrollPane = new JScrollPane(userNames);
         playersScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        playersScrollPane.setBounds(450, 300, 300, 400);
+        playersScrollPane.setBounds(450, 250, 300, 400);
         playersScrollPane.setVisible(true);
 
-        //timer - after all players have joined show a jlabel saying starting game in 3 2 1
-        //lead to playing screen
-
-        //for testing purposes
-        JButton goToPlaying=  new JButton("Go to Playing Screen");
-        goToPlaying.setFont(customFont.deriveFont(28f));
-        goToPlaying.setBounds(450, 710, 300, 75);
-        goToPlaying.setHorizontalAlignment(SwingConstants.CENTER);
-        goToPlaying.setOpaque(true);
-        goToPlaying.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "PlayingScreen");
-            }
-        });
+        countdownLabel = new JLabel("");
+        countdownLabel.setFont(customFont.deriveFont(40f));
+        countdownLabel.setBounds(450, 660, 300, 75);
+        countdownLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        countdownLabel.setOpaque(true);
+        countdownLabel.setBackground(Color.BLACK);
+        countdownLabel.setForeground(Color.ORANGE);
+        countdownLabel.setVisible(false);
 
         add(playersJoined);
         add(accessCodeShow);
         add(playersScrollPane);
-        add(goToPlaying);
-        //add starting game label but make visible false
-    }
-
-    private void buttonFormatting(JButton button) {
-        button.setOpaque(false);
-        button.setContentAreaFilled(false);
-        button.setFocusPainted(false);
-        button.setVisible(true);
+        add(countdownLabel);
     }
 
     private void readImages() {
@@ -103,15 +89,35 @@ public class LobbyUI extends JPanel {
         }
     }
 
-    public static void refreshLobby(String username){
-        System.out.println(username);
-        playersModel.addElement(username);
-//        playersModel.clear();
-//        for (int i = 0; i<currentGame.heroes.size(); i++)
-//            playersModel.addElement(currentGame.heroes.get(i).heroName);
+    public static void refreshLobby(ArrayList<Hero> currentHeroes, int maxPlayers) {
+        playersModel.clear();
+        for (int i = 0; i < currentHeroes.size(); i++)
+            playersModel.addElement(currentHeroes.get(i).heroName);
+
+        if (playersModel.size() == maxPlayers)
+            startCountdown();
     }
 
-    public static void displayCode(String code){
+    private static void startCountdown() {
+        countdownLabel.setVisible(true);
+        countdown = 3;
+        countdownTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (countdown > 0) {
+                    countdownLabel.setText("Starting in " + countdown + "...");
+                    countdown--;
+                } else {
+                    countdownTimer.stop();
+                    countdownLabel.setVisible(false);
+                    cardLayout.show(mainPanel, "PlayingScreen");
+                }
+            }
+        });
+        countdownTimer.start();
+    }
+
+    public static void displayCode(String code) {
         accessCodeShow.setText("Access Code: " + code);
     }
 }
