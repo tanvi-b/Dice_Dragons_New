@@ -25,6 +25,7 @@ public class Game implements Runnable, Serializable {
         level = 0;
         heroes = new ArrayList<>();
         diceRolled = new ArrayList<>();
+        messages = new ArrayList<>();
     }
 
     public void run() {
@@ -66,7 +67,7 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
                 {
-                     PlayingUI.refreshChat(((Game) cfs.getData()).getMessagesChat());
+                    PlayingUI.refreshChat((ArrayList<String>) cfs.getData());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
