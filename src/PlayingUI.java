@@ -41,6 +41,10 @@ public class PlayingUI extends JPanel {
     private static JLabel expText;
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
+    public static String acc;
+    private static DefaultListModel<String> chat = new DefaultListModel<>();
+    private static JList<String> messages = new JList<>(chat);
+    private static JScrollPane chatBox = new JScrollPane(messages);
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
