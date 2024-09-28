@@ -40,6 +40,12 @@ public class PlayingUI extends JPanel {
     private static JLabel levelText;
     private static JLabel expText;
     private static JLabel goldText;
+    private static ArrayList<Integer> diceRolled;
+    public static String acc;
+    private static DefaultListModel<String> chat = new DefaultListModel<>();
+    private static JList<String> messages = new JList<>(chat);
+    private static JScrollPane chatBox = new JScrollPane(messages);
+    private static String username;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -58,6 +64,7 @@ public class PlayingUI extends JPanel {
         poisonTokens = new ArrayList<>();
         pinnedTokens = new ArrayList<>();
         blessedTokens = new ArrayList<>();
+        diceRolled = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
@@ -68,10 +75,8 @@ public class PlayingUI extends JPanel {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
-        //all players should see same dice so will need to change
-        Random random = new Random();
-        for (int i = 0; i < 5; i++)
-           g.drawImage(diceFaces.get(random.nextInt(diceFaces.size())), 450 + i*125, 100, 100, 100, this);
+        for (int i = 0; i < diceRolled.size(); i++)
+           g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
 
        if(heroClass==0) {
             try {
@@ -142,7 +147,7 @@ public class PlayingUI extends JPanel {
         rules.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //cardLayout.show(mainPanel, "PlayerRulesScreen");
+                cardLayout.show(mainPanel, "PlayerRulesScreen");
             }
         });
 
@@ -155,7 +160,7 @@ public class PlayingUI extends JPanel {
         guide.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //cardLayout.show(mainPanel, "DragonGuideScreen");
+                cardLayout.show(mainPanel, "DragonGuideScreen");
             }
         });
 
@@ -173,17 +178,14 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
 
-        //chat method
-        /*
-        send.addActionListener(new ActionListener() {
+         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String acc = characterName + ": " + messageText.getText();
-                ///will need to implement following method
-                //sendMessage(os,name+ ": " + input.getText());
+               acc = username+ ": " + messageText.getText();
                 messageText.setText("");
+                //to send to other clients
+                PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
-         */
 
         JButton roll1 = new JButton("Roll");
         roll1.setFont(customFont.deriveFont(20f));
@@ -353,9 +355,12 @@ public class PlayingUI extends JPanel {
         add(previous);
     }
 
-    private static void refreshChat(String message)
-    {
-
+   public static void refreshChat(ArrayList<String> text) throws IOException {
+        chat.clear();
+        for(int i =0; i<text.size(); i++){
+            chat.addElement(text.get(i));
+        }
+        messages.ensureIndexIsVisible(chat.getSize()-1);
     }
 
     private void loadFonts() {
@@ -423,10 +428,17 @@ public class PlayingUI extends JPanel {
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
+        username = hero.heroName;
         armorClassText.setText(String.valueOf(hero.armorClass));
         hitPointsText.setText(String.valueOf(hero.hitPoints));
         levelText.setText(String.valueOf(hero.level));
         expText.setText(String.valueOf(hero.exp));
         goldText.setText(String.valueOf(hero.gold));
+    }
+
+    public static void getDice (ArrayList<Integer> diceFromHost)
+    {
+        for (int i = 0; i< diceFromHost.size(); i++)
+            diceRolled.add(diceFromHost.get(i));
     }
 }

@@ -16,6 +16,7 @@ public class Game implements Runnable, Serializable {
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
     ArrayList<Integer> diceRolled;
+    ArrayList<String> messages;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -24,6 +25,7 @@ public class Game implements Runnable, Serializable {
         level = 0;
         heroes = new ArrayList<>();
         diceRolled = new ArrayList<>();
+        messages = new ArrayList<>();
     }
 
     public void run() {
@@ -36,6 +38,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -43,6 +46,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -63,7 +67,7 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
                 {
-                    //PlayingUI.refreshChat(cfs.getMessage());
+                    PlayingUI.refreshChat((ArrayList<String>) cfs.getData());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -82,6 +86,17 @@ public class Game implements Runnable, Serializable {
             CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
             os.writeObject(cfc);
             os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+     public void sendMessage (ObjectOutputStream os, String text) {
+        try{
+                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, null);
+                os.writeObject(cfc);
+                os.flush();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -124,6 +139,14 @@ public class Game implements Runnable, Serializable {
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
+    
+    public ArrayList<String> getMessagesChat(){
+        return messages;
+    }
+
+    public void setChat(ArrayList<String> chat){
+        this.messages = chat;
+    }
 
     public int getLevel() {
         return level;
@@ -155,5 +178,13 @@ public class Game implements Runnable, Serializable {
 
     public void setDragons(ArrayList<Dragon> dragons) {
         this.dragons = dragons;
+    }
+
+    public ArrayList<Integer> getDiceRolled() {
+        return diceRolled;
+    }
+
+    public void setDiceRolled(ArrayList<Integer> diceRolled) {
+        this.diceRolled = diceRolled;
     }
 }

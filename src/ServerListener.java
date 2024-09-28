@@ -1,19 +1,19 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
     private ObjectOutputStream os;
     private int accessCode;
     static Map<String, Game> currentGames = new HashMap<>();
+    public static ArrayList<String>  historyChat = new ArrayList<>();
+    private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
+        outs.add(os);
     }
 
     @Override
@@ -69,6 +69,8 @@ public class ServerListener implements Runnable {
                     //creating game object
                     Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
+                    newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
+                            random.nextInt(6),random.nextInt(6),random.nextInt(6))));
 
                     String playerEntry = (String) cfc.getData();
                     System.out.println("Player Entry: " + playerEntry);
@@ -88,10 +90,18 @@ public class ServerListener implements Runnable {
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
                 }
 
-                if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE)
-                {
-
-                }
+                if(cfc.getCommand() == CommandFromClient.SEND_MESSAGE){
+                    String message  = (String) cfc.getData();
+                    historyChat.add(message);
+                    CommandFromServer cfs = new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, historyChat, null);
+                    for (ObjectOutputStream o : outs) {
+                        try {
+                            sendCommandToChat(cfs, o);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -195,5 +205,19 @@ public class ServerListener implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendCommandToChat(CommandFromServer cfs, ObjectOutputStream os){
+        try {
+            os.reset();
+            os.writeObject(cfs);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> getHistoryChat(){
+        return historyChat;
     }
 }

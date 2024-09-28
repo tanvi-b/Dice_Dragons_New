@@ -12,6 +12,7 @@ public class ServerMain {
         try {
             // Create a ServerSocket to listen for client connections
             ServerSocket serverSocket = new ServerSocket(8001);
+            ServerListener.historyChat.clear();
 
             System.out.println("Created by Tanvi Bhattad and Prisha Singh - 2024");
 
