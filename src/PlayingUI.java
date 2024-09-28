@@ -45,6 +45,7 @@ public class PlayingUI extends JPanel {
     private static DefaultListModel<String> chat = new DefaultListModel<>();
     private static JList<String> messages = new JList<>(chat);
     private static JScrollPane chatBox = new JScrollPane(messages);
+    private static String username;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -179,7 +180,7 @@ public class PlayingUI extends JPanel {
 
          send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                acc = messageText.getText();
+               acc = username+ ": " + messageText.getText();
                 messageText.setText("");
                 //to send to other clients
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
@@ -427,6 +428,7 @@ public class PlayingUI extends JPanel {
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
+        username = hero.heroName;
         armorClassText.setText(String.valueOf(hero.armorClass));
         hitPointsText.setText(String.valueOf(hero.hitPoints));
         levelText.setText(String.valueOf(hero.level));
