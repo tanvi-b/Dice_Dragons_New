@@ -11,6 +11,19 @@ import java.nio.Buffer;
 import java.sql.Array;
 import java.util.*;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import javax.swing.plaf.basic.BasicArrowButton;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.Buffer;
+import java.sql.Array;
+import java.util.*;
+
 public class PlayingUI extends JPanel {
     public static Game game;
     private CardLayout cardLayout;
@@ -74,14 +87,14 @@ public class PlayingUI extends JPanel {
         addComponents();
     }
 
-   public void paintComponent(Graphics g) {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
         for (int i = 0; i < diceRolled.size(); i++)
-           g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
+            g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
 
-       if(heroClass==0) {
+        if(heroClass==0) {
             try {
                 g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -113,16 +126,16 @@ public class PlayingUI extends JPanel {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
         }
-       if(heroClass==3) {
-           try {
-               g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
-           } catch (IOException e) {
-               throw new RuntimeException(e);
-           }
-           for (int i = 0; i < 3; i++) {
-               g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
-           }
-       }
+        if(heroClass==3) {
+            try {
+                g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            for (int i = 0; i < 3; i++) {
+                g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
+            }
+        }
         if(heroClass==4) {
             try {
                 g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
@@ -181,7 +194,7 @@ public class PlayingUI extends JPanel {
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
 
-         send.addActionListener(new ActionListener() {
+        send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 acc = username+ ": " + messageText.getText();
                 messageText.setText("");
@@ -293,8 +306,6 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
-        bruh = new JTextField();
-        bruh.setBounds(20, 20, 270, 200);
 
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
@@ -337,7 +348,6 @@ public class PlayingUI extends JPanel {
         add(turn);
         add(rules);
         add(guide);
-        add(bruh);
         add(chatBox);
         add(messageText);
         add(send);
@@ -362,20 +372,16 @@ public class PlayingUI extends JPanel {
         add(previous);
     }
 
-   public static void refreshChat(ArrayList<String> text) throws IOException {
+    public static void refreshChat(ArrayList<String> text) throws IOException {
 
         System.out.println("UPDATING" + text);
 
-            chatModel.clear();
-            for(int i =0; i<text.size(); i++){
-               chatModel.addElement(text.get(i));
-               System.out.println("ADDED : " + text.get(i));
-            }
-            //messages.ensureIndexIsVisible(chatModel.getSize()-1);
-
-
-
-
+        chatModel.clear();
+        for(int i =0; i<text.size(); i++){
+            chatModel.addElement(text.get(i));
+            System.out.println("ADDED : " + text.get(i));
+        }
+        chatMessages.ensureIndexIsVisible(chatModel.getSize()-1);
 
     }
 
