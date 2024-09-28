@@ -7,10 +7,13 @@ public class ServerListener implements Runnable {
     private ObjectOutputStream os;
     private int accessCode;
     static Map<String, Game> currentGames = new HashMap<>();
+    public static ArrayList<String>  historyChat = new ArrayList<>();
+    private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
+        outs.add(os);
     }
 
     @Override
@@ -89,11 +92,13 @@ public class ServerListener implements Runnable {
 
                 if(cfc.getCommand() == CommandFromClient.SEND_MESSAGE){
                     String message  = (String) cfc.getData();
-                    Game game = currentGames.get(String.valueOf(accessCode));
-                    game.getMessagesChat().add(message);
-                    if(game != null){
-                            for (int i = 0; i < game.getHeroes().size(); i++) {
-                                sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, game, message), game.getHeroes().get(i).os);
+                    historyChat.add(message);
+                    CommandFromServer cfs = new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, historyChat, null);
+                    for (ObjectOutputStream o : outs) {
+                        try {
+                            sendCommandToChat(cfs, o);
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                  }
@@ -200,5 +205,19 @@ public class ServerListener implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendCommandToChat(CommandFromServer cfs, ObjectOutputStream os){
+        try {
+            os.reset();
+            os.writeObject(cfs);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> getHistoryChat(){
+        return historyChat;
     }
 }
