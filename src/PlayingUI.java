@@ -42,10 +42,13 @@ public class PlayingUI extends JPanel {
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
     public static String acc;
-    private static DefaultListModel<String> chat = new DefaultListModel<>();
-    private static JList<String> messages = new JList<>(chat);
-    private static JScrollPane chatBox = new JScrollPane(messages);
+    private static DefaultListModel<String> chat;
+    private static JList<String> messages;
+    private static JScrollPane chatBox;
     private static String username;
+    public static JTextField bruh;
+    private static DefaultListModel<String> chatModel = new DefaultListModel<>();
+    public static JList<String> chatMessages = new JList<>(chatModel);
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -164,8 +167,8 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        JList<String> messages = new JList<>();
-        JScrollPane chatBox = new JScrollPane(messages);
+        JScrollPane chatBox = new JScrollPane(chatMessages);
+        chatBox.setVisible(true);
         chatBox.setBounds(20, 20, 270, 200);
 
         JTextField messageText = new JTextField();
@@ -180,7 +183,7 @@ public class PlayingUI extends JPanel {
 
          send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               acc = username+ ": " + messageText.getText();
+                acc = username+ ": " + messageText.getText();
                 messageText.setText("");
                 //to send to other clients
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
@@ -290,6 +293,9 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
+        bruh = new JTextField();
+        bruh.setBounds(20, 20, 270, 200);
+
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
@@ -331,6 +337,7 @@ public class PlayingUI extends JPanel {
         add(turn);
         add(rules);
         add(guide);
+        add(bruh);
         add(chatBox);
         add(messageText);
         add(send);
@@ -356,11 +363,20 @@ public class PlayingUI extends JPanel {
     }
 
    public static void refreshChat(ArrayList<String> text) throws IOException {
-        chat.clear();
-        for(int i =0; i<text.size(); i++){
-            chat.addElement(text.get(i));
-        }
-        messages.ensureIndexIsVisible(chat.getSize()-1);
+
+        System.out.println("UPDATING" + text);
+
+            chatModel.clear();
+            for(int i =0; i<text.size(); i++){
+               chatModel.addElement(text.get(i));
+               System.out.println("ADDED : " + text.get(i));
+            }
+            //messages.ensureIndexIsVisible(chatModel.getSize()-1);
+
+
+
+
+
     }
 
     private void loadFonts() {
