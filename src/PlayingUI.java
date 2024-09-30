@@ -405,16 +405,11 @@ public class PlayingUI extends JPanel {
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
-
-        System.out.println("UPDATING" + text);
-
         chatModel.clear();
         for(int i =0; i<text.size(); i++){
             chatModel.addElement(text.get(i));
-            System.out.println("ADDED : " + text.get(i));
         }
         chatMessages.ensureIndexIsVisible(chatModel.getSize()-1);
-
     }
 
     private void loadFonts() {

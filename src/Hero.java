@@ -41,11 +41,6 @@ public class Hero extends Player {
 
     }
 
-    private void chat ()
-    {
-
-    }
-
     private void activateSpecialToken()
     {
 
