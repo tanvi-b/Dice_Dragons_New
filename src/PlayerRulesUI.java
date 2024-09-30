@@ -49,7 +49,8 @@ public class PlayerRulesUI extends JPanel {
         done.setOpaque(true);
         done.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //cardLayout.show(mainPanel, "Playing Screen"); --> somehow need to see current playing screen, not new
+                cardLayout.show(mainPanel, "PlayingScreen");
+
             }
         });
 

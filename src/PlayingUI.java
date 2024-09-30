@@ -263,6 +263,35 @@ public class PlayingUI extends JPanel {
         keep5.setBorder(BorderFactory.createLineBorder(Color.black));
         keep5.setOpaque(true);
 
+        JButton placeToken = new JButton("Place Token");
+        placeToken.setFont(customFont.deriveFont(20f));
+        placeToken.setBounds(450, 290, 150, 50);
+        placeToken.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        JButton dragonAttack = new JButton("Dragon Counter Attack");
+        dragonAttack.setFont(customFont.deriveFont(20f));
+        dragonAttack.setBounds(620, 290, 200, 50);
+        dragonAttack.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        dragonAttack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "DragonAttackScreen");
+            }
+        });
+
+        JButton handDice = new JButton("Hand Dice to Player");
+        handDice.setFont(customFont.deriveFont(20f));
+        handDice.setBounds(840, 290, 200, 50);
+        handDice.setBorder(BorderFactory.createLineBorder(Color.black));
+
+        handDice.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "PassDiceScreen");
+            }
+        });
+
+
+
         currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
         currentPlayerSheet.setBounds(160, 355, 500, 50);
@@ -361,6 +390,9 @@ public class PlayingUI extends JPanel {
         add(keep4);
         add(roll5);
         add(keep5);
+        add(placeToken);
+        add(dragonAttack);
+        add(handDice);
         add(currentPlayerSheet);
         add(characterNameText);
         add (armorClassText);

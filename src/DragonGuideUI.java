@@ -49,7 +49,7 @@ public class DragonGuideUI extends JPanel {
             done.setOpaque(true);
             done.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
-                    //cardLayout.show(mainPanel, "Playing Screen"); --> somehow need to see current playing screen, not new
+                    cardLayout.show(mainPanel, "PlayingScreen");
                 }
             });
 
@@ -71,12 +71,15 @@ public class DragonGuideUI extends JPanel {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 if (indexPage1+2<dragonGuide.size() && indexPage2+2<dragonGuide.size())
                 {
                     indexPage1+=2;
                     indexPage2+=2;
                     repaint();
                 }
+
+
             }
         });
         next.setBounds(1045, 915, 130, 40);
