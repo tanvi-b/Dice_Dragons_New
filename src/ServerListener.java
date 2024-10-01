@@ -5,7 +5,7 @@ import java.util.*;
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
     private ObjectOutputStream os;
-    private int accessCode;
+    public int accessCode;
     static Map<String, Game> currentGames = new HashMap<>();
     public static ArrayList<String>  historyChat = new ArrayList<>();
     private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
@@ -92,13 +92,12 @@ public class ServerListener implements Runnable {
 
                 if(cfc.getCommand() == CommandFromClient.SEND_MESSAGE){
                     String message  = (String) cfc.getData();
-                    historyChat.add(message);
-                    CommandFromServer cfs = new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, historyChat, null);
-                    for (ObjectOutputStream o : outs) {
-                        try {
-                            sendCommandToChat(cfs, o);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    game.getMessagesChat().add(message);
+                    //CommandFromServer cfs = new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, historyChat, null);
+                    if(game == currentGames.get(String.valueOf(cfc.getPlayer()))){
+                        for (int i = 0; i < game.getHeroes().size(); i++) {
+                            sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, null, game.getMessagesChat()), game.getHeroes().get(i).os);
                         }
                     }
                 }

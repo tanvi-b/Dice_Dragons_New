@@ -38,6 +38,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
@@ -47,11 +48,13 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
+                    PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+
                 }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
@@ -67,7 +70,7 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
                 {
-                    PlayingUI.refreshChat((ArrayList<String>) cfs.getData());
+                    PlayingUI.refreshChat((ArrayList<String>) cfs.getPlayer());
 
                 }
             }
@@ -95,7 +98,7 @@ public class Game implements Runnable, Serializable {
 
      public void sendMessage (ObjectOutputStream os, String text) {
         try{
-                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, null);
+                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
                 os.writeObject(cfc);
                 os.flush();
         }
