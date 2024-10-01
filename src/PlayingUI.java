@@ -43,6 +43,7 @@ public class PlayingUI extends JPanel {
     private static String username;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
+    public static String accessCode;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -180,6 +181,7 @@ public class PlayingUI extends JPanel {
                 acc = username+ ": " + messageText.getText();
                 messageText.setText("");
                 //to send to other clients
+                System.out.println("BEING SENT FROM SEND _ PLAYING UI");
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
@@ -426,6 +428,14 @@ public class PlayingUI extends JPanel {
         turn.setText("Turn: " + gameHeroes.get(0).heroName);
     }
 
+    public static void setAccessCode(String num){
+        accessCode = num;
+    }
+
+    public static String getAccessCode(){
+        return accessCode;
+    }
+
     public static void setFields (Hero hero)
     {
         heroClass = hero.classType;
@@ -445,3 +455,4 @@ public class PlayingUI extends JPanel {
             diceRolled.add(diceFromHost.get(i));
     }
 }
+
