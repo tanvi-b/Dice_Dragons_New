@@ -120,7 +120,7 @@ public class PlayingUI extends JPanel {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
                 g.drawImage(blessedTokens.get(0), -105, 295 + (i*50), 325, 250, this);
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
