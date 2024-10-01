@@ -7,21 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
-import java.util.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
 import java.util.*;
 
 public class PlayingUI extends JPanel {
@@ -55,11 +40,7 @@ public class PlayingUI extends JPanel {
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
     public static String acc;
-    private static DefaultListModel<String> chat;
-    private static JList<String> messages;
-    private static JScrollPane chatBox;
     private static String username;
-    public static JTextField bruh;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
 
