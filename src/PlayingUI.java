@@ -7,21 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
-import java.util.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
 import java.util.*;
 
 public class PlayingUI extends JPanel {
@@ -55,11 +40,7 @@ public class PlayingUI extends JPanel {
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
     public static String acc;
-    private static DefaultListModel<String> chat;
-    private static JList<String> messages;
-    private static JScrollPane chatBox;
     private static String username;
-    public static JTextField bruh;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
 
@@ -120,7 +101,7 @@ public class PlayingUI extends JPanel {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
                 g.drawImage(blessedTokens.get(0), -105, 295 + (i*50), 325, 250, this);
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
@@ -263,34 +244,10 @@ public class PlayingUI extends JPanel {
         keep5.setBorder(BorderFactory.createLineBorder(Color.black));
         keep5.setOpaque(true);
 
-        JButton placeToken = new JButton("Place Token");
-        placeToken.setFont(customFont.deriveFont(20f));
-        placeToken.setBounds(450, 290, 150, 50);
-        placeToken.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        JButton dragonAttack = new JButton("Dragon Counter Attack");
-        dragonAttack.setFont(customFont.deriveFont(20f));
-        dragonAttack.setBounds(620, 290, 200, 50);
-        dragonAttack.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        dragonAttack.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "DragonAttackScreen");
-            }
-        });
-
-        JButton handDice = new JButton("Hand Dice to Player");
-        handDice.setFont(customFont.deriveFont(20f));
-        handDice.setBounds(840, 290, 200, 50);
-        handDice.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        handDice.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "PassDiceScreen");
-            }
-        });
-
-
+        JTextField gameMessages = new JTextField("Message: ");
+        gameMessages.setFont(customFont.deriveFont(17f));
+        gameMessages.setBounds(450, 280, 600, 50);
+        gameMessages.setBorder(BorderFactory.createLineBorder(Color.black));
 
         currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
@@ -334,7 +291,6 @@ public class PlayingUI extends JPanel {
         goldText.setBounds(455, 582, 20, 20);
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
-
 
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
@@ -390,9 +346,7 @@ public class PlayingUI extends JPanel {
         add(keep4);
         add(roll5);
         add(keep5);
-        add(placeToken);
-        add(dragonAttack);
-        add(handDice);
+        add(gameMessages);
         add(currentPlayerSheet);
         add(characterNameText);
         add (armorClassText);
