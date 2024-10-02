@@ -175,13 +175,10 @@ public class PlayingUI extends JPanel {
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
-
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 acc = username+ ": " + messageText.getText();
                 messageText.setText("");
-                //to send to other clients
-                System.out.println("BEING SENT FROM SEND _ PLAYING UI");
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
@@ -191,62 +188,113 @@ public class PlayingUI extends JPanel {
         roll1.setBounds(450, 210, 100, 20);
         roll1.setBorder(BorderFactory.createLineBorder(Color.black));
         roll1.setOpaque(true);
+        roll1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep1 = new JButton("Keep");
         keep1.setFont(customFont.deriveFont(20f));
         keep1.setBounds(450, 235, 100, 20);
         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
         keep1.setOpaque(true);
+        keep1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll2 = new JButton("Roll");
         roll2.setFont(customFont.deriveFont(20f));
         roll2.setBounds(575, 210, 100, 20);
         roll2.setBorder(BorderFactory.createLineBorder(Color.black));
         roll2.setOpaque(true);
+        roll2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep2 = new JButton("Keep");
         keep2.setFont(customFont.deriveFont(20f));
         keep2.setBounds(575, 235, 100, 20);
         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
         keep2.setOpaque(true);
+        keep2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll3 = new JButton("Roll");
         roll3.setFont(customFont.deriveFont(20f));
         roll3.setBounds(700, 210, 100, 20);
         roll3.setBorder(BorderFactory.createLineBorder(Color.black));
         roll3.setOpaque(true);
+        roll3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep3 = new JButton("Keep");
         keep3.setFont(customFont.deriveFont(20f));
         keep3.setBounds(700, 235, 100, 20);
         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
         keep3.setOpaque(true);
+        keep3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll4 = new JButton("Roll");
         roll4.setFont(customFont.deriveFont(20f));
         roll4.setBounds(825, 210, 100, 20);
         roll4.setBorder(BorderFactory.createLineBorder(Color.black));
         roll4.setOpaque(true);
+        roll4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep4 = new JButton("Keep");
         keep4.setFont(customFont.deriveFont(20f));
         keep4.setBounds(825, 235, 100, 20);
         keep4.setBorder(BorderFactory.createLineBorder(Color.black));
         keep4.setOpaque(true);
+        keep4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll5 = new JButton("Roll");
         roll5.setFont(customFont.deriveFont(20f));
         roll5.setBounds(950, 210, 100, 20);
         roll5.setBorder(BorderFactory.createLineBorder(Color.black));
         roll5.setOpaque(true);
+        roll5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep5 = new JButton("Keep");
         keep5.setFont(customFont.deriveFont(20f));
         keep5.setBounds(950, 235, 100, 20);
         keep5.setBorder(BorderFactory.createLineBorder(Color.black));
         keep5.setOpaque(true);
+        keep5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JTextField gameMessages = new JTextField("Message: ");
+        gameMessages.setEditable(false);
         gameMessages.setFont(customFont.deriveFont(17f));
         gameMessages.setBounds(450, 280, 600, 50);
         gameMessages.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -455,4 +503,3 @@ public class PlayingUI extends JPanel {
             diceRolled.add(diceFromHost.get(i));
     }
 }
-
