@@ -56,6 +56,10 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
 
                 }
+                else if (cfs.getCommand()==CommandFromServer.GIVE_DICE)
+                {
+                    PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
+                }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
                 }
@@ -71,7 +75,6 @@ public class Game implements Runnable, Serializable {
                 else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
                 {
                     PlayingUI.refreshChat((ArrayList<String>) cfs.getPlayer());
-
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -81,6 +84,19 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void passDice (ObjectOutputStream os, ArrayList<Integer> dice)
+    {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.PASS_DICE, dice, PlayingUI.getAccessCode());
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void playerJoin (ObjectOutputStream os, String info, String name)
@@ -96,21 +112,21 @@ public class Game implements Runnable, Serializable {
         }
     }
 
-     public void sendMessage (ObjectOutputStream os, String text) {
-        try{
-                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
-                os.writeObject(cfc);
-                os.flush();
+    public void playerHost(ObjectOutputStream os, String info, String player)  {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
+            os.writeObject(cfc);
+            os.flush();
         }
         catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public void playerHost(ObjectOutputStream os, String info, String player)  {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
+    public void sendMessage (ObjectOutputStream os, String text) {
+        try{
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
             os.writeObject(cfc);
             os.flush();
         }

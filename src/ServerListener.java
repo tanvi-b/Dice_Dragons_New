@@ -7,13 +7,10 @@ public class ServerListener implements Runnable {
     private ObjectOutputStream os;
     public int accessCode;
     static Map<String, Game> currentGames = new HashMap<>();
-    public static ArrayList<String>  historyChat = new ArrayList<>();
-    private static ArrayList<ObjectOutputStream> outs = new ArrayList<>();
 
     public ServerListener(ObjectInputStream i, ObjectOutputStream o) {
         this.is = i;
         this.os = o;
-        outs.add(os);
     }
 
     @Override
@@ -94,7 +91,6 @@ public class ServerListener implements Runnable {
                     String message  = (String) cfc.getData();
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     game.getMessagesChat().add(message);
-                    //CommandFromServer cfs = new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, historyChat, null);
                     if(game == currentGames.get(String.valueOf(cfc.getPlayer()))){
                         for (int i = 0; i < game.getHeroes().size(); i++) {
                             sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, null, game.getMessagesChat()), game.getHeroes().get(i).os);
@@ -102,7 +98,15 @@ public class ServerListener implements Runnable {
                     }
                 }
 
-
+                if (cfc.getCommand()==CommandFromClient.PASS_DICE)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    if(game == currentGames.get(String.valueOf(cfc.getPlayer()))){
+                        for (int i = 0; i < game.getHeroes().size(); i++) {
+                            sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, cfc.getData(), null), game.getHeroes().get(i).os);
+                        }
+                    }
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -206,20 +210,6 @@ public class ServerListener implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void sendCommandToChat(CommandFromServer cfs, ObjectOutputStream os){
-        try {
-            os.reset();
-            os.writeObject(cfs);
-            os.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ArrayList<String> getHistoryChat(){
-        return historyChat;
     }
 }
 
