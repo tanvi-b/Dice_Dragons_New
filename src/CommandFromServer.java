@@ -14,6 +14,7 @@ public class CommandFromServer implements Serializable {
     public static final int MAX_PLAYERS = 5;
     public static final int NEW_PLAYER= 6;
     public static final int DISPLAY_MESSAGE = 7;
+    public static final int GIVE_DICE = 8;
 
     public CommandFromServer(int command, Object data, Object player) {
         this.command = command;
