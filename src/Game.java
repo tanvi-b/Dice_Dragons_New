@@ -56,10 +56,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
 
                 }
-                else if (cfs.getCommand()==CommandFromServer.GIVE_DICE)
-                {
-                    PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
-                }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
                 }
@@ -72,9 +68,11 @@ public class Game implements Runnable, Serializable {
                 else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
                     JoinUI.maxPlayers();
                 }
-                else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
-                {
+                else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE) {
                     PlayingUI.refreshChat((ArrayList<String>) cfs.getPlayer());
+                }
+                else if (cfs.getCommand()==CommandFromServer.GIVE_DICE) {
+                    PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -86,11 +84,11 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
-    public void passDice (ObjectOutputStream os, ArrayList<Integer> dice)
+    public void passDice (ObjectOutputStream os)
     {
         try
         {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.PASS_DICE, dice, PlayingUI.getAccessCode());
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.PASS_DICE, null, PlayingUI.getAccessCode());
             os.writeObject(cfc);
             os.flush();
         }

@@ -52,7 +52,7 @@ public class DefeatedUI extends JPanel {
         exit.setOpaque(true);
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //force quit program
+                System.exit(0);
             }
         });
 

@@ -70,7 +70,6 @@ public class ServerListener implements Runnable {
                             random.nextInt(6),random.nextInt(6),random.nextInt(6))));
 
                     String playerEntry = (String) cfc.getData();
-                    System.out.println("Player Entry: " + playerEntry);
 
                     String[] playerInfo = playerEntry.split(",");
                     int classType = Integer.parseInt(playerInfo[2]);
@@ -78,11 +77,9 @@ public class ServerListener implements Runnable {
 
                     Hero hostHero = new Hero(classType, characterName, os);
                     setHeroValues(hostHero);
-                    System.out.println("Host Hero Created: " + hostHero);
 
                     newGame.getHeroes().add(hostHero);
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
-                    System.out.println("Current Games: " + currentGames.toString());
                     currentGames.put(String.valueOf(accessCode), newGame);
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
                 }
@@ -91,21 +88,18 @@ public class ServerListener implements Runnable {
                     String message  = (String) cfc.getData();
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     game.getMessagesChat().add(message);
-                    if(game == currentGames.get(String.valueOf(cfc.getPlayer()))){
-                        for (int i = 0; i < game.getHeroes().size(); i++) {
+                    for (int i = 0; i < game.getHeroes().size(); i++)
                             sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, null, game.getMessagesChat()), game.getHeroes().get(i).os);
-                        }
-                    }
                 }
 
                 if (cfc.getCommand()==CommandFromClient.PASS_DICE)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    if(game == currentGames.get(String.valueOf(cfc.getPlayer()))){
-                        for (int i = 0; i < game.getHeroes().size(); i++) {
-                            sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, cfc.getData(), null), game.getHeroes().get(i).os);
-                        }
-                    }
+                    Random random = new Random();
+                    game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
+                            random.nextInt(6),random.nextInt(6),random.nextInt(6))));
+                    for (int i = 0; i < game.getHeroes().size(); i++)
+                        sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), game.getHeroes().get(i).os);
                 }
             }
         } catch (Exception e) {

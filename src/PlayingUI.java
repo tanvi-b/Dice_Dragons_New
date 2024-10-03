@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class PlayingUI extends JPanel {
+    private static PlayingUI instance;
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -46,6 +47,7 @@ public class PlayingUI extends JPanel {
     public static String accessCode;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
+        instance = this;
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
@@ -190,11 +192,8 @@ public class PlayingUI extends JPanel {
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                diceRolled.clear();
-                for (int i = 0; i < 5; i++)
-                    diceRolled.add((int) (Math.random() * 5 + 1));
-                PlayingUI.game.passDice(PlayingUI.game.getOs(), diceRolled);
-                //repaint();
+                PlayingUI.game.passDice(PlayingUI.game.getOs());
+                repaint();
             }
         });
 
@@ -265,8 +264,6 @@ public class PlayingUI extends JPanel {
                 cardLayout.show(mainPanel, "SpecialSkillsScreen");
             }
         });
-
-
 
         JTextField gameMessages = new JTextField("Message: ");
         gameMessages.setEditable(false);
@@ -471,8 +468,13 @@ public class PlayingUI extends JPanel {
 
     public static void getDice (ArrayList<Integer> dice)
     {
+        diceRolled.clear();
         for (int i = 0; i< dice.size(); i++)
             diceRolled.add(dice.get(i));
+
+        if (instance != null) {
+            instance.repaint();
+        }
     }
 }
 
