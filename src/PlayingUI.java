@@ -7,21 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
-import java.util.*;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.nio.Buffer;
-import java.sql.Array;
 import java.util.*;
 
 public class PlayingUI extends JPanel {
@@ -55,13 +40,10 @@ public class PlayingUI extends JPanel {
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
     public static String acc;
-    private static DefaultListModel<String> chat;
-    private static JList<String> messages;
-    private static JScrollPane chatBox;
     private static String username;
-    public static JTextField bruh;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
+    public static String accessCode;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -120,7 +102,7 @@ public class PlayingUI extends JPanel {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
                 g.drawImage(blessedTokens.get(0), -105, 295 + (i*50), 325, 250, this);
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
@@ -193,12 +175,10 @@ public class PlayingUI extends JPanel {
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
-
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 acc = username+ ": " + messageText.getText();
                 messageText.setText("");
-                //to send to other clients
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
@@ -208,89 +188,116 @@ public class PlayingUI extends JPanel {
         roll1.setBounds(450, 210, 100, 20);
         roll1.setBorder(BorderFactory.createLineBorder(Color.black));
         roll1.setOpaque(true);
+        roll1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep1 = new JButton("Keep");
         keep1.setFont(customFont.deriveFont(20f));
         keep1.setBounds(450, 235, 100, 20);
         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
         keep1.setOpaque(true);
+        keep1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll2 = new JButton("Roll");
         roll2.setFont(customFont.deriveFont(20f));
         roll2.setBounds(575, 210, 100, 20);
         roll2.setBorder(BorderFactory.createLineBorder(Color.black));
         roll2.setOpaque(true);
+        roll2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep2 = new JButton("Keep");
         keep2.setFont(customFont.deriveFont(20f));
         keep2.setBounds(575, 235, 100, 20);
         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
         keep2.setOpaque(true);
+        keep2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll3 = new JButton("Roll");
         roll3.setFont(customFont.deriveFont(20f));
         roll3.setBounds(700, 210, 100, 20);
         roll3.setBorder(BorderFactory.createLineBorder(Color.black));
         roll3.setOpaque(true);
+        roll3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep3 = new JButton("Keep");
         keep3.setFont(customFont.deriveFont(20f));
         keep3.setBounds(700, 235, 100, 20);
         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
         keep3.setOpaque(true);
+        keep3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll4 = new JButton("Roll");
         roll4.setFont(customFont.deriveFont(20f));
         roll4.setBounds(825, 210, 100, 20);
         roll4.setBorder(BorderFactory.createLineBorder(Color.black));
         roll4.setOpaque(true);
+        roll4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep4 = new JButton("Keep");
         keep4.setFont(customFont.deriveFont(20f));
         keep4.setBounds(825, 235, 100, 20);
         keep4.setBorder(BorderFactory.createLineBorder(Color.black));
         keep4.setOpaque(true);
+        keep4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton roll5 = new JButton("Roll");
         roll5.setFont(customFont.deriveFont(20f));
         roll5.setBounds(950, 210, 100, 20);
         roll5.setBorder(BorderFactory.createLineBorder(Color.black));
         roll5.setOpaque(true);
+        roll5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton keep5 = new JButton("Keep");
         keep5.setFont(customFont.deriveFont(20f));
         keep5.setBounds(950, 235, 100, 20);
         keep5.setBorder(BorderFactory.createLineBorder(Color.black));
         keep5.setOpaque(true);
-
-        JButton placeToken = new JButton("Place Token");
-        placeToken.setFont(customFont.deriveFont(20f));
-        placeToken.setBounds(450, 290, 150, 50);
-        placeToken.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        JButton dragonAttack = new JButton("Dragon Counter Attack");
-        dragonAttack.setFont(customFont.deriveFont(20f));
-        dragonAttack.setBounds(620, 290, 200, 50);
-        dragonAttack.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        dragonAttack.addActionListener(new ActionListener() {
+        keep5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "DragonAttackScreen");
+
             }
         });
 
-        JButton handDice = new JButton("Hand Dice to Player");
-        handDice.setFont(customFont.deriveFont(20f));
-        handDice.setBounds(840, 290, 200, 50);
-        handDice.setBorder(BorderFactory.createLineBorder(Color.black));
-
-        handDice.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "PassDiceScreen");
-            }
-        });
-
-
+        JTextField gameMessages = new JTextField("Message: ");
+        gameMessages.setEditable(false);
+        gameMessages.setFont(customFont.deriveFont(17f));
+        gameMessages.setBounds(450, 280, 600, 50);
+        gameMessages.setBorder(BorderFactory.createLineBorder(Color.black));
 
         currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
@@ -334,7 +341,6 @@ public class PlayingUI extends JPanel {
         goldText.setBounds(455, 582, 20, 20);
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
-
 
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
@@ -390,9 +396,7 @@ public class PlayingUI extends JPanel {
         add(keep4);
         add(roll5);
         add(keep5);
-        add(placeToken);
-        add(dragonAttack);
-        add(handDice);
+        add(gameMessages);
         add(currentPlayerSheet);
         add(characterNameText);
         add (armorClassText);
@@ -405,7 +409,6 @@ public class PlayingUI extends JPanel {
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
-
         chatModel.clear();
         for(int i =0; i<text.size(); i++){
             chatModel.addElement(text.get(i));
@@ -471,6 +474,14 @@ public class PlayingUI extends JPanel {
             }
         });
         turn.setText("Turn: " + gameHeroes.get(0).heroName);
+    }
+
+    public static void setAccessCode(String num){
+        accessCode = num;
+    }
+
+    public static String getAccessCode(){
+        return accessCode;
     }
 
     public static void setFields (Hero hero)
