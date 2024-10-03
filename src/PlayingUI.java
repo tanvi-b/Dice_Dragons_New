@@ -253,6 +253,21 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        //special skills
+        JButton specialSkills = new JButton("Special Skills");
+        specialSkills.setFont(customFont.deriveFont(20f));
+        specialSkills.setBounds(30, 610, 150, 40);
+        specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
+        specialSkills.setOpaque(true);
+
+        specialSkills.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "SpecialSkillsScreen");
+            }
+        });
+
+
+
         JTextField gameMessages = new JTextField("Message: ");
         gameMessages.setEditable(false);
         gameMessages.setFont(customFont.deriveFont(17f));
@@ -352,6 +367,7 @@ public class PlayingUI extends JPanel {
         add(keep3);
         add(keep4);
         add(keep5);
+        add(specialSkills);
         add(gameMessages);
         add(currentPlayerSheet);
         add(characterNameText);
