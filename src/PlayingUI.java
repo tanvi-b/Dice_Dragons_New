@@ -12,6 +12,7 @@ import java.util.*;
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
+    public static Game gameObject;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes;
@@ -40,7 +41,6 @@ public class PlayingUI extends JPanel {
     private static JLabel expText;
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
-    public static String acc;
     private static String username;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
@@ -179,9 +179,9 @@ public class PlayingUI extends JPanel {
         send.setBounds(225, 230, 65, 65);
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                acc = username+ ": " + messageText.getText();
+                if (messageText.getText().length()!=0)
+                    PlayingUI.game.sendMessage(PlayingUI.game.getOs(), username+ ": " + messageText.getText());
                 messageText.setText("");
-                PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
 
@@ -476,6 +476,12 @@ public class PlayingUI extends JPanel {
             instance.repaint();
         }
     }
+
+//    public static void getGame (Game actualGame)
+//    {
+//        gameObject = actualGame;
+//        addHeroes(gameObject.getHeroes());
+//    }
 }
 
 //roll - y = 210

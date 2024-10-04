@@ -68,6 +68,8 @@ public class ServerListener implements Runnable {
                     newGame.setAccessCode(String.valueOf(accessCode));
                     newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
                             random.nextInt(6),random.nextInt(6),random.nextInt(6))));
+                    newGame.setLevel(0);
+                    newGame.setDragons(createDragonsList());
 
                     String playerEntry = (String) cfc.getData();
 
@@ -107,51 +109,47 @@ public class ServerListener implements Runnable {
         }
     }
 
+    private ArrayList<Dragon> createDragonsList ()
+    {
+        ArrayList<Dragon> gameDragons = new ArrayList<>();
+        return gameDragons;
+    }
+
     private void setHeroValues(Hero hero)
     {
+        //call player constructor/hero constructor?
+        hero.level = 1;
+        hero.exp = 0;
+        hero.gold = 0;
+        hero.alive = true;
         if (hero.classType==0)
         {
             hero.armorClass=0;
             hero.hitPoints=23;
-            hero.level = 1;
-            hero.exp = 0;
-            hero.gold = 0;
             hero.incentiveOrder = 5;
         }
         if (hero.classType==1)
         {
             hero.armorClass=0;
             hero.hitPoints=22;
-            hero.level=1;
-            hero.exp = 0;
-            hero.gold = 0;
             hero.incentiveOrder = 4;
         }
         if (hero.classType==2)
         {
             hero.armorClass=0;
             hero.hitPoints=24;
-            hero.level=1;
-            hero.exp = 0;
-            hero.gold = 0;
             hero.incentiveOrder = 6;
         }
         if (hero.classType==3)
         {
             hero.armorClass=1;
             hero.hitPoints=21;
-            hero.level=1;
-            hero.exp = 0;
-            hero.gold = 0;
             hero.incentiveOrder = 2;
         }
         if (hero.classType==4)
         {
             hero.armorClass=1;
             hero.hitPoints=19;
-            hero.level=1;
-            hero.exp = 0;
-            hero.gold = 0;
             hero.incentiveOrder = 1;
         }
     }
