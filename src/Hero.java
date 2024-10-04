@@ -55,4 +55,52 @@ public class Hero extends Player {
     {
 
     }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public boolean isFlee() {
+        return flee;
+    }
+
+    public void setFlee(boolean flee) {
+        this.flee = flee;
+    }
+
+    public int getClassType() {
+        return classType;
+    }
+
+    public void setClassType(int classType) {
+        this.classType = classType;
+    }
+
+    public String getHeroName() {
+        return heroName;
+    }
+
+    public void setHeroName(String heroName) {
+        this.heroName = heroName;
+    }
+
+    public ArrayList<Token> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(ArrayList<Token> tokens) {
+        this.tokens = tokens;
+    }
+
+    public ObjectOutputStream getOs() {
+        return os;
+    }
+
+    public void setOs(ObjectOutputStream os) {
+        this.os = os;
+    }
 }
