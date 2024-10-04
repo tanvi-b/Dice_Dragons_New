@@ -68,10 +68,11 @@ public class Game implements Runnable, Serializable {
                 else if(cfs.getCommand() == CommandFromServer.MAX_PLAYERS){
                     JoinUI.maxPlayers();
                 }
-                else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE)
-                {
+                else if (cfs.getCommand() == CommandFromServer.DISPLAY_MESSAGE) {
                     PlayingUI.refreshChat((ArrayList<String>) cfs.getPlayer());
-
+                }
+                else if (cfs.getCommand()==CommandFromServer.GIVE_DICE) {
+                    PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -81,6 +82,19 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void passDice (ObjectOutputStream os)
+    {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.PASS_DICE, null, PlayingUI.getAccessCode());
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void playerJoin (ObjectOutputStream os, String info, String name)
@@ -96,21 +110,21 @@ public class Game implements Runnable, Serializable {
         }
     }
 
-     public void sendMessage (ObjectOutputStream os, String text) {
-        try{
-                CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
-                os.writeObject(cfc);
-                os.flush();
+    public void playerHost(ObjectOutputStream os, String info, String player)  {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
+            os.writeObject(cfc);
+            os.flush();
         }
         catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public void playerHost(ObjectOutputStream os, String info, String player)  {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
+    public void sendMessage (ObjectOutputStream os, String text) {
+        try{
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
             os.writeObject(cfc);
             os.flush();
         }
@@ -192,3 +206,4 @@ public class Game implements Runnable, Serializable {
         this.diceRolled = diceRolled;
     }
 }
+

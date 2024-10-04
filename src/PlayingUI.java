@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class PlayingUI extends JPanel {
+    private static PlayingUI instance;
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
@@ -46,6 +47,7 @@ public class PlayingUI extends JPanel {
     public static String accessCode;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
+        instance = this;
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
@@ -175,78 +177,96 @@ public class PlayingUI extends JPanel {
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
         send.setBounds(225, 230, 65, 65);
-
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 acc = username+ ": " + messageText.getText();
                 messageText.setText("");
-                //to send to other clients
-                System.out.println("BEING SENT FROM SEND _ PLAYING UI");
                 PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
 
-        JButton roll1 = new JButton("Roll");
-        roll1.setFont(customFont.deriveFont(20f));
-        roll1.setBounds(450, 210, 100, 20);
-        roll1.setBorder(BorderFactory.createLineBorder(Color.black));
-        roll1.setOpaque(true);
+        JButton roll = new JButton ("Roll");
+        roll.setFont(customFont.deriveFont(20f));
+        roll.setBounds(625, 240, 250, 30);
+        roll.setBorder(BorderFactory.createLineBorder(Color.black));
+        roll.setOpaque(true);
+        roll.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                PlayingUI.game.passDice(PlayingUI.game.getOs());
+                repaint();
+            }
+        });
 
         JButton keep1 = new JButton("Keep");
         keep1.setFont(customFont.deriveFont(20f));
-        keep1.setBounds(450, 235, 100, 20);
+        keep1.setBounds(450, 210, 100, 20);
         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
         keep1.setOpaque(true);
+        keep1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-        JButton roll2 = new JButton("Roll");
-        roll2.setFont(customFont.deriveFont(20f));
-        roll2.setBounds(575, 210, 100, 20);
-        roll2.setBorder(BorderFactory.createLineBorder(Color.black));
-        roll2.setOpaque(true);
+            }
+        });
 
         JButton keep2 = new JButton("Keep");
         keep2.setFont(customFont.deriveFont(20f));
-        keep2.setBounds(575, 235, 100, 20);
+        keep2.setBounds(575, 210, 100, 20);
         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
         keep2.setOpaque(true);
+        keep2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-        JButton roll3 = new JButton("Roll");
-        roll3.setFont(customFont.deriveFont(20f));
-        roll3.setBounds(700, 210, 100, 20);
-        roll3.setBorder(BorderFactory.createLineBorder(Color.black));
-        roll3.setOpaque(true);
+            }
+        });
 
         JButton keep3 = new JButton("Keep");
         keep3.setFont(customFont.deriveFont(20f));
-        keep3.setBounds(700, 235, 100, 20);
+        keep3.setBounds(700, 210, 100, 20);
         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
         keep3.setOpaque(true);
+        keep3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-        JButton roll4 = new JButton("Roll");
-        roll4.setFont(customFont.deriveFont(20f));
-        roll4.setBounds(825, 210, 100, 20);
-        roll4.setBorder(BorderFactory.createLineBorder(Color.black));
-        roll4.setOpaque(true);
+            }
+        });
 
         JButton keep4 = new JButton("Keep");
         keep4.setFont(customFont.deriveFont(20f));
-        keep4.setBounds(825, 235, 100, 20);
+        keep4.setBounds(825, 210, 100, 20);
         keep4.setBorder(BorderFactory.createLineBorder(Color.black));
         keep4.setOpaque(true);
+        keep4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
-        JButton roll5 = new JButton("Roll");
-        roll5.setFont(customFont.deriveFont(20f));
-        roll5.setBounds(950, 210, 100, 20);
-        roll5.setBorder(BorderFactory.createLineBorder(Color.black));
-        roll5.setOpaque(true);
+            }
+        });
 
         JButton keep5 = new JButton("Keep");
         keep5.setFont(customFont.deriveFont(20f));
-        keep5.setBounds(950, 235, 100, 20);
+        keep5.setBounds(950, 210, 100, 20);
         keep5.setBorder(BorderFactory.createLineBorder(Color.black));
         keep5.setOpaque(true);
+        keep5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        //special skills
+        JButton specialSkills = new JButton("Special Skills");
+        specialSkills.setFont(customFont.deriveFont(20f));
+        specialSkills.setBounds(30, 610, 150, 40);
+        specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
+        specialSkills.setOpaque(true);
+
+        specialSkills.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "SpecialSkillsScreen");
+            }
+        });
 
         JTextField gameMessages = new JTextField("Message: ");
+        gameMessages.setEditable(false);
         gameMessages.setFont(customFont.deriveFont(17f));
         gameMessages.setBounds(450, 280, 600, 50);
         gameMessages.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -338,16 +358,13 @@ public class PlayingUI extends JPanel {
         add(chatBox);
         add(messageText);
         add(send);
-        add(roll1);
+        add(roll);
         add(keep1);
-        add(roll2);
         add(keep2);
-        add(roll3);
         add(keep3);
-        add(roll4);
         add(keep4);
-        add(roll5);
         add(keep5);
+        add(specialSkills);
         add(gameMessages);
         add(currentPlayerSheet);
         add(characterNameText);
@@ -449,9 +466,17 @@ public class PlayingUI extends JPanel {
         goldText.setText(String.valueOf(hero.gold));
     }
 
-    public static void getDice (ArrayList<Integer> diceFromHost)
+    public static void getDice (ArrayList<Integer> dice)
     {
-        for (int i = 0; i< diceFromHost.size(); i++)
-            diceRolled.add(diceFromHost.get(i));
+        diceRolled.clear();
+        for (int i = 0; i< dice.size(); i++)
+            diceRolled.add(dice.get(i));
+
+        if (instance != null) {
+            instance.repaint();
+        }
     }
 }
+
+//roll - y = 210
+//keep - y = 235
