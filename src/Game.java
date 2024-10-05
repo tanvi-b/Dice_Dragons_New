@@ -39,6 +39,7 @@ public class Game implements Runnable, Serializable {
                     //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
@@ -49,6 +50,7 @@ public class Game implements Runnable, Serializable {
                     //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                 }

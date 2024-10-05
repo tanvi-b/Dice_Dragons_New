@@ -1,8 +1,9 @@
 public class Dragon extends Player{
     String dragonName;
 
-    public Dragon (String name)
+    public Dragon (String name, int hitPoints, int gold, int exp, int incentiveOrder)
     {
+        super(hitPoints, gold, exp, incentiveOrder, true);
         dragonName = name;
     }
 

@@ -31,7 +31,7 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
-    private static int heroClass;
+    private static int heroClass; //changes as person flips through sheets
     private static JLabel turn;
     private static JLabel currentPlayerSheet;
     private static JLabel characterNameText;
@@ -79,7 +79,6 @@ public class PlayingUI extends JPanel {
             g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
 
         if(heroClass==0) {
-            SpecialSkillsUI.setHeroClass("Warrior");
             try {
                 g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -90,7 +89,6 @@ public class PlayingUI extends JPanel {
             }
         }
         if(heroClass==1) {
-            SpecialSkillsUI.setHeroClass("Wizard");
             try {
                 g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -101,7 +99,6 @@ public class PlayingUI extends JPanel {
             }
         }
         if(heroClass==2) {
-            SpecialSkillsUI.setHeroClass("Cleric");
             try {
                 g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -114,7 +111,6 @@ public class PlayingUI extends JPanel {
             }
         }
         if(heroClass==3) {
-            SpecialSkillsUI.setHeroClass("Ranger");
             try {
                 g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -125,7 +121,6 @@ public class PlayingUI extends JPanel {
             }
         }
         if(heroClass==4) {
-            SpecialSkillsUI.setHeroClass("Rogue");
             try {
                 g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
             } catch (IOException e) {
@@ -469,6 +464,11 @@ public class PlayingUI extends JPanel {
         levelText.setText(String.valueOf(hero.level));
         expText.setText(String.valueOf(hero.exp));
         goldText.setText(String.valueOf(hero.gold));
+    }
+
+    public static void setSpecialSkillsUI (Hero hero)
+    {
+        SpecialSkillsUI.setHeroClass(hero.classType);
     }
 
     public static void getDice (ArrayList<Integer> dice)

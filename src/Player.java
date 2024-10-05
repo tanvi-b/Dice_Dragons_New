@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class Player implements Serializable {
     int hitPoints;
-    int armorClass;
     int gold;
     int exp;
     int incentiveOrder;
@@ -11,9 +10,13 @@ public class Player implements Serializable {
     ArrayList<MarketItem> items;
     boolean alive;
 
-    public Player()
+    public Player(int hitPoints, int gold, int exp, int incentiveOrder, boolean alive)
     {
-        //make constructor
+        this.hitPoints = hitPoints;
+        this.gold = gold;
+        this.exp = exp;
+        this.incentiveOrder = incentiveOrder;
+        this.alive = alive;
     }
 
     private boolean checkCombination()
@@ -37,14 +40,6 @@ public class Player implements Serializable {
 
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
-    }
-
-    public int getArmorClass() {
-        return armorClass;
-    }
-
-    public void setArmorClass(int armorClass) {
-        this.armorClass = armorClass;
     }
 
     public int getGold() {

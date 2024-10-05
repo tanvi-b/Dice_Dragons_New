@@ -4,17 +4,23 @@ import java.util.ArrayList;
 
 public class Hero extends Player {
     int level;
+    int armorClass;
     boolean flee;
     int classType; //warrior = 0, wizard = 1, cleric = 2, ranger = 3, rogue = 4
     String heroName;
     ArrayList<Token> tokens;
     transient ObjectOutputStream os;
 
-    public Hero(int classType, String characterName, ObjectOutputStream os)
+    public Hero(int classType, String heroName, ObjectOutputStream os, int hitPoints, int gold, int exp, int incentiveOrder)
     {
+        super(hitPoints, gold, exp, incentiveOrder, true);
         this.classType = classType;
-        heroName = characterName;
+        this.heroName = heroName;
         this.os = os;
+        this.armorClass = armorClass;
+        this.level = 1;
+        this.flee = false;
+        this.tokens = new ArrayList<>();
     }
 
     public String toString() {
@@ -62,6 +68,14 @@ public class Hero extends Player {
 
     public void setLevel(int level) {
         this.level = level;
+    }
+
+    public int getArmorClass() {
+        return armorClass;
+    }
+
+    public void setArmorClass(int armorClass) {
+        this.armorClass = armorClass;
     }
 
     public boolean isFlee() {

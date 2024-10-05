@@ -18,6 +18,7 @@ public class ServerListener implements Runnable {
         try {
             while (true) {
                 CommandFromClient cfc = (CommandFromClient) is.readObject();
+
                 if (cfc.getCommand() == CommandFromClient.JOIN) {
                     String validationResponse = validPlayer(cfc.getData());
 
@@ -28,18 +29,15 @@ public class ServerListener implements Runnable {
                         String characterName = playerInfo[1];
 
                         Game game = currentGames.get(playerInfo[0]);
-                        game.toString();
 
                         if (game != null) {
-                            Hero newHero = new Hero(classType, characterName, os);
+                            Hero newHero = new Hero(classType, characterName, os, 0, 0, 0, 0);
                             setHeroValues(newHero);
                             game.getHeroes().add(newHero);
-                            System.out.println("Current Games: " + currentGames.toString());
                             sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, newHero));
-                            for (int i = 0; i<game.getHeroes().size(); i++)
-                            {
-                                if (!game.getHeroes().get(i).heroName.equals(newHero.heroName))
-                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, newHero), game.getHeroes().get(i).os);
+                            for (Hero hero : game.getHeroes()) {
+                                if (!hero.heroName.equals(newHero.heroName))
+                                    sendCommand(new CommandFromServer(CommandFromServer.NEW_PLAYER, game, newHero), hero.getOs());
                             }
                         }
                     } else if (validationResponse.equals("invalidAccessCode")) {
@@ -63,45 +61,44 @@ public class ServerListener implements Runnable {
                         pause = true;
                     }
 
-                    //creating game object
                     Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
-                    newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
-                            random.nextInt(6),random.nextInt(6),random.nextInt(6))));
+                    newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
+                            random.nextInt(6), random.nextInt(6), random.nextInt(6))));
                     newGame.setLevel(0);
                     newGame.setDragons(createDragonsList());
 
                     String playerEntry = (String) cfc.getData();
-
                     String[] playerInfo = playerEntry.split(",");
                     int classType = Integer.parseInt(playerInfo[2]);
                     String characterName = playerInfo[1];
-
-                    Hero hostHero = new Hero(classType, characterName, os);
+                    Hero hostHero = new Hero(classType, characterName, os, 0, 0, 0, 0);
                     setHeroValues(hostHero);
 
                     newGame.getHeroes().add(hostHero);
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
                     currentGames.put(String.valueOf(accessCode), newGame);
+
                     sendCommand(new CommandFromServer(CommandFromServer.ACCESS_CODE, newGame, hostHero));
                 }
 
-                if(cfc.getCommand() == CommandFromClient.SEND_MESSAGE){
-                    String message  = (String) cfc.getData();
+                if (cfc.getCommand() == CommandFromClient.SEND_MESSAGE) {
+                    String message = (String) cfc.getData();
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     game.getMessagesChat().add(message);
-                    for (int i = 0; i < game.getHeroes().size(); i++)
-                            sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, null, game.getMessagesChat()), game.getHeroes().get(i).os);
+                    for (Hero hero : game.getHeroes()) {
+                        sendCommand(new CommandFromServer(CommandFromServer.DISPLAY_MESSAGE, null, game.getMessagesChat()), hero.getOs());
+                    }
                 }
 
-                if (cfc.getCommand()==CommandFromClient.PASS_DICE)
-                {
+                if (cfc.getCommand() == CommandFromClient.PASS_DICE) {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     Random random = new Random();
-                    game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6),random.nextInt(6),
-                            random.nextInt(6),random.nextInt(6),random.nextInt(6))));
-                    for (int i = 0; i < game.getHeroes().size(); i++)
-                        sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), game.getHeroes().get(i).os);
+                    game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
+                            random.nextInt(6), random.nextInt(6), random.nextInt(6))));
+                    for (Hero hero : game.getHeroes()) {
+                        sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), hero.getOs());
+                    }
                 }
             }
         } catch (Exception e) {
@@ -109,49 +106,51 @@ public class ServerListener implements Runnable {
         }
     }
 
-    private ArrayList<Dragon> createDragonsList ()
-    {
+    private ArrayList<Dragon> createDragonsList() {
         ArrayList<Dragon> gameDragons = new ArrayList<>();
+        gameDragons.add(new Dragon ("young red", 45, 3, 8, 1));
+        gameDragons.add(new Dragon ("pale", 50, 4, 10, 2));
+        gameDragons.add(new Dragon ("young black", 55, 5, 12, 3));
+        gameDragons.add(new Dragon ("green", 65, 6, 14, 4));
+        gameDragons.add(new Dragon ("red", 80, 8, 16, 5));
+        gameDragons.add(new Dragon ("blue", 75, 8, 18, 6));
+        gameDragons.add(new Dragon ("undead", 75, 10, 20, 7));
+        gameDragons.add(new Dragon ("black", 80, 12, 24, 8));
         return gameDragons;
     }
 
-    private void setHeroValues(Hero hero)
-    {
-        //call player constructor/hero constructor?
-        hero.level = 1;
-        hero.exp = 0;
-        hero.gold = 0;
-        hero.alive = true;
-        if (hero.classType==0)
-        {
-            hero.armorClass=0;
-            hero.hitPoints=23;
-            hero.incentiveOrder = 5;
+    private void setHeroValues(Hero hero) {
+        switch (hero.classType) {
+            case 0: //warrior
+                hero.setHitPoints(23);
+                hero.setArmorClass(0);
+                hero.setIncentiveOrder(5);
+                break;
+            case 1:  //wizard
+                hero.setHitPoints(22);
+                hero.setArmorClass(0);
+                hero.setIncentiveOrder(4);
+                break;
+            case 2:  //cleric
+                hero.setHitPoints(24);
+                hero.setArmorClass(0);
+                hero.setIncentiveOrder(6);
+                break;
+            case 3:  //ranger
+                hero.setHitPoints(21);
+                hero.setArmorClass(1);
+                hero.setIncentiveOrder(2);
+                break;
+            case 4:  //rogue
+                hero.setHitPoints(19);
+                hero.setArmorClass(1);
+                hero.setIncentiveOrder(1);
+                break;
         }
-        if (hero.classType==1)
-        {
-            hero.armorClass=0;
-            hero.hitPoints=22;
-            hero.incentiveOrder = 4;
-        }
-        if (hero.classType==2)
-        {
-            hero.armorClass=0;
-            hero.hitPoints=24;
-            hero.incentiveOrder = 6;
-        }
-        if (hero.classType==3)
-        {
-            hero.armorClass=1;
-            hero.hitPoints=21;
-            hero.incentiveOrder = 2;
-        }
-        if (hero.classType==4)
-        {
-            hero.armorClass=1;
-            hero.hitPoints=19;
-            hero.incentiveOrder = 1;
-        }
+
+        hero.setExp(0);
+        hero.setGold(0);
+        hero.setAlive(true);
     }
 
     private String validPlayer(Object data) {
@@ -163,12 +162,9 @@ public class ServerListener implements Runnable {
             if (key.equals(playerInputs[0])) {
                 Game game = entry.getValue();
                 ArrayList<Hero> currentHeroes = game.heroes;
-
                 if (currentHeroes.size() == game.maxPlayers)
                     return "maxPlayersReached";
-
-                for (int i = 0; i < currentHeroes.size(); i++) {
-                    Hero hero = currentHeroes.get(i);
+                for (Hero hero : currentHeroes) {
                     if (hero.heroName.equals(playerInputs[1]))
                         return "invalidName";
                     if (hero.classType == Integer.parseInt(playerInputs[2]))
@@ -180,9 +176,7 @@ public class ServerListener implements Runnable {
         return "invalidAccessCode";
     }
 
-    private void sendCommand (CommandFromServer cfs)
-    {
-        //sends to one specific client
+    private void sendCommand(CommandFromServer cfs) {
         try {
             os.reset();
             os.writeObject(cfs);
@@ -192,9 +186,7 @@ public class ServerListener implements Runnable {
         }
     }
 
-    private void sendCommand (CommandFromServer cfs, ObjectOutputStream hero_Os)
-    {
-        //sends to one specific client
+    private void sendCommand(CommandFromServer cfs, ObjectOutputStream hero_Os) {
         try {
             hero_Os.reset();
             hero_Os.writeObject(cfs);
@@ -204,4 +196,3 @@ public class ServerListener implements Runnable {
         }
     }
 }
-
