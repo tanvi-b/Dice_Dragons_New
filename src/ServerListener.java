@@ -122,26 +122,31 @@ public class ServerListener implements Runnable {
     private void setHeroValues(Hero hero) {
         switch (hero.classType) {
             case 0: //warrior
+                //hero.setPlayerSkills(new Skill());
                 hero.setHitPoints(23);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(5);
                 break;
             case 1:  //wizard
+                //hero.setPlayerSkills();
                 hero.setHitPoints(22);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(4);
                 break;
             case 2:  //cleric
+                //hero.setPlayerSkills();
                 hero.setHitPoints(24);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(6);
                 break;
             case 3:  //ranger
+                //hero.setPlayerSkills();
                 hero.setHitPoints(21);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(2);
                 break;
             case 4:  //rogue
+                //hero.setPlayerSkills();
                 hero.setHitPoints(19);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(1);

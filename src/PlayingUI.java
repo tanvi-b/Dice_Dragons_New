@@ -31,6 +31,7 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
+    private static int originalHeroClass;
     private static int heroClass; //changes as person flips through sheets
     private static JLabel turn;
     private static JLabel currentPlayerSheet;
@@ -417,12 +418,12 @@ public class PlayingUI extends JPanel {
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
             blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
 
+            diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
             diceFaces.add(ImageIO.read(new File("images/dice3.png")));
             diceFaces.add(ImageIO.read(new File("images/dice4.png")));
             diceFaces.add(ImageIO.read(new File("images/dice5.png")));
-            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -455,6 +456,7 @@ public class PlayingUI extends JPanel {
 
     public static void setFields (Hero hero)
     {
+        originalHeroClass = hero.classType;
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);

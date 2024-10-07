@@ -2,12 +2,12 @@ import java.util.ArrayList;
 
 public class Skill {
     String name;
-    ArrayList<Dice> requiredSymbols;
+    ArrayList<Integer> requiredSymbols;
     int typeEffect;
     int amtEffect;
     char type;
 
-    public Skill(String name, ArrayList<Dice> requiredSymbols, int typeEffect, int amtEffect, char type) {
+    public Skill(String name, ArrayList<Integer> requiredSymbols, int typeEffect, int amtEffect, char type) {
         this.name = name;
         this.requiredSymbols = requiredSymbols;
         this.typeEffect = typeEffect;
@@ -22,7 +22,7 @@ public class Skill {
         return this.name;
     }
 
-    public ArrayList<Dice> getRequiredSymbols() {
+    public ArrayList<Integer> getRequiredSymbols() {
         return this.requiredSymbols;
     }
 

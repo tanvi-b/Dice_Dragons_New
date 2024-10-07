@@ -241,7 +241,7 @@ public class SpecialSkillsUI extends JPanel {
 
         JButton back = new JButton("Back");
         back.setFont(customFont.deriveFont(20f));
-        back.setBounds(50, 850, 130, 50);
+        back.setBounds(15, 900, 130, 50);
         back.setOpaque(true);
         back.addActionListener(new ActionListener() {
             @Override
@@ -249,6 +249,7 @@ public class SpecialSkillsUI extends JPanel {
                 cardLayout.show(mainPanel, "PlayingScreen");
             }
         });
+        //for home, set bounds to (5,730,130,50)
 
         add(title);
         add(blessing);
