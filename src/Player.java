@@ -29,11 +29,6 @@ public class Player implements Serializable {
 
     }
 
-    private ArrayList<Dice> rollDice()
-    {
-        return null;
-    }
-
     public int getHitPoints() {
         return hitPoints;
     }

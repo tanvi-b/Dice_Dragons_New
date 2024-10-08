@@ -302,3 +302,4 @@ public class SpecialSkillsUI extends JPanel {
         return dice;
     }
 }
+

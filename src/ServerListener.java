@@ -119,29 +119,42 @@ public class ServerListener implements Runnable {
         return gameDragons;
     }
 
+    //dice order is based on dragon guide
+    //6: not equal to
+    //7: equal
     private void setHeroValues(Hero hero) {
         switch (hero.classType) {
             case 0: //warrior
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Strike", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 2, 5)), 5, 0),
+                        new Skill("Slash", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3)), 4, 0),
+                        new Skill("Smashing Blow", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3,3, 3)), 6, 0),
+                        new Skill("Savage Attack", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 3, 3)), 9, 0),
+                        new Skill("Parry", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 6, 6, 6)), 2, 2),
+                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 2, 5, 0, 1)), 7, 0))));
                 hero.setHitPoints(23);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(5);
                 break;
             case 1:  //wizard
+                //hero.setPlayerSkills();
                 hero.setHitPoints(22);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(4);
                 break;
             case 2:  //cleric
+                //hero.setPlayerSkills();
                 hero.setHitPoints(24);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(6);
                 break;
             case 3:  //ranger
+                //hero.setPlayerSkills();
                 hero.setHitPoints(21);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(2);
                 break;
             case 4:  //rogue
+                //hero.setPlayerSkills();
                 hero.setHitPoints(19);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(1);
