@@ -31,7 +31,6 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
-    private static int originalHeroClass;
     private static int heroClass; //changes as person flips through sheets
     private static JLabel turn;
     private static JLabel currentPlayerSheet;
@@ -195,6 +194,7 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 PlayingUI.game.passDice(PlayingUI.game.getOs());
                 repaint();
+                SpecialSkillsUI.setDice(diceRolled);
             }
         });
 
@@ -256,7 +256,7 @@ public class PlayingUI extends JPanel {
         //special skills
         JButton specialSkills = new JButton("Special Skills");
         specialSkills.setFont(customFont.deriveFont(20f));
-        specialSkills.setBounds(30, 610, 150, 40);
+        specialSkills.setBounds(30, 350, 150, 40);
         specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
         specialSkills.setOpaque(true);
 
@@ -418,12 +418,12 @@ public class PlayingUI extends JPanel {
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
             blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
 
-            diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
             diceFaces.add(ImageIO.read(new File("images/dice3.png")));
             diceFaces.add(ImageIO.read(new File("images/dice4.png")));
             diceFaces.add(ImageIO.read(new File("images/dice5.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -456,7 +456,6 @@ public class PlayingUI extends JPanel {
 
     public static void setFields (Hero hero)
     {
-        originalHeroClass = hero.classType;
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
@@ -472,6 +471,11 @@ public class PlayingUI extends JPanel {
     {
         SpecialSkillsUI.setHeroClass(hero.classType);
     }
+
+    public static void setSpecialSkillsDice(ArrayList<Integer> d){
+            SpecialSkillsUI.setDice(d);
+    }
+
 
     public static void getDice (ArrayList<Integer> dice)
     {
