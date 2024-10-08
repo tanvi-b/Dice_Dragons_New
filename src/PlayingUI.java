@@ -192,9 +192,10 @@ public class PlayingUI extends JPanel {
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                SpecialSkillsUI.setDice(diceRolled);
                 PlayingUI.game.passDice(PlayingUI.game.getOs());
                 repaint();
-                SpecialSkillsUI.setDice(diceRolled);
+
             }
         });
 
@@ -418,12 +419,12 @@ public class PlayingUI extends JPanel {
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
             blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
 
+            diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
             diceFaces.add(ImageIO.read(new File("images/dice3.png")));
             diceFaces.add(ImageIO.read(new File("images/dice4.png")));
             diceFaces.add(ImageIO.read(new File("images/dice5.png")));
-            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }

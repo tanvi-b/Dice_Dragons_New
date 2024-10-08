@@ -99,12 +99,12 @@ public class SpecialSkillsUI extends JPanel {
         try {
             background = ImageIO.read(new File("images/backgroundImage.png"));
 
+            diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
             diceFaces.add(ImageIO.read(new File("images/dice3.png")));
             diceFaces.add(ImageIO.read(new File("images/dice4.png")));
             diceFaces.add(ImageIO.read(new File("images/dice5.png")));
-            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
