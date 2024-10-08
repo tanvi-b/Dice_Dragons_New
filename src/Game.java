@@ -42,6 +42,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
+                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
@@ -53,6 +54,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
+                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
