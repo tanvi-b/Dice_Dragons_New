@@ -36,23 +36,30 @@ public class Game implements Runnable, Serializable {
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
+                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
+                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
+                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
+                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
+                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
 
                 }
@@ -160,10 +167,6 @@ public class Game implements Runnable, Serializable {
     
     public ArrayList<String> getMessagesChat(){
         return messages;
-    }
-
-    public void setChat(ArrayList<String> chat){
-        this.messages = chat;
     }
 
     public int getLevel() {

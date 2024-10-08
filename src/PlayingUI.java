@@ -12,6 +12,7 @@ import java.util.*;
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
+    public static Game gameObject;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes;
@@ -30,7 +31,7 @@ public class PlayingUI extends JPanel {
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
-    private static int heroClass;
+    private static int heroClass; //changes as person flips through sheets
     private static JLabel turn;
     private static JLabel currentPlayerSheet;
     private static JLabel characterNameText;
@@ -40,7 +41,6 @@ public class PlayingUI extends JPanel {
     private static JLabel expText;
     private static JLabel goldText;
     private static ArrayList<Integer> diceRolled;
-    public static String acc;
     private static String username;
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
@@ -179,9 +179,9 @@ public class PlayingUI extends JPanel {
         send.setBounds(225, 230, 65, 65);
         send.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                acc = username+ ": " + messageText.getText();
+                if (messageText.getText().length()!=0)
+                    PlayingUI.game.sendMessage(PlayingUI.game.getOs(), username+ ": " + messageText.getText());
                 messageText.setText("");
-                PlayingUI.game.sendMessage(PlayingUI.game.getOs(), acc);
             }
         });
 
@@ -192,8 +192,10 @@ public class PlayingUI extends JPanel {
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                SpecialSkillsUI.setDice(diceRolled);
                 PlayingUI.game.passDice(PlayingUI.game.getOs());
                 repaint();
+
             }
         });
 
@@ -255,7 +257,7 @@ public class PlayingUI extends JPanel {
         //special skills
         JButton specialSkills = new JButton("Special Skills");
         specialSkills.setFont(customFont.deriveFont(20f));
-        specialSkills.setBounds(30, 610, 150, 40);
+        specialSkills.setBounds(30, 350, 150, 40);
         specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
         specialSkills.setOpaque(true);
 
@@ -417,12 +419,12 @@ public class PlayingUI extends JPanel {
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
             blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
 
+            diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
             diceFaces.add(ImageIO.read(new File("images/dice3.png")));
             diceFaces.add(ImageIO.read(new File("images/dice4.png")));
             diceFaces.add(ImageIO.read(new File("images/dice5.png")));
-            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -466,6 +468,16 @@ public class PlayingUI extends JPanel {
         goldText.setText(String.valueOf(hero.gold));
     }
 
+    public static void setSpecialSkillsUI (Hero hero)
+    {
+        SpecialSkillsUI.setHeroClass(hero.classType);
+    }
+
+    public static void setSpecialSkillsDice(ArrayList<Integer> d){
+            SpecialSkillsUI.setDice(d);
+    }
+
+
     public static void getDice (ArrayList<Integer> dice)
     {
         diceRolled.clear();
@@ -476,6 +488,12 @@ public class PlayingUI extends JPanel {
             instance.repaint();
         }
     }
+
+//    public static void getGame (Game actualGame)
+//    {
+//        gameObject = actualGame;
+//        addHeroes(gameObject.getHeroes());
+//    }
 }
 
 //roll - y = 210
