@@ -276,15 +276,15 @@ public class SpecialSkillsUI extends JPanel {
         add(back);
     }
 
-    public static void setHeroClass(int hero) {
-        heroClass = hero;
+    public static void setHeroClass(Hero hero) {
+        heroClass = hero.classType;
     }
 
     public static int getHeroClass() {
         return heroClass;
     }
 
-    public static void setDice(ArrayList<Integer> d){
+    public static void getDice(ArrayList<Integer> d){
         dice = d;
     }
 

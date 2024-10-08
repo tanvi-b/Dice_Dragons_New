@@ -12,7 +12,6 @@ import java.util.*;
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
-    public static Game gameObject;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes;
@@ -45,6 +44,8 @@ public class PlayingUI extends JPanel {
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
     public static String accessCode;
+    private static int turnTracker = 0;
+    private int timesRolled;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -192,10 +193,17 @@ public class PlayingUI extends JPanel {
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SpecialSkillsUI.setDice(diceRolled);
-                PlayingUI.game.passDice(PlayingUI.game.getOs());
+                //eventually the switch turn logic will be moved to another button
+                if (turn.getText().substring(6).equals(characterNameText.getText()))
+                {
+                    PlayingUI.game.passDice(PlayingUI.game.getOs());
+                    timesRolled++;
+                    if (timesRolled==3) {
+                        PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
+                        timesRolled=0;
+                    }
+                }
                 repaint();
-
             }
         });
 
@@ -206,7 +214,7 @@ public class PlayingUI extends JPanel {
         keep1.setOpaque(true);
         keep1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -217,7 +225,7 @@ public class PlayingUI extends JPanel {
         keep2.setOpaque(true);
         keep2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -228,7 +236,7 @@ public class PlayingUI extends JPanel {
         keep3.setOpaque(true);
         keep3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -239,7 +247,7 @@ public class PlayingUI extends JPanel {
         keep4.setOpaque(true);
         keep4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -250,7 +258,7 @@ public class PlayingUI extends JPanel {
         keep5.setOpaque(true);
         keep5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -263,6 +271,8 @@ public class PlayingUI extends JPanel {
 
         specialSkills.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
+                SpecialSkillsUI.getDice(diceRolled);
                 cardLayout.show(mainPanel, "SpecialSkillsScreen");
             }
         });
@@ -438,13 +448,14 @@ public class PlayingUI extends JPanel {
             heroSheets.add(currentHeroes.get(i).classType);
             gameHeroes.add(currentHeroes.get(i));
         }
-        Collections.sort(gameHeroes, new Comparator<Hero>() {
-            @Override
-            public int compare(Hero h1, Hero h2) {
-                return Integer.compare(h1.incentiveOrder, h2.incentiveOrder);
-            }
-        });
-        turn.setText("Turn: " + gameHeroes.get(0).heroName);
+        gameHeroes.sort(Comparator.comparingInt(h -> h.incentiveOrder));
+        setTurnText(0);
+    }
+
+    public static void setTurnText(int turnNumber)
+    {
+        turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
+        turnTracker = turnNumber;
     }
 
     public static void setAccessCode(String num){
@@ -468,16 +479,6 @@ public class PlayingUI extends JPanel {
         goldText.setText(String.valueOf(hero.gold));
     }
 
-    public static void setSpecialSkillsUI (Hero hero)
-    {
-        SpecialSkillsUI.setHeroClass(hero.classType);
-    }
-
-    public static void setSpecialSkillsDice(ArrayList<Integer> d){
-            SpecialSkillsUI.setDice(d);
-    }
-
-
     public static void getDice (ArrayList<Integer> dice)
     {
         diceRolled.clear();
@@ -488,12 +489,6 @@ public class PlayingUI extends JPanel {
             instance.repaint();
         }
     }
-
-//    public static void getGame (Game actualGame)
-//    {
-//        gameObject = actualGame;
-//        addHeroes(gameObject.getHeroes());
-//    }
 }
 
 //roll - y = 210

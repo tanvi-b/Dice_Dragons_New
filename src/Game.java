@@ -36,30 +36,27 @@ public class Game implements Runnable, Serializable {
                 if(cfs.getCommand() == CommandFromServer.ACCESS_CODE) {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
-                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
-                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
-                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
+                    SpecialSkillsUI.setHeroClass((Hero) cfs.getPlayer());
+                    SpecialSkillsUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.MAKE_HERO) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
-                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
-                    PlayingUI.setSpecialSkillsUI((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
-                    PlayingUI.setSpecialSkillsDice(((Game) cfs.getData()).getDiceRolled());
+                    SpecialSkillsUI.setHeroClass((Hero) cfs.getPlayer());
+                    SpecialSkillsUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
                 else if(cfs.getCommand() == CommandFromServer.NEW_PLAYER) {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
-                    //PlayingUI.getGame((Game) cfs.getData());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
 
                 }
@@ -81,6 +78,9 @@ public class Game implements Runnable, Serializable {
                 else if (cfs.getCommand()==CommandFromServer.GIVE_DICE) {
                     PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
                 }
+                else if (cfs.getCommand()==CommandFromServer.SWITCH_TURN) {
+                    PlayingUI.setTurnText((Integer)cfs.getData());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -89,6 +89,19 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void switchTurn (ObjectOutputStream os, int turnTracker)
+    {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.SWITCH_TURN, turnTracker, PlayingUI.getAccessCode());
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
     }
 
     public void passDice (ObjectOutputStream os)

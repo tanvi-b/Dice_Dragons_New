@@ -96,9 +96,22 @@ public class ServerListener implements Runnable {
                     Random random = new Random();
                     game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
                             random.nextInt(6), random.nextInt(6), random.nextInt(6))));
-                    for (Hero hero : game.getHeroes()) {
+                    for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), hero.getOs());
-                    }
+
+                }
+
+                if (cfc.getCommand()==CommandFromClient.SWITCH_TURN)
+                {
+                    System.out.println("reached here");
+                    int turn = (Integer) cfc.getData();
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    if (turn < game.maxPlayers - 1)
+                        turn++;
+                    else
+                        turn = 0;
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.SWITCH_TURN, turn, null), hero.getOs());
                 }
             }
         } catch (Exception e) {
