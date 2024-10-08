@@ -194,6 +194,7 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 PlayingUI.game.passDice(PlayingUI.game.getOs());
                 repaint();
+                SpecialSkillsUI.setDice(diceRolled);
             }
         });
 
@@ -255,7 +256,7 @@ public class PlayingUI extends JPanel {
         //special skills
         JButton specialSkills = new JButton("Special Skills");
         specialSkills.setFont(customFont.deriveFont(20f));
-        specialSkills.setBounds(30, 610, 150, 40);
+        specialSkills.setBounds(30, 350, 150, 40);
         specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
         specialSkills.setOpaque(true);
 
@@ -470,6 +471,11 @@ public class PlayingUI extends JPanel {
     {
         SpecialSkillsUI.setHeroClass(hero.classType);
     }
+
+    public static void setSpecialSkillsDice(ArrayList<Integer> d){
+            SpecialSkillsUI.setDice(d);
+    }
+
 
     public static void getDice (ArrayList<Integer> dice)
     {

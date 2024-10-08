@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class SpecialSkillsUI extends JPanel {
     private Font customFont;
@@ -15,6 +16,8 @@ public class SpecialSkillsUI extends JPanel {
     private static CardLayout cardLayout;
     private BufferedImage background;
     public static int heroClass;
+    private ArrayList<BufferedImage> diceFaces;
+    public static ArrayList<Integer> dice;
     private Color greenBackground = new Color(147, 195, 123);
     private Color greenBorder = new Color(72, 129, 34);
     private Color redBackground = new Color(228, 99, 98);
@@ -22,6 +25,7 @@ public class SpecialSkillsUI extends JPanel {
     private int borderThickness = 4;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel) {
+        diceFaces = new ArrayList<>();
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         readImages();
@@ -32,10 +36,14 @@ public class SpecialSkillsUI extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
+        dice = getDice();
+        repaint();
 
         if (heroClass==0) {
             try {
-                g.drawImage(ImageIO.read(new File("images/warrior.png")), 190, 400, 450, 550, this);
+                g.drawImage(ImageIO.read(new File("images/warrior.png")), 30, 320, 450, 550, this);
+                for (int i = 0; i < dice.size(); i++)
+                    g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 450, 100, 100, this);
                 addComponents();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -44,7 +52,9 @@ public class SpecialSkillsUI extends JPanel {
 
         if (heroClass==1) {
             try {
-                g.drawImage(ImageIO.read(new File("images/wizard.png")), 190, 400, 450, 550, this);
+                g.drawImage(ImageIO.read(new File("images/wizard.png")), 30, 320, 450, 550, this);
+                for (int i = 0; i < dice.size(); i++)
+                    g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 450, 100, 100, this);
                 addComponents();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -53,7 +63,9 @@ public class SpecialSkillsUI extends JPanel {
 
         if (heroClass==2) {
             try {
-                g.drawImage(ImageIO.read(new File("images/cleric.png")), 190, 400, 450, 550, this);
+                g.drawImage(ImageIO.read(new File("images/cleric.png")), 30, 320, 450, 550, this);
+                for (int i = 0; i < dice.size(); i++)
+                    g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 450, 100, 100, this);
                 addComponents();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -62,7 +74,9 @@ public class SpecialSkillsUI extends JPanel {
 
         if (heroClass==3) {
             try {
-                g.drawImage(ImageIO.read(new File("images/ranger.png")), 190, 400, 450, 550, this);
+                g.drawImage(ImageIO.read(new File("images/ranger.png")), 30, 320, 450, 550, this);
+                for (int i = 0; i < dice.size(); i++)
+                    g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 450, 100, 100, this);
                 addComponents();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -71,7 +85,9 @@ public class SpecialSkillsUI extends JPanel {
 
         if (heroClass==4) {
             try {
-                g.drawImage(ImageIO.read(new File("images/rogue.png")), 190, 400, 450, 550, this);
+                g.drawImage(ImageIO.read(new File("images/rogue.png")), 30, 320, 450, 550, this);
+                for (int i = 0; i < dice.size(); i++)
+                    g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 450, 100, 100, this);
                 addComponents();
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -82,6 +98,13 @@ public class SpecialSkillsUI extends JPanel {
     private void readImages() {
         try {
             background = ImageIO.read(new File("images/backgroundImage.png"));
+
+            diceFaces.add(ImageIO.read(new File("images/dice1.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice2.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice3.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice4.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice5.png")));
+            diceFaces.add(ImageIO.read(new File("images/dice6.png")));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,7 +264,7 @@ public class SpecialSkillsUI extends JPanel {
 
         JButton back = new JButton("Back");
         back.setFont(customFont.deriveFont(20f));
-        back.setBounds(50, 850, 130, 50);
+        back.setBounds(30, 900, 130, 50);
         back.setOpaque(true);
         back.addActionListener(new ActionListener() {
             @Override
@@ -269,5 +292,13 @@ public class SpecialSkillsUI extends JPanel {
 
     public static int getHeroClass() {
         return heroClass;
+    }
+
+    public static void setDice(ArrayList<Integer> d){
+        dice = d;
+    }
+
+    public ArrayList<Integer> getDice(){
+        return dice;
     }
 }
