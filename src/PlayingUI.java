@@ -343,6 +343,7 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
+
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
@@ -381,6 +382,8 @@ public class PlayingUI extends JPanel {
         });
         previous.setBounds(200, 370, 100, 25);
 
+
+
         add(turn);
         add(rules);
         add(guide);
@@ -405,6 +408,7 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
+
     }
 
     private void addWarriorSkillButtons()
@@ -419,12 +423,44 @@ public class PlayingUI extends JPanel {
 
     private void addClericSkillButtons()
     {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton testing1= new JButton("Testing");
+        testing1.setFont(customFont.deriveFont(9.4f));
+        testing1.setBounds(255, 620, 85, 20);
+        testing1.setBackground(buttonSkillsColor);
+
+        JButton testing2 = new JButton("Testing");
+        testing2.setFont(customFont.deriveFont(10f));
+        testing2.setBounds(255, 660, 85, 20);
+        testing2.setBackground(buttonSkillsColor);
+
+        add(testing2);
+        add(testing1);
 
     }
 
     private void addRangerSkillButtons()
     {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton accurateShot = new JButton("Accurate Shot");
+        accurateShot.setFont(customFont.deriveFont(9.4f));
+        accurateShot.setBounds(255, 620, 85, 20);
+        accurateShot.setBackground(buttonSkillsColor);
 
+        JButton dualShot = new JButton("Dual Shot");
+        dualShot.setFont(customFont.deriveFont(10f));
+        dualShot.setBounds(255, 660, 85, 20);
+        dualShot.setBackground(buttonSkillsColor);
+
+        add(accurateShot);
+        add(dualShot);
+
+
+        accurateShot.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
     }
 
     private void addRogueSkillButtons()
