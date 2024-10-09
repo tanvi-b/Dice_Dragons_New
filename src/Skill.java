@@ -9,7 +9,7 @@ public class Skill implements Serializable {
     ArrayList<Integer> heroClasses;
     ArrayList<Integer> requiredSymbols;
     int amtEffect;
-    int skillType; //0: attack, 1: healing, 2: stance, 3: re-roll, 4: ally
+    int skillType; //0: attack (HP), 1: healing (+HP), 2: stance (AC), 3: re-roll, 4: ally
 
     public Skill(String name, ArrayList<Integer> heroClasses, ArrayList<Integer> requiredSymbols, int amtEffect, int skilTtype) {
         this.name = name;

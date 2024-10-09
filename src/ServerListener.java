@@ -96,9 +96,22 @@ public class ServerListener implements Runnable {
                     Random random = new Random();
                     game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
                             random.nextInt(6), random.nextInt(6), random.nextInt(6))));
-                    for (Hero hero : game.getHeroes()) {
+                    for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), hero.getOs());
-                    }
+
+                }
+
+                if (cfc.getCommand()==CommandFromClient.SWITCH_TURN)
+                {
+                    System.out.println("reached here");
+                    int turn = (Integer) cfc.getData();
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    if (turn < game.maxPlayers - 1)
+                        turn++;
+                    else
+                        turn = 0;
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.SWITCH_TURN, turn, null), hero.getOs());
                 }
             }
         } catch (Exception e) {
@@ -125,36 +138,59 @@ public class ServerListener implements Runnable {
     private void setHeroValues(Hero hero) {
         switch (hero.classType) {
             case 0: //warrior
-                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Strike", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 2, 5)), 5, 0),
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Strike", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2)), 5, 0),
                         new Skill("Slash", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3)), 4, 0),
-                        new Skill("Smashing Blow", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3,3, 3)), 6, 0),
+                        new Skill("Smashing Blow", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 3)), 6, 0),
                         new Skill("Savage Attack", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 3, 3)), 9, 0),
                         new Skill("Parry", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 6, 6, 6)), 2, 2),
-                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 2, 5, 0, 1)), 7, 0))));
+                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
                 hero.setHitPoints(23);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(5);
                 break;
             case 1:  //wizard
-                //hero.setPlayerSkills();
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Strike", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2)), 5, 0),
+                        new Skill("Magic Bolt", new ArrayList<>(Arrays.asList(1)), new ArrayList<>(Arrays.asList(5, 5)), 4, 0),
+                        new Skill("Fireball", new ArrayList<>(Arrays.asList(1)), new ArrayList<>(Arrays.asList(5, 5, 5)), 6, 0),
+                        new Skill("Lightning Storm", new ArrayList<>(Arrays.asList(1, 3)), new ArrayList<>(Arrays.asList(5, 5, 0, 0)), 7, 0),
+                        new Skill("Shield", new ArrayList<>(Arrays.asList(1, 2)), new ArrayList<>(Arrays.asList(5, 5, 1, 1)), 2, 2),
+                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
                 hero.setHitPoints(22);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(4);
                 break;
             case 2:  //cleric
-                //hero.setPlayerSkills();
+                //holy strike wasn't in dragon guide
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Holy Strike", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 3, 5)), 5, 0),
+                        new Skill("Blessing", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1)), 0, 3),
+                        new Skill("Smite", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 1)), 4, 0),
+                        new Skill("Healing Hands", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 1, 1)), 6, 1),
+                        new Skill("Holy Storm", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 1, 1, 7, 7)), 7, 0),
+                        new Skill("Shield", new ArrayList<>(Arrays.asList(1, 2)), new ArrayList<>(Arrays.asList(5, 5, 1, 1)), 2, 2))));
                 hero.setHitPoints(24);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(6);
                 break;
             case 3:  //ranger
-                //hero.setPlayerSkills();
+                //wild strike wasn't in dragon guide
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Wild Strike", new ArrayList<>(Arrays.asList(3)), new ArrayList<>(Arrays.asList(0, 3, 2)), 5, 0),
+                        new Skill("Accurate Shot", new ArrayList<>(Arrays.asList(3)), new ArrayList<>(Arrays.asList(0, 0)), 4, 0),
+                        new Skill("Dual Shot", new ArrayList<>(Arrays.asList(3)), new ArrayList<>(Arrays.asList(0, 0, 0)), 7, 0),
+                        new Skill("Crossfire", new ArrayList<>(Arrays.asList(3)), new ArrayList<>(Arrays.asList(0, 0, 0, 0)), 9, 0),
+                        new Skill("Pin Down", new ArrayList<>(Arrays.asList(3, 4)), new ArrayList<>(Arrays.asList(0, 0, 2, 2)), -1, 2),
+                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
                 hero.setHitPoints(21);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(2);
                 break;
             case 4:  //rogue
-                //hero.setPlayerSkills();
+                //flanking strike wasn't in dragon guide
+                hero.setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Strike", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2)), 5, 0),
+                        new Skill("Stab", new ArrayList<>(Arrays.asList(4)), new ArrayList<>(Arrays.asList(2, 2)), 4, 0),
+                        new Skill("Flanking Strike", new ArrayList<>(Arrays.asList(4)), new ArrayList<>(Arrays.asList(2, 2, 2)), 6, 0),
+                        new Skill("Sneak Attack", new ArrayList<>(Arrays.asList(4, 0)), new ArrayList<>(Arrays.asList(2, 2, 3, 3)), 6, 0),
+                        new Skill("Sudden Death", new ArrayList<>(Arrays.asList(4)), new ArrayList<>(Arrays.asList(2, 2, 2, 7, 7)), 7, 0),
+                        new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 8, 0))));
                 hero.setHitPoints(19);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(1);

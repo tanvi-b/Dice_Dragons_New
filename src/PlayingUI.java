@@ -12,7 +12,6 @@ import java.util.*;
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
-    public static Game gameObject;
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes;
@@ -45,6 +44,8 @@ public class PlayingUI extends JPanel {
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
     public static String accessCode;
+    private static int turnTracker = 0;
+    private int timesRolled;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -87,6 +88,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
+            addWarriorSkillButtons();
         }
         if(heroClass==1) {
             try {
@@ -97,6 +99,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
+            addWizardSkillButtons();
         }
         if(heroClass==2) {
             try {
@@ -109,6 +112,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
+            addClericSkillButtons();
         }
         if(heroClass==3) {
             try {
@@ -119,6 +123,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
             }
+            addRangerSkillButtons();
         }
         if(heroClass==4) {
             try {
@@ -129,6 +134,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
             }
+            addRogueSkillButtons();
         }
     }
 
@@ -187,15 +193,34 @@ public class PlayingUI extends JPanel {
 
         JButton roll = new JButton ("Roll");
         roll.setFont(customFont.deriveFont(20f));
-        roll.setBounds(625, 240, 250, 30);
+        roll.setBounds(515, 240, 225, 30);
         roll.setBorder(BorderFactory.createLineBorder(Color.black));
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                SpecialSkillsUI.setDice(diceRolled);
-                PlayingUI.game.passDice(PlayingUI.game.getOs());
+                if (turn.getText().substring(6).equals(characterNameText.getText()))
+                {
+                    if (timesRolled<3) {
+                        PlayingUI.game.passDice(PlayingUI.game.getOs());
+                        timesRolled++;
+                    }
+                }
                 repaint();
+            }
+        });
 
+        JButton doneWithTurn = new JButton ("Done with Turn");
+        doneWithTurn.setBackground(new Color(228, 99, 98));
+        doneWithTurn.setFont(customFont.deriveFont(20f));
+        doneWithTurn.setBounds(755, 240, 225, 30);
+        doneWithTurn.setBorder(BorderFactory.createLineBorder(new Color(139, 0, 0)));
+        doneWithTurn.setOpaque(true);
+        doneWithTurn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (timesRolled>0) {
+                    PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
+                    timesRolled = 0;
+                }
             }
         });
 
@@ -206,7 +231,7 @@ public class PlayingUI extends JPanel {
         keep1.setOpaque(true);
         keep1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -217,7 +242,7 @@ public class PlayingUI extends JPanel {
         keep2.setOpaque(true);
         keep2.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -228,7 +253,7 @@ public class PlayingUI extends JPanel {
         keep3.setOpaque(true);
         keep3.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -239,7 +264,7 @@ public class PlayingUI extends JPanel {
         keep4.setOpaque(true);
         keep4.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -250,7 +275,7 @@ public class PlayingUI extends JPanel {
         keep5.setOpaque(true);
         keep5.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
             }
         });
 
@@ -263,6 +288,8 @@ public class PlayingUI extends JPanel {
 
         specialSkills.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                //if (turn.getText().substring(6).equals(characterNameText.getText()))
+                SpecialSkillsUI.getDice(diceRolled);
                 cardLayout.show(mainPanel, "SpecialSkillsScreen");
             }
         });
@@ -316,6 +343,7 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
+
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
@@ -354,6 +382,8 @@ public class PlayingUI extends JPanel {
         });
         previous.setBounds(200, 370, 100, 25);
 
+
+
         add(turn);
         add(rules);
         add(guide);
@@ -361,6 +391,7 @@ public class PlayingUI extends JPanel {
         add(messageText);
         add(send);
         add(roll);
+        add(doneWithTurn);
         add(keep1);
         add(keep2);
         add(keep3);
@@ -377,6 +408,167 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
+
+    }
+
+    private void addWarriorSkillButtons()
+    {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton strike = new JButton("Strike");
+        strike.setFont(customFont.deriveFont(10f));
+        strike.setBounds(262, 620, 80, 20);
+        strike.setBackground(buttonSkillsColor);
+        strike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        JButton slash = new JButton("Slash");
+        slash.setFont(customFont.deriveFont(10f));
+        slash.setBounds(264, 660, 80, 20);
+        slash.setBackground(buttonSkillsColor);
+
+        JButton smashingBlow = new JButton("Smashing Blow");
+        smashingBlow.setFont(customFont.deriveFont(7.4f));
+        smashingBlow.setBounds(265, 697, 80, 20);
+        smashingBlow.setBackground(buttonSkillsColor);
+
+        JButton savageAttack = new JButton("Savage   Attack");
+        savageAttack.setFont(customFont.deriveFont(7.4f));
+        savageAttack.setBounds(262, 735, 80, 20);
+        savageAttack.setBackground(buttonSkillsColor);
+
+        JButton parry = new JButton("Parry");
+        parry.setFont(customFont.deriveFont(10f));
+        parry.setBounds(265, 772, 80, 20);
+        parry.setBackground(buttonSkillsColor);
+
+        JButton criticalHit = new JButton("Critical Hit");
+        criticalHit.setFont(customFont.deriveFont(10f));
+        criticalHit.setBounds(265, 813, 80, 18);
+        criticalHit.setBackground(buttonSkillsColor);
+
+        add(strike);
+        add(slash);
+        add(smashingBlow);
+        add(savageAttack);
+        add(parry);
+        add(criticalHit);
+    }
+
+    private void addWizardSkillButtons()
+    {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton strike = new JButton("Strike");
+        strike.setFont(customFont.deriveFont(10f));
+        strike.setBounds(262, 620, 80, 20);
+        strike.setBackground(buttonSkillsColor);
+        strike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        JButton magicBolt = new JButton("Magic Bolt");
+        magicBolt.setFont(customFont.deriveFont(10f));
+        magicBolt.setBounds(264, 658, 80, 20);
+        magicBolt.setBackground(buttonSkillsColor);
+
+        JButton firebolt = new JButton("Firebolt");
+        firebolt.setFont(customFont.deriveFont(10f));
+        firebolt.setBounds(265, 697, 80, 20);
+        firebolt.setBackground(buttonSkillsColor);
+
+        JButton lightningStorm = new JButton("Lightning Storm");
+        lightningStorm.setFont(customFont.deriveFont(6.4f));
+        lightningStorm.setBounds(262, 735, 80, 20);
+        lightningStorm.setBackground(buttonSkillsColor);
+
+        JButton shield = new JButton("Shield");
+        shield.setFont(customFont.deriveFont(10f));
+        shield.setBounds(263, 770, 80, 20);
+        shield.setBackground(buttonSkillsColor);
+
+        JButton criticalHit = new JButton("Critical Hit");
+        criticalHit.setFont(customFont.deriveFont(10f));
+        criticalHit.setBounds(263, 811, 80, 18);
+        criticalHit.setBackground(buttonSkillsColor);
+
+        add(strike);
+        add(magicBolt);
+        add(firebolt);
+        add(lightningStorm);
+        add(shield);
+        add(criticalHit);
+    }
+
+    private void addClericSkillButtons()
+    {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton testing1 = new JButton("Testing");
+        testing1.setFont(customFont.deriveFont(9.4f));
+        testing1.setBounds(255, 620, 85, 20);
+        testing1.setBackground(buttonSkillsColor);
+
+        JButton testing2 = new JButton("Testing");
+        testing2.setFont(customFont.deriveFont(10f));
+        testing2.setBounds(255, 660, 85, 20);
+        testing2.setBackground(buttonSkillsColor);
+
+        add(testing2);
+        add(testing1);
+    }
+
+    private void addRangerSkillButtons()
+    {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton wildStrike = new JButton("Wild Strike");
+        wildStrike.setFont(customFont.deriveFont(10f));
+        wildStrike.setBounds(255, 620, 85, 20);
+        wildStrike.setBackground(buttonSkillsColor);
+        wildStrike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        JButton accurateShot = new JButton("Accurate Shot");
+        accurateShot.setFont(customFont.deriveFont(9.4f));
+        accurateShot.setBounds(255, 660, 85, 20);
+        accurateShot.setBackground(buttonSkillsColor);
+
+        JButton dualShot = new JButton("Dual Shot");
+        dualShot.setFont(customFont.deriveFont(10f));
+        dualShot.setBounds(255, 700, 85, 20);
+        dualShot.setBackground(buttonSkillsColor);
+
+        JButton crossfire = new JButton("Crossfire");
+        crossfire.setFont(customFont.deriveFont(10f));
+        crossfire.setBounds(255, 740, 85, 20);
+        crossfire.setBackground(buttonSkillsColor);
+
+        JButton pinDown = new JButton("Pin Down");
+        pinDown.setFont(customFont.deriveFont(10f));
+        pinDown.setBounds(255, 780, 85, 20);
+        pinDown.setBackground(buttonSkillsColor);
+
+        JButton criticalHit = new JButton("Critical Hit");
+        criticalHit.setFont(customFont.deriveFont(10f));
+        criticalHit.setBounds(255, 820, 85, 18);
+        criticalHit.setBackground(buttonSkillsColor);
+
+        add(wildStrike);
+        add(accurateShot);
+        add(dualShot);
+        add(crossfire);
+        add(pinDown);
+        add(criticalHit);
+    }
+
+    private void addRogueSkillButtons()
+    {
+
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
@@ -438,13 +630,14 @@ public class PlayingUI extends JPanel {
             heroSheets.add(currentHeroes.get(i).classType);
             gameHeroes.add(currentHeroes.get(i));
         }
-        Collections.sort(gameHeroes, new Comparator<Hero>() {
-            @Override
-            public int compare(Hero h1, Hero h2) {
-                return Integer.compare(h1.incentiveOrder, h2.incentiveOrder);
-            }
-        });
-        turn.setText("Turn: " + gameHeroes.get(0).heroName);
+        gameHeroes.sort(Comparator.comparingInt(h -> h.incentiveOrder));
+        setTurnText(0);
+    }
+
+    public static void setTurnText(int turnNumber)
+    {
+        turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
+        turnTracker = turnNumber;
     }
 
     public static void setAccessCode(String num){
@@ -468,16 +661,6 @@ public class PlayingUI extends JPanel {
         goldText.setText(String.valueOf(hero.gold));
     }
 
-    public static void setSpecialSkillsUI (Hero hero)
-    {
-        SpecialSkillsUI.setHeroClass(hero.classType);
-    }
-
-    public static void setSpecialSkillsDice(ArrayList<Integer> d){
-            SpecialSkillsUI.setDice(d);
-    }
-
-
     public static void getDice (ArrayList<Integer> dice)
     {
         diceRolled.clear();
@@ -488,12 +671,6 @@ public class PlayingUI extends JPanel {
             instance.repaint();
         }
     }
-
-//    public static void getGame (Game actualGame)
-//    {
-//        gameObject = actualGame;
-//        addHeroes(gameObject.getHeroes());
-//    }
 }
 
 //roll - y = 210

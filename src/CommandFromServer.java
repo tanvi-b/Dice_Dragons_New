@@ -5,7 +5,6 @@ public class CommandFromServer implements Serializable {
     private Object data = null;
     private Object player = null;
 
-    // Command list
     public static final int ACCESS_CODE = 0;
     public static final int MAKE_HERO= 1;
     public static final int INVALID_ACCESS_CODE = 2;
@@ -15,6 +14,7 @@ public class CommandFromServer implements Serializable {
     public static final int NEW_PLAYER= 6;
     public static final int DISPLAY_MESSAGE = 7;
     public static final int GIVE_DICE = 8;
+    public static final int SWITCH_TURN = 9;
 
     public CommandFromServer(int command, Object data, Object player) {
         this.command = command;

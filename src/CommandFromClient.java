@@ -3,7 +3,6 @@ import java.util.ArrayList;
 
 public class CommandFromClient implements Serializable
 {
-    //The command being sent to the server
     private int command;
     private Object data = null;
     private String player = "";
@@ -13,8 +12,7 @@ public class CommandFromClient implements Serializable
     public static final int SEND_MESSAGE = 2;
     public static final int PASS_DICE = 3;
 
-    //public static final int CUSTOM_HERO;
-    //public static final int DISCONNECT;
+    public static final int SWITCH_TURN = 4;
 
     public CommandFromClient(int command, Object data, String player) {
         this.command = command;
