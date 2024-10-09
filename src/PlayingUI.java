@@ -442,18 +442,44 @@ public class PlayingUI extends JPanel {
     private void addRangerSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton wildStrike = new JButton("Wild Strike");
+        wildStrike.setFont(customFont.deriveFont(10f));
+        wildStrike.setBounds(255, 620, 85, 20);
+        wildStrike.setBackground(buttonSkillsColor);
+
         JButton accurateShot = new JButton("Accurate Shot");
         accurateShot.setFont(customFont.deriveFont(9.4f));
-        accurateShot.setBounds(255, 620, 85, 20);
+        accurateShot.setBounds(255, 660, 85, 20);
         accurateShot.setBackground(buttonSkillsColor);
+
 
         JButton dualShot = new JButton("Dual Shot");
         dualShot.setFont(customFont.deriveFont(10f));
-        dualShot.setBounds(255, 660, 85, 20);
+        dualShot.setBounds(255, 700, 85, 20);
         dualShot.setBackground(buttonSkillsColor);
 
+        JButton crossfire = new JButton("Crossfire");
+        crossfire.setFont(customFont.deriveFont(10f));
+        crossfire.setBounds(255, 740, 85, 20);
+        crossfire.setBackground(buttonSkillsColor);
+
+        JButton pinDown = new JButton("Pin Down");
+        pinDown.setFont(customFont.deriveFont(10f));
+        pinDown.setBounds(255, 780, 85, 20);
+        pinDown.setBackground(buttonSkillsColor);
+
+        JButton criticalHit = new JButton("Critical Hit");
+        criticalHit.setFont(customFont.deriveFont(10f));
+        criticalHit.setBounds(255, 820, 85, 18);
+        criticalHit.setBackground(buttonSkillsColor);
+
+
+        add(wildStrike);
         add(accurateShot);
         add(dualShot);
+        add(crossfire);
+        add(pinDown);
+        add(criticalHit);
 
 
         accurateShot.addActionListener(new ActionListener() {
