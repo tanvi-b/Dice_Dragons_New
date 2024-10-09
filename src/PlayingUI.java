@@ -568,7 +568,49 @@ public class PlayingUI extends JPanel {
 
     private void addRogueSkillButtons()
     {
+        Color buttonSkillsColor = new Color(237,197,72,255);
+        JButton strike = new JButton("Strike");
+        strike.setFont(customFont.deriveFont(10f));
+        strike.setBounds(265, 620, 85, 20);
+        strike.setBackground(buttonSkillsColor);
+        strike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+
+        JButton stab = new JButton("Stab");
+        stab.setFont(customFont.deriveFont(10f));
+        stab.setBounds(265, 660, 85, 20);
+        stab.setBackground(buttonSkillsColor);
+
+        JButton flankingStrike = new JButton("Flanking Strike");
+        flankingStrike.setFont(customFont.deriveFont(8f));
+        flankingStrike.setBounds(265, 695, 85, 20);
+        flankingStrike.setBackground(buttonSkillsColor);
+
+        JButton sneakAttack = new JButton("Sneak Attack");
+        sneakAttack.setFont(customFont.deriveFont(9f));
+        sneakAttack.setBounds(265, 735, 85, 20);
+        sneakAttack.setBackground(buttonSkillsColor);
+
+        JButton suddenDeath = new JButton("Sudden Death");
+        suddenDeath.setFont(customFont.deriveFont(10f));
+        suddenDeath.setBounds(265, 780, 85, 20);
+        suddenDeath.setBackground(buttonSkillsColor);
+
+
+        JButton criticalHit = new JButton("Critical Hit");
+        criticalHit.setFont(customFont.deriveFont(10f));
+        criticalHit.setBounds(265, 820, 85, 18);
+        criticalHit.setBackground(buttonSkillsColor);
+
+        add(strike);
+        add(stab);
+        add(suddenDeath);
+        add(flankingStrike);
+        add(sneakAttack);
+        add(criticalHit);
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
@@ -675,3 +717,5 @@ public class PlayingUI extends JPanel {
 
 //roll - y = 210
 //keep - y = 235
+
+  
