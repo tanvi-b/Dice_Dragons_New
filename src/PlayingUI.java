@@ -88,6 +88,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
+            addWarriorSkillButtons();
         }
         if(heroClass==1) {
             try {
@@ -98,6 +99,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
+            addWizardSkillButtons();
         }
         if(heroClass==2) {
             try {
@@ -110,6 +112,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
+            addClericSkillButtons();
         }
         if(heroClass==3) {
             try {
@@ -120,6 +123,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
             }
+            addRangerSkillButtons();
         }
         if(heroClass==4) {
             try {
@@ -130,6 +134,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
             }
+            addRangerSkillButtons();
         }
     }
 
@@ -188,22 +193,34 @@ public class PlayingUI extends JPanel {
 
         JButton roll = new JButton ("Roll");
         roll.setFont(customFont.deriveFont(20f));
-        roll.setBounds(625, 240, 250, 30);
+        roll.setBounds(515, 240, 225, 30);
         roll.setBorder(BorderFactory.createLineBorder(Color.black));
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //eventually the switch turn logic will be moved to another button
                 if (turn.getText().substring(6).equals(characterNameText.getText()))
                 {
-                    PlayingUI.game.passDice(PlayingUI.game.getOs());
-                    timesRolled++;
-                    if (timesRolled==3) {
-                        PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
-                        timesRolled=0;
+                    if (timesRolled<3) {
+                        PlayingUI.game.passDice(PlayingUI.game.getOs());
+                        timesRolled++;
                     }
                 }
                 repaint();
+            }
+        });
+
+        JButton doneWithTurn = new JButton ("Done with Turn");
+        doneWithTurn.setBackground(new Color(228, 99, 98));
+        doneWithTurn.setFont(customFont.deriveFont(20f));
+        doneWithTurn.setBounds(755, 240, 225, 30);
+        doneWithTurn.setBorder(BorderFactory.createLineBorder(new Color(139, 0, 0)));
+        doneWithTurn.setOpaque(true);
+        doneWithTurn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (timesRolled>0) {
+                    PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
+                    timesRolled = 0;
+                }
             }
         });
 
@@ -371,6 +388,7 @@ public class PlayingUI extends JPanel {
         add(messageText);
         add(send);
         add(roll);
+        add(doneWithTurn);
         add(keep1);
         add(keep2);
         add(keep3);
@@ -387,6 +405,31 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
+    }
+
+    private void addWarriorSkillButtons()
+    {
+
+    }
+
+    private void addWizardSkillButtons()
+    {
+
+    }
+
+    private void addClericSkillButtons()
+    {
+
+    }
+
+    private void addRangerSkillButtons()
+    {
+
+    }
+
+    private void addRogueSkillButtons()
+    {
+
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
