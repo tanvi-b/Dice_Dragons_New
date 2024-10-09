@@ -134,7 +134,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
             }
-            addRangerSkillButtons();
+            addRogueSkillButtons();
         }
     }
 
