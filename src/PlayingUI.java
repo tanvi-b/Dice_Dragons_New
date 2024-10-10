@@ -571,7 +571,7 @@ public class PlayingUI extends JPanel {
         Color buttonSkillsColor = new Color(237,197,72,255);
         JButton holyStrike = new JButton("Holy Strike");
         holyStrike.setFont(customFont.deriveFont(10f));
-        holyStrike.setBounds(255, 620, 85, 20);
+        holyStrike.setBounds(255, 615, 85, 20);
         holyStrike.setBackground(buttonSkillsColor);
         holyStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -581,7 +581,7 @@ public class PlayingUI extends JPanel {
 
         JButton blessing = new JButton("Blessing");
         blessing.setFont(customFont.deriveFont(9.4f));
-        blessing.setBounds(255, 660, 85, 20);
+        blessing.setBounds(255, 655, 85, 20);
         blessing.setBackground(buttonSkillsColor);
         blessing.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -591,7 +591,7 @@ public class PlayingUI extends JPanel {
 
         JButton smite = new JButton("Smite");
         smite.setFont(customFont.deriveFont(10f));
-        smite.setBounds(255, 700, 85, 20);
+        smite.setBounds(255, 695, 85, 20);
         smite.setBackground(buttonSkillsColor);
         smite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -601,7 +601,7 @@ public class PlayingUI extends JPanel {
 
         JButton healingHands = new JButton("Healing Hands");
         healingHands.setFont(customFont.deriveFont(10f));
-        healingHands.setBounds(255, 740, 85, 20);
+        healingHands.setBounds(255, 735, 85, 20);
         healingHands.setBackground(buttonSkillsColor);
         healingHands.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -611,7 +611,7 @@ public class PlayingUI extends JPanel {
 
         JButton holyStorm = new JButton("Holy Storm");
         holyStorm.setFont(customFont.deriveFont(10f));
-        holyStorm.setBounds(255, 780, 85, 20);
+        holyStorm.setBounds(255, 770, 85, 20);
         holyStorm.setBackground(buttonSkillsColor);
         holyStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -621,7 +621,7 @@ public class PlayingUI extends JPanel {
 
         JButton shield = new JButton("Shield");
         shield.setFont(customFont.deriveFont(10f));
-        shield.setBounds(255, 820, 85, 18);
+        shield.setBounds(255, 812, 85, 18);
         shield.setBackground(buttonSkillsColor);
         shield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -737,26 +737,53 @@ public class PlayingUI extends JPanel {
         stab.setFont(customFont.deriveFont(10f));
         stab.setBounds(265, 660, 85, 20);
         stab.setBackground(buttonSkillsColor);
+        stab.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton flankingStrike = new JButton("Flanking Strike");
         flankingStrike.setFont(customFont.deriveFont(8f));
         flankingStrike.setBounds(265, 695, 85, 20);
         flankingStrike.setBackground(buttonSkillsColor);
+        flankingStrike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton sneakAttack = new JButton("Sneak Attack");
         sneakAttack.setFont(customFont.deriveFont(9f));
         sneakAttack.setBounds(265, 735, 85, 20);
         sneakAttack.setBackground(buttonSkillsColor);
+        sneakAttack.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         JButton suddenDeath = new JButton("Sudden Death");
-        suddenDeath.setFont(customFont.deriveFont(10f));
-        suddenDeath.setBounds(265, 780, 85, 20);
+        suddenDeath.setFont(customFont.deriveFont(8f));
+        suddenDeath.setBounds(265, 770, 85, 20);
         suddenDeath.setBackground(buttonSkillsColor);
+        suddenDeath.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
 
         JButton criticalHit = new JButton("Critical Hit");
-        criticalHit.setFont(customFont.deriveFont(10f));
-        criticalHit.setBounds(265, 820, 85, 18);
+        criticalHit.setFont(customFont.deriveFont(9f));
+        criticalHit.setBounds(265, 812, 85, 18);
         criticalHit.setBackground(buttonSkillsColor);
+        criticalHit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
 
         add(strike);
         add(stab);
@@ -886,5 +913,3 @@ public class PlayingUI extends JPanel {
 
 //roll - y = 210
 //keep - y = 235
-
-  
