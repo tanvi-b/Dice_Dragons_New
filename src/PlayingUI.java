@@ -875,7 +875,7 @@ public class PlayingUI extends JPanel {
     {
         turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
         turnTracker = turnNumber;
-        gameMessages.setText("It is now " + gameHeroes.get(turnNumber).heroName + " turn! You have 3 turns to use");
+        gameMessages.setText("It is now " + gameHeroes.get(turnNumber).heroName + "'s turn! " + gameHeroes.get(turnNumber).heroName + " has 3 turns to use");
     }
 
     public static void setAccessCode(String num){
