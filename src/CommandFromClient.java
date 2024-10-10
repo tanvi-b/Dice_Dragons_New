@@ -14,6 +14,8 @@ public class CommandFromClient implements Serializable
 
     public static final int SWITCH_TURN = 4;
 
+    public static final int GAME_TEXT_DISPLAY = 5;
+
     public CommandFromClient(int command, Object data, String player) {
         this.command = command;
         this.data = data;

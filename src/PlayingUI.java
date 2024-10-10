@@ -47,6 +47,7 @@ public class PlayingUI extends JPanel {
     private static int turnTracker = 0;
     private int timesRolled;
     private static ArrayList<JButton> skillButtons;
+    private static JTextField gameMessages;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -207,6 +208,8 @@ public class PlayingUI extends JPanel {
                     if (timesRolled<3) {
                         PlayingUI.game.passDice(PlayingUI.game.getOs());
                         timesRolled++;
+                        String text = username + " has rolled the dice combinations above! They have " + (3-timesRolled) + " turns remaining!";
+                        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
                     }
                 }
                 repaint();
@@ -298,7 +301,7 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        JTextField gameMessages = new JTextField("Message: ");
+        gameMessages = new JTextField("Message: ");
         gameMessages.setEditable(false);
         gameMessages.setFont(customFont.deriveFont(17f));
         gameMessages.setBounds(450, 280, 600, 50);
@@ -872,6 +875,7 @@ public class PlayingUI extends JPanel {
     {
         turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
         turnTracker = turnNumber;
+        gameMessages.setText("It is now " + gameHeroes.get(turnNumber).heroName + " turn! You have 3 turns to use");
     }
 
     public static void setAccessCode(String num){
@@ -908,6 +912,11 @@ public class PlayingUI extends JPanel {
         if (instance != null) {
             instance.repaint();
         }
+
+    }
+
+    public static void showGameMessage(String text){
+        gameMessages.setText(text);
     }
 }
 

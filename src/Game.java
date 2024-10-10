@@ -83,6 +83,9 @@ public class Game implements Runnable, Serializable {
                 else if (cfs.getCommand()==CommandFromServer.SWITCH_TURN) {
                     PlayingUI.setTurnText((Integer)cfs.getData());
                 }
+                else if(cfs.getCommand() == CommandFromServer.SEND_GAME_MESSAGE){
+                    PlayingUI.showGameMessage((String) cfs.getData());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -98,6 +101,19 @@ public class Game implements Runnable, Serializable {
         try
         {
             CommandFromClient cfc = new CommandFromClient(CommandFromClient.SWITCH_TURN, turnTracker, PlayingUI.getAccessCode());
+            os.writeObject(cfc);
+            os.flush();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void gameMessageText (ObjectOutputStream os, String text)
+    {
+        try
+        {
+            CommandFromClient cfc = new CommandFromClient(CommandFromClient.GAME_TEXT_DISPLAY, text, PlayingUI.getAccessCode());
             os.writeObject(cfc);
             os.flush();
         }
