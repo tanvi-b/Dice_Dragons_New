@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,7 +14,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.List;
 import java.util.stream.Collectors;
 
-//change boolean values in diceRolled to true if keep is selected
+//do we need to redraw dice after done turn?
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
@@ -186,6 +188,126 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        JButton keep1 = new JButton("Keep");
+        keep1.setFont(customFont.deriveFont(20f));
+        keep1.setBounds(450, 205, 100, 25);
+        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep1.setOpaque(true);
+        keep1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(0).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep1.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep1.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep1.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(0, newEntry);
+                }
+            }
+        });
+
+        JButton keep2 = new JButton("Keep");
+        keep2.setFont(customFont.deriveFont(20f));
+        keep2.setBounds(575, 205, 100, 25);
+        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep2.setOpaque(true);
+        keep2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(1).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep2.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep2.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep2.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(1, newEntry);
+                }
+            }
+        });
+
+        JButton keep3 = new JButton("Keep");
+        keep3.setFont(customFont.deriveFont(20f));
+        keep3.setBounds(700, 205, 100, 25);
+        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep3.setOpaque(true);
+        keep3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(2).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep3.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep3.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep3.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(2, newEntry);
+                }
+            }
+        });
+
+        JButton keep4 = new JButton("Keep");
+        keep4.setFont(customFont.deriveFont(20f));
+        keep4.setBounds(825, 205, 100, 25);
+        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep4.setOpaque(true);
+        keep4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(3).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep4.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep4.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep4.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(3, newEntry);
+                }
+            }
+        });
+
+        JButton keep5 = new JButton("Keep");
+        keep5.setFont(customFont.deriveFont(20f));
+        keep5.setBounds(950, 205, 100, 25);
+        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep5.setOpaque(true);
+        keep5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(4).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep5.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep5.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(4, newEntry);
+                }
+            }
+        });
+
         JButton roll = new JButton ("Roll");
         roll.setFont(customFont.deriveFont(20f));
         roll.setBounds(515, 240, 225, 30);
@@ -196,6 +318,11 @@ public class PlayingUI extends JPanel {
                 if (turn.getText().substring(6).equals(username))
                 {
                     if (timesRolled<3) {
+                        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
                         PlayingUI.game.passDice(PlayingUI.game.getOs(), diceRolled);
                         timesRolled++;
                         String text = username + " has rolled the dice combinations above! " + username + " has " + (3-timesRolled) + " turns remaining!";
@@ -214,88 +341,13 @@ public class PlayingUI extends JPanel {
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (timesRolled>0) {
+                    keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep5.setBorder(BorderFactory.createLineBorder(Color.black));
                     PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
                     timesRolled = 0;
-                }
-            }
-        });
-
-        JButton keep1 = new JButton("Keep");
-        keep1.setFont(customFont.deriveFont(20f));
-        keep1.setBounds(450, 210, 100, 20);
-        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep1.setOpaque(true);
-        keep1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && timesRolled>0)
-                {
-                    Integer value = diceRolled.get(0).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                    diceRolled.set(0, newEntry);
-                }
-            }
-        });
-
-        JButton keep2 = new JButton("Keep");
-        keep2.setFont(customFont.deriveFont(20f));
-        keep2.setBounds(575, 210, 100, 20);
-        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep2.setOpaque(true);
-        keep2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && timesRolled>0)
-                {
-                    Integer value = diceRolled.get(1).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                    diceRolled.set(1, newEntry);
-                }
-            }
-        });
-
-        JButton keep3 = new JButton("Keep");
-        keep3.setFont(customFont.deriveFont(20f));
-        keep3.setBounds(700, 210, 100, 20);
-        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep3.setOpaque(true);
-        keep3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && timesRolled>0)
-                {
-                    Integer value = diceRolled.get(2).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                    diceRolled.set(2, newEntry);
-                }
-            }
-        });
-
-        JButton keep4 = new JButton("Keep");
-        keep4.setFont(customFont.deriveFont(20f));
-        keep4.setBounds(825, 210, 100, 20);
-        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep4.setOpaque(true);
-        keep4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && timesRolled>0)
-                {
-                    Integer value = diceRolled.get(3).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                    diceRolled.set(3, newEntry);
-                }
-            }
-        });
-
-        JButton keep5 = new JButton("Keep");
-        keep5.setFont(customFont.deriveFont(20f));
-        keep5.setBounds(950, 210, 100, 20);
-        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep5.setOpaque(true);
-        keep5.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && timesRolled>0)
-                {
-                    Integer value = diceRolled.get(4).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                    diceRolled.set(4, newEntry);
                 }
             }
         });
@@ -306,14 +358,14 @@ public class PlayingUI extends JPanel {
         specialSkills.setBounds(30, 350, 150, 40);
         specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
         specialSkills.setOpaque(true);
-
-//        specialSkills.addActionListener(new ActionListener() {
-//            public void actionPerformed(ActionEvent e) {
-//                //if (turn.getText().substring(6).equals(username))
-//                SpecialSkillsUI.getDice(diceRolled);
-//                cardLayout.show(mainPanel, "SpecialSkillsScreen");
-//            }
-//        });
+        specialSkills.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username)) {
+                    SpecialSkillsUI.getDice(diceRolled);
+                    cardLayout.show(mainPanel, "SpecialSkillsScreen");
+                }
+            }
+        });
 
         gameMessages = new JTextField("Message: ");
         gameMessages.setEditable(false);
