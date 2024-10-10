@@ -922,5 +922,3 @@ public class PlayingUI extends JPanel {
 
 //roll - y = 210
 //keep - y = 235
-
-  
