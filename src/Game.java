@@ -42,7 +42,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
-                    PlayingUI.setHeroClass((Hero) cfs.getPlayer());
                     SpecialSkillsUI.setHeroClass((Hero) cfs.getPlayer());
                     SpecialSkillsUI.getDice(((Game) cfs.getData()).getDiceRolled());
                 }
@@ -53,7 +52,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
-                     PlayingUI.setHeroClass((Hero) cfs.getPlayer());
                     PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
                     SpecialSkillsUI.setHeroClass((Hero) cfs.getPlayer());
@@ -156,7 +154,7 @@ public class Game implements Runnable, Serializable {
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
-    
+
     public ArrayList<String> getMessagesChat(){
         return messages;
     }
@@ -199,4 +197,3 @@ public class Game implements Runnable, Serializable {
 
     public void setDiceRolled(List<Map.Entry<Boolean, Integer>> diceRolled) { this.diceRolled = diceRolled;}
 }
-

@@ -3,6 +3,8 @@
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Skill implements Serializable {
     String name;
@@ -11,12 +13,17 @@ public class Skill implements Serializable {
     int amtEffect;
     int skillType; //0: attack (HP), 1: healing (+HP), 2: stance (AC), 3: re-roll, 4: ally
 
-    public Skill(String name, ArrayList<Integer> heroClasses, ArrayList<Integer> requiredSymbols, int amtEffect, int skilTtype) {
+    public Skill(String name, ArrayList<Integer> heroClasses, ArrayList<Integer> requiredSymbols, int amtEffect, int skilType) {
         this.name = name;
         this.heroClasses = heroClasses;
         this.requiredSymbols = requiredSymbols;
         this.amtEffect = amtEffect;
-        this.skillType = skilTtype;
+        this.skillType = skilType;
+    }
+
+    public static boolean checkDiceCombo (List<Map.Entry<Boolean, Integer>> dice)
+    {
+        return false;
     }
 
     public static void activate() {
