@@ -3,13 +3,14 @@
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Skill implements Serializable {
     String name;
     ArrayList<Integer> heroClasses;
-    ArrayList<Integer> requiredSymbols;
+    static ArrayList<Integer> requiredSymbols;
     int amtEffect;
     int skillType; //0: attack (HP), 1: healing (+HP), 2: stance (AC), 3: re-roll, 4: ally
 
@@ -21,9 +22,26 @@ public class Skill implements Serializable {
         this.skillType = skilType;
     }
 
-    public static boolean checkDiceCombo (List<Map.Entry<Boolean, Integer>> dice)
+    public static boolean checkDiceCombo (List<Map.Entry<Boolean, Integer>> playerDice)
     {
-        return false;
+        HashMap<Integer, Integer> attributeCount = new HashMap<>();
+        for (Integer value : requiredSymbols) {
+            attributeCount.put(value, attributeCount.getOrDefault(value, 0) + 1);
+        }
+
+        HashMap<Integer, Integer> paramCount = new HashMap<>();
+        for (Map.Entry<Boolean, Integer> entry : playerDice) {
+            paramCount.put(entry.getValue(), paramCount.getOrDefault(entry.getValue(), 0) + 1);
+        }
+
+        for (Map.Entry<Integer, Integer> entry : attributeCount.entrySet()) {
+            Integer requiredCount = entry.getValue();
+            Integer availableCount = paramCount.getOrDefault(entry.getKey(), 0);
+            if (availableCount < requiredCount) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static void activate() {

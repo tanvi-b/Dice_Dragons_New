@@ -15,8 +15,8 @@
 //
 ////do we need to redraw dice after done turn?
 //
-//public class PlayingUITanvi extends JPanel {
-//    private static PlayingUITanvi instance;
+//public class PlayingUI extends JPanel {
+//    private static PlayingUI instance;
 //    public static Game game;
 //    private CardLayout cardLayout;
 //    private JPanel mainPanel;
@@ -49,7 +49,7 @@
 //    private static ArrayList<JButton> skillButtons = new ArrayList<>();
 //    private static JTextField gameMessages;
 //
-//    public PlayingUITanvi(CardLayout cardLayout, JPanel mainPanel, Game game) {
+//    public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
 //        instance = this;
 //        this.cardLayout = cardLayout;
 //        this.mainPanel = mainPanel;
@@ -507,7 +507,8 @@
 //        strike.setBackground(buttonSkillsColor);
 //        strike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -520,7 +521,8 @@
 //        slash.setBackground(buttonSkillsColor);
 //        slash.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -533,7 +535,8 @@
 //        smashingBlow.setBackground(buttonSkillsColor);
 //        smashingBlow.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -546,7 +549,8 @@
 //        savageAttack.setBackground(buttonSkillsColor);
 //        savageAttack.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -559,7 +563,8 @@
 //        parry.setBackground(buttonSkillsColor);
 //        parry.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -572,7 +577,8 @@
 //        criticalHit.setBackground(buttonSkillsColor);
 //        criticalHit.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -602,7 +608,8 @@
 //        strike.setBackground(buttonSkillsColor);
 //        strike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -615,7 +622,8 @@
 //        magicBolt.setBackground(buttonSkillsColor);
 //        magicBolt.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -628,7 +636,8 @@
 //        firebolt.setBackground(buttonSkillsColor);
 //        firebolt.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -641,7 +650,8 @@
 //        lightningStorm.setBackground(buttonSkillsColor);
 //        lightningStorm.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -654,7 +664,8 @@
 //        shield.setBackground(buttonSkillsColor);
 //        shield.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -667,7 +678,8 @@
 //        criticalHit.setBackground(buttonSkillsColor);
 //        criticalHit.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -697,7 +709,8 @@
 //        holyStrike.setBackground(buttonSkillsColor);
 //        holyStrike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -710,7 +723,8 @@
 //        blessing.setBackground(buttonSkillsColor);
 //        blessing.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -723,7 +737,8 @@
 //        smite.setBackground(buttonSkillsColor);
 //        smite.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -736,7 +751,8 @@
 //        healingHands.setBackground(buttonSkillsColor);
 //        healingHands.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -749,7 +765,8 @@
 //        holyStorm.setBackground(buttonSkillsColor);
 //        holyStorm.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -762,7 +779,8 @@
 //        shield.setBackground(buttonSkillsColor);
 //        shield.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -792,7 +810,8 @@
 //        wildStrike.setBackground(buttonSkillsColor);
 //        wildStrike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -805,7 +824,8 @@
 //        accurateShot.setBackground(buttonSkillsColor);
 //        accurateShot.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -818,7 +838,8 @@
 //        dualShot.setBackground(buttonSkillsColor);
 //        dualShot.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -831,7 +852,8 @@
 //        crossfire.setBackground(buttonSkillsColor);
 //        crossfire.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -844,7 +866,8 @@
 //        pinDown.setBackground(buttonSkillsColor);
 //        pinDown.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -857,7 +880,8 @@
 //        criticalHit.setBackground(buttonSkillsColor);
 //        criticalHit.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -887,7 +911,8 @@
 //        strike.setBackground(buttonSkillsColor);
 //        strike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -900,7 +925,8 @@
 //        stab.setBackground(buttonSkillsColor);
 //        stab.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -913,7 +939,8 @@
 //        flankingStrike.setBackground(buttonSkillsColor);
 //        flankingStrike.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -926,7 +953,8 @@
 //        sneakAttack.setBackground(buttonSkillsColor);
 //        sneakAttack.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -939,7 +967,8 @@
 //        suddenDeath.setBackground(buttonSkillsColor);
 //        suddenDeath.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
@@ -952,7 +981,8 @@
 //        criticalHit.setBackground(buttonSkillsColor);
 //        criticalHit.addActionListener(new ActionListener() {
 //            public void actionPerformed(ActionEvent e) {
-//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+//                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
+//                        && timesRolled>0)
 //                {
 //
 //                }
