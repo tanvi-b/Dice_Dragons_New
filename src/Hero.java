@@ -17,10 +17,8 @@ public class Hero extends Player {
         this.classType = classType;
         this.heroName = heroName;
         this.os = os;
-        this.armorClass = armorClass;
         this.level = 1;
         this.flee = false;
-        this.tokens = new ArrayList<>();
     }
 
     public String toString() {

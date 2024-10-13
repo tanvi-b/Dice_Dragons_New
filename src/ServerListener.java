@@ -72,7 +72,7 @@ public class ServerListener implements Runnable {
                             new AbstractMap.SimpleEntry<>(false, random.nextInt(6))
                     ));
                     newGame.setDiceRolled(diceList);
-                    newGame.setLevel(0);
+                    newGame.setLevel(1);
                     newGame.setDragons(createDragonsList());
 
                     String playerEntry = (String) cfc.getData();
@@ -116,7 +116,6 @@ public class ServerListener implements Runnable {
 
                 if (cfc.getCommand()==CommandFromClient.SWITCH_TURN)
                 {
-                    System.out.println("reached here");
                     int turn = (Integer) cfc.getData();
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     if (turn < game.maxPlayers - 1)
@@ -162,6 +161,8 @@ public class ServerListener implements Runnable {
                         new Skill("Savage Attack", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 3, 3)), 9, 0),
                         new Skill("Parry", new ArrayList<>(Arrays.asList(0)), new ArrayList<>(Arrays.asList(3, 3, 6, 6, 6)), 2, 2),
                         new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -35, 235),
+                        new Token(0, -35, 285), new Token(0, -35, 335))));
                 hero.setHitPoints(23);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(5);
@@ -173,6 +174,8 @@ public class ServerListener implements Runnable {
                         new Skill("Lightning Storm", new ArrayList<>(Arrays.asList(1, 3)), new ArrayList<>(Arrays.asList(5, 5, 0, 0)), 7, 0),
                         new Skill("Shield", new ArrayList<>(Arrays.asList(1, 2)), new ArrayList<>(Arrays.asList(5, 5, 1, 1)), 2, 2),
                         new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -60, 210),
+                        new Token(0, -60, 260), new Token(0, -60, 310))));
                 hero.setHitPoints(22);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(4);
@@ -185,6 +188,10 @@ public class ServerListener implements Runnable {
                         new Skill("Healing Hands", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 1, 1)), 6, 1),
                         new Skill("Holy Storm", new ArrayList<>(Arrays.asList(2)), new ArrayList<>(Arrays.asList(1, 1, 1, 7, 7)), 7, 0),
                         new Skill("Shield", new ArrayList<>(Arrays.asList(1, 2)), new ArrayList<>(Arrays.asList(5, 5, 1, 1)), 2, 2))));
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, 17, 265),
+                        new Token(0, 17, 315), new Token(0, 17, 365),
+                        new Token(1, -105, 295), new Token(1, -105, 345),
+                        new Token(1, -105, 395), new Token(1, -105, 445))));
                 hero.setHitPoints(24);
                 hero.setArmorClass(0);
                 hero.setIncentiveOrder(6);
@@ -197,6 +204,8 @@ public class ServerListener implements Runnable {
                         new Skill("Crossfire", new ArrayList<>(Arrays.asList(3)), new ArrayList<>(Arrays.asList(0, 0, 0, 0)), 9, 0),
                         new Skill("Pin Down", new ArrayList<>(Arrays.asList(3, 4)), new ArrayList<>(Arrays.asList(0, 0, 2, 2)), -1, 2),
                         new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 7, 0))));
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -25, 250),
+                        new Token(0, -25, 300), new Token(0, -25, 350))));
                 hero.setHitPoints(21);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(2);
@@ -209,6 +218,8 @@ public class ServerListener implements Runnable {
                         new Skill("Sneak Attack", new ArrayList<>(Arrays.asList(4, 0)), new ArrayList<>(Arrays.asList(2, 2, 3, 3)), 6, 0),
                         new Skill("Sudden Death", new ArrayList<>(Arrays.asList(4)), new ArrayList<>(Arrays.asList(2, 2, 2, 7, 7)), 7, 0),
                         new Skill("Critical Hit", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(3, 5, 2, 0, 1)), 8, 0))));
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -30, 300),
+                        new Token(0, -30, 350), new Token(0, -30, 400))));
                 hero.setHitPoints(19);
                 hero.setArmorClass(1);
                 hero.setIncentiveOrder(1);
