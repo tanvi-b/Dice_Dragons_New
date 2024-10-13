@@ -12,8 +12,6 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-//do we need to redraw dice after done turn?
-
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
@@ -47,7 +45,9 @@ public class PlayingUI extends JPanel {
     public static int level;
     private static int turnTracker = 0;
     private int timesRolled=1;
-    private static ArrayList<JButton> skillButtons = new ArrayList<>();
+
+    private static List<Map.Entry<Boolean, JButton>> skillButtons = new ArrayList<>();
+    //private static ArrayList<JButton> skillButtons = new ArrayList<>();
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -524,67 +524,87 @@ public class PlayingUI extends JPanel {
 
     private void addWarriorSkillButtons()
     {
-        for (int i  = 0; i<=5; i++)
-            skillButtons.get(i).setVisible(true);
+        for (int i  = 0; i<=5; i++) {
+            if (skillButtons.get(i).getKey()==true)
+                skillButtons.get(i).getValue().setVisible(true);
+            else
+                skillButtons.get(i).getValue().setVisible(false);
+        }
         for (int i = 6; i< skillButtons.size(); i++)
-            skillButtons.get(i).setVisible(false);
+            skillButtons.get(i).getValue().setVisible(false);
     }
 
     private void addWizardSkillButtons()
     {
         for (int i = 0; i<=5; i++)
-            skillButtons.get(i).setVisible(false);
-        skillButtons.get(0).setVisible(true);
-        skillButtons.get(5).setVisible(true);
-        for (int i = 6; i<=9; i++)
-            skillButtons.get(i).setVisible(true);
-        for (int i = 10; i< skillButtons.size(); i++)
-            skillButtons.get(i).setVisible(false);
+            skillButtons.get(i).getValue().setVisible(false);
+        for (int i  = 6; i<=11; i++) {
+            if (skillButtons.get(i).getKey()==true)
+                skillButtons.get(i).getValue().setVisible(true);
+            else
+                skillButtons.get(i).getValue().setVisible(false);
+        }
+        for (int i = 12; i< skillButtons.size(); i++)
+            skillButtons.get(i).getValue().setVisible(false);
     }
 
     private void addClericSkillButtons()
     {
-        for (int i = 0; i<=8; i++)
-            skillButtons.get(i).setVisible(false);
-        for (int i = 9; i<=14; i++)
-            skillButtons.get(i).setVisible(true);
-        for (int i = 15; i< skillButtons.size(); i++)
-            skillButtons.get(i).setVisible(false);
+        for (int i = 0; i<=11; i++)
+            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 12; i<=17; i++) {
+            if (skillButtons.get(i).getKey()==true)
+                skillButtons.get(i).getValue().setVisible(true);
+            else
+                skillButtons.get(i).getValue().setVisible(false);
+        }
+        for (int i = 18; i< skillButtons.size(); i++)
+            skillButtons.get(i).getValue().setVisible(false);
     }
 
     private void addRangerSkillButtons()
     {
-        for (int i = 0; i<=14; i++)
-            skillButtons.get(i).setVisible(false);
-        skillButtons.get(5).setVisible(true);
-        for (int i = 15; i<=19; i++)
-            skillButtons.get(i).setVisible(true);
-        for (int i = 20; i< skillButtons.size(); i++)
-            skillButtons.get(i).setVisible(false);
+        for (int i = 0; i<=17; i++)
+            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 18; i<=23; i++) {
+            if (skillButtons.get(i).getKey()==true)
+                skillButtons.get(i).getValue().setVisible(true);
+            else
+                skillButtons.get(i).getValue().setVisible(false);
+        }
+        for (int i = 24; i< skillButtons.size(); i++)
+            skillButtons.get(i).getValue().setVisible(false);
     }
 
     private void addRogueSkillButtons()
     {
-        for (int i = 0; i<=19; i++)
-            skillButtons.get(i).setVisible(false);
-        skillButtons.get(0).setVisible(true);
-        skillButtons.get(5).setVisible(true);
-        for (int i = 20; i< skillButtons.size(); i++)
-            skillButtons.get(i).setVisible(true);
+        for (int i = 0; i<=23; i++)
+            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 24; i< skillButtons.size(); i++) {
+            if (skillButtons.get(i).getKey()==true)
+                skillButtons.get(i).getValue().setVisible(true);
+            else
+                skillButtons.get(i).getValue().setVisible(false);
+        }
     }
 
     private void addSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
-        JButton strike = new JButton("Strike");
-        strike.setFont(customFont.deriveFont(10f));
-        strike.setBounds(262, 620, 80, 20);
-        strike.setBackground(buttonSkillsColor);
-        strike.addActionListener(new ActionListener() {
+        JButton warriorStrike = new JButton("Strike");
+        warriorStrike.setFont(customFont.deriveFont(10f));
+        warriorStrike.setBounds(262, 620, 80, 20);
+        warriorStrike.setBackground(buttonSkillsColor);
+        warriorStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
                     System.out.println(gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled));
+                    //need to do networking
+                    gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 262;
+                    gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 500;
+                    skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    //PlayingUI.game.activateSkill(PlayingUI.game.getOs(), skillButtons);
                 }
             }
         });
@@ -641,11 +661,24 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        JButton criticalHit = new JButton("Critical Hit");
-        criticalHit.setFont(customFont.deriveFont(10f));
-        criticalHit.setBounds(265, 813, 80, 18);
-        criticalHit.setBackground(buttonSkillsColor);
-        criticalHit.addActionListener(new ActionListener() {
+        JButton warriorCriticalHit = new JButton("Critical Hit");
+        warriorCriticalHit.setFont(customFont.deriveFont(10f));
+        warriorCriticalHit.setBounds(265, 813, 80, 18);
+        warriorCriticalHit.setBackground(buttonSkillsColor);
+        warriorCriticalHit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
+        JButton wizardStrike = new JButton("Strike");
+        wizardStrike.setFont(customFont.deriveFont(10f));
+        wizardStrike.setBounds(262, 620, 80, 20);
+        wizardStrike.setBackground(buttonSkillsColor);
+        wizardStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -693,11 +726,24 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        JButton shield = new JButton("Shield");
-        shield.setFont(customFont.deriveFont(10f));
-        shield.setBounds(263, 770, 80, 20);
-        shield.setBackground(buttonSkillsColor);
-        shield.addActionListener(new ActionListener() {
+        JButton wizardShield = new JButton("Shield");
+        wizardShield.setFont(customFont.deriveFont(10f));
+        wizardShield.setBounds(263, 770, 80, 20);
+        wizardShield.setBackground(buttonSkillsColor);
+        wizardShield.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
+        JButton wizardCriticalHit = new JButton("Critical Hit");
+        wizardCriticalHit.setFont(customFont.deriveFont(10f));
+        wizardCriticalHit.setBounds(265, 811, 80, 18);
+        wizardCriticalHit.setBackground(buttonSkillsColor);
+        wizardCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -771,6 +817,19 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        JButton clericShield = new JButton("Critical Hit");
+        clericShield.setFont(customFont.deriveFont(10f));
+        clericShield.setBounds(265, 812, 85, 18);
+        clericShield.setBackground(buttonSkillsColor);
+        clericShield.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
         JButton wildStrike = new JButton("Wild Strike");
         wildStrike.setFont(customFont.deriveFont(10f));
         wildStrike.setBounds(255, 620, 85, 20);
@@ -836,6 +895,32 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        JButton rangerCriticalHit = new JButton("Critical Hit");
+        rangerCriticalHit.setFont(customFont.deriveFont(10f));
+        rangerCriticalHit.setBounds(255, 820, 85, 18);
+        rangerCriticalHit.setBackground(buttonSkillsColor);
+        rangerCriticalHit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
+        JButton rogueStrike = new JButton("Strike");
+        rogueStrike.setFont(customFont.deriveFont(10f));
+        rogueStrike.setBounds(265, 620, 85, 20);
+        rogueStrike.setBackground(buttonSkillsColor);
+        rogueStrike.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
         JButton stab = new JButton("Stab");
         stab.setFont(customFont.deriveFont(10f));
         stab.setBounds(265, 660, 85, 20);
@@ -877,7 +962,7 @@ public class PlayingUI extends JPanel {
 
         JButton suddenDeath = new JButton("Sudden Death");
         suddenDeath.setFont(customFont.deriveFont(8f));
-        suddenDeath.setBounds(265, 770, 85, 20);
+        suddenDeath.setBounds(265, 780, 85, 20);
         suddenDeath.setBackground(buttonSkillsColor);
         suddenDeath.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -888,39 +973,62 @@ public class PlayingUI extends JPanel {
             }
         });
 
-        //warrior
-        skillButtons.add(strike);
-        skillButtons.add(slash);
-        skillButtons.add(smashingBlow);
-        skillButtons.add(savageAttack);
-        skillButtons.add(parry);
-        skillButtons.add(criticalHit);
-        //wizard - also has strike and critical hit
-        skillButtons.add(magicBolt);
-        skillButtons.add(firebolt);
-        skillButtons.add(lightningStorm);
-        skillButtons.add(shield);
-        //cleric - also has shield
-        skillButtons.add(holyStrike);
-        skillButtons.add(blessing);
-        skillButtons.add(smite);
-        skillButtons.add(healingHands);
-        skillButtons.add(holyStorm);
-        //ranger - also has critical hit
-        skillButtons.add(wildStrike);
-        skillButtons.add(accurateShot);
-        skillButtons.add(dualShot);
-        skillButtons.add(crossfire);
-        skillButtons.add(pinDown);
-        //rogue - also has strike and critical hit
-        skillButtons.add(stab);
-        skillButtons.add(suddenDeath);
-        skillButtons.add(flankingStrike);
-        skillButtons.add(sneakAttack);
+        JButton rogueCriticalHit = new JButton("Critical Hit");
+        rogueCriticalHit.setFont(customFont.deriveFont(10f));
+        rogueCriticalHit.setBounds(265, 820, 85, 18);
+        rogueCriticalHit.setBackground(buttonSkillsColor);
+        rogueCriticalHit.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
+                {
+
+                }
+            }
+        });
+
+        //warrior (0-5)
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, slash));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smashingBlow));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, savageAttack));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, parry));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorCriticalHit));
+        //wizard (6-11)
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, magicBolt));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, firebolt));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, lightningStorm));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardShield));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardCriticalHit));
+        //cleric (12-17)
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, blessing));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smite));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, healingHands));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStorm));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, clericShield));
+        //ranger (18-23)
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wildStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, accurateShot));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, dualShot));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, crossfire));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, pinDown));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rangerCriticalHit));
+        //rogue (24-29)
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, stab));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, suddenDeath));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, flankingStrike));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, sneakAttack));
+        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueCriticalHit));
         for (int i = 0; i< skillButtons.size(); i++) {
-            add(skillButtons.get(i));
-            skillButtons.get(i).setVisible(false);
+            add(skillButtons.get(i).getValue());
+            skillButtons.get(i).getValue().setVisible(false);
         }
+    }
+
+    public static void updateSkillButtons (List<Map.Entry<Boolean, JButton>> buttons) {
+        skillButtons = buttons;
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {

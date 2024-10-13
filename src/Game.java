@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -88,6 +89,9 @@ public class Game implements Runnable, Serializable {
                 else if(cfs.getCommand() == CommandFromServer.SEND_GAME_MESSAGE){
                     PlayingUI.showGameMessage((String) cfs.getData());
                 }
+                else if (cfs.getCommand() == CommandFromServer.PLACE_TOKEN) {
+                    //PlayingUI.updateSkillButtons((List<Map.Entry<Boolean, JButton>>) cfs.getData());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -96,6 +100,10 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void activateSkill (ObjectOutputStream os, List<Map.Entry<Boolean, JButton>> skills) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, skills, PlayingUI.getAccessCode()));
     }
 
     public void switchTurn (ObjectOutputStream os, int turnTracker) {
