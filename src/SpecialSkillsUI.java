@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class SpecialSkillsUI extends JPanel {
     private Font customFont;
@@ -16,16 +18,14 @@ public class SpecialSkillsUI extends JPanel {
     private static CardLayout cardLayout;
     private BufferedImage background;
     public static int heroClass;
-    private ArrayList<BufferedImage> diceFaces;
-    public static ArrayList<Integer> dice;
+    private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
+    public static List<Map.Entry<Boolean, Integer>> dice = new ArrayList<>();
     private Color greenBackground = new Color(147, 195, 123);
     private Color greenBorder = new Color(72, 129, 34);
     private Color redBackground = new Color(228, 99, 98);
     private Color redBorder = new Color(139, 0, 0);
-    private int borderThickness = 4;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel) {
-        diceFaces = new ArrayList<>();
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         readImages();
@@ -38,7 +38,7 @@ public class SpecialSkillsUI extends JPanel {
         g.drawImage(background, 0, 0, 1200, 1000, this);
         dice = getDice();
         for (int i = 0; i < dice.size(); i++)
-            g.drawImage(diceFaces.get(dice.get(i)), 500 + i*125, 370, 100, 100, this);
+            g.drawImage(diceFaces.get(dice.get(i).getValue()), 500 + i*125, 370, 100, 100, this);
 
         if (heroClass==0) {
             try {
@@ -124,10 +124,10 @@ public class SpecialSkillsUI extends JPanel {
         blessing.setOpaque(true);
         if (heroClass==2) {
             blessing.setBackground(greenBackground);
-            blessing.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            blessing.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             blessing.setBackground(redBackground);
-            blessing.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            blessing.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         blessing.addActionListener(new ActionListener() {
             @Override
@@ -141,10 +141,10 @@ public class SpecialSkillsUI extends JPanel {
         shield.setOpaque(true);
         if (heroClass==1 || heroClass==2) {
             shield.setBackground(greenBackground);
-            shield.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            shield.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             shield.setBackground(redBackground);
-            shield.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            shield.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         shield.addActionListener(new ActionListener() {
             @Override
@@ -158,10 +158,10 @@ public class SpecialSkillsUI extends JPanel {
         pinDown.setOpaque(true);
         if (heroClass==3 || heroClass==4) {
             pinDown.setBackground(greenBackground);
-            pinDown.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            pinDown.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             pinDown.setBackground(redBackground);
-            pinDown.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            pinDown.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         pinDown.addActionListener(new ActionListener() {
             @Override
@@ -175,10 +175,10 @@ public class SpecialSkillsUI extends JPanel {
         allySkills.setOpaque(true);
         if (heroClass==1 || heroClass==3) {
             allySkills.setBackground(greenBackground);
-            allySkills.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            allySkills.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             allySkills.setBackground(redBackground);
-            allySkills.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            allySkills.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         allySkills.addActionListener(new ActionListener() {
             @Override
@@ -192,10 +192,10 @@ public class SpecialSkillsUI extends JPanel {
         drainLife.setOpaque(true);
         if (heroClass==1) {
             drainLife.setBackground(greenBackground);
-            drainLife.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            drainLife.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             drainLife.setBackground(redBackground);
-            drainLife.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            drainLife.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         drainLife.addActionListener(new ActionListener() {
             @Override
@@ -209,10 +209,10 @@ public class SpecialSkillsUI extends JPanel {
         healingWave.setOpaque(true);
         if (heroClass==2) {
             healingWave.setBackground(greenBackground);
-            healingWave.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+            healingWave.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         } else {
             healingWave.setBackground(redBackground);
-            healingWave.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, redBorder));
+            healingWave.setBorder(new MatteBorder(4, 4, 4, 4, redBorder));
         }
         healingWave.addActionListener(new ActionListener() {
             @Override
@@ -233,7 +233,7 @@ public class SpecialSkillsUI extends JPanel {
         jab.setBounds(450, 260, 130, 50);
         jab.setOpaque(true);
         jab.setBackground(greenBackground);
-        jab.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+        jab.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         jab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -245,7 +245,7 @@ public class SpecialSkillsUI extends JPanel {
         treatWounds.setBounds(600, 260, 130, 50);
         treatWounds.setOpaque(true);
         treatWounds.setBackground(greenBackground);
-        treatWounds.setBorder(new MatteBorder(borderThickness, borderThickness, borderThickness, borderThickness, greenBorder));
+        treatWounds.setBorder(new MatteBorder(4, 4, 4, 4, greenBorder));
         treatWounds.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -284,11 +284,11 @@ public class SpecialSkillsUI extends JPanel {
         return heroClass;
     }
 
-    public static void getDice(ArrayList<Integer> d){
+    public static void getDice(List<Map.Entry<Boolean, Integer>> d){
         dice = d;
     }
 
-    public ArrayList<Integer> getDice(){
+    public List<Map.Entry<Boolean, Integer>> getDice(){
         return dice;
     }
 }

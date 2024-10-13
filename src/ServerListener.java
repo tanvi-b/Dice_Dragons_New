@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.Socket;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ServerListener implements Runnable {
     private ObjectInputStream is;
@@ -63,8 +64,14 @@ public class ServerListener implements Runnable {
 
                     Game newGame = new Game(null, null);
                     newGame.setAccessCode(String.valueOf(accessCode));
-                    newGame.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
-                            random.nextInt(6), random.nextInt(6), random.nextInt(6))));
+                    List<Map.Entry<Boolean, Integer>> diceList = new ArrayList<>(Arrays.asList(
+                            new AbstractMap.SimpleEntry<>(false, random.nextInt(6)),
+                            new AbstractMap.SimpleEntry<>(false, random.nextInt(6)),
+                            new AbstractMap.SimpleEntry<>(false, random.nextInt(6)),
+                            new AbstractMap.SimpleEntry<>(false, random.nextInt(6)),
+                            new AbstractMap.SimpleEntry<>(false, random.nextInt(6))
+                    ));
+                    newGame.setDiceRolled(diceList);
                     newGame.setLevel(0);
                     newGame.setDragons(createDragonsList());
 
@@ -94,11 +101,17 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand() == CommandFromClient.PASS_DICE) {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     Random random = new Random();
-                    game.setDiceRolled(new ArrayList<>(Arrays.asList(random.nextInt(6), random.nextInt(6),
-                            random.nextInt(6), random.nextInt(6), random.nextInt(6))));
+                    List<Map.Entry<Boolean, Integer>> originalDiceList = (List<Map.Entry<Boolean, Integer>>) cfc.getData();
+                    List<Map.Entry<Boolean, Integer>> updatedDiceList = new ArrayList<>();
+                    for (Map.Entry<Boolean, Integer> entry : originalDiceList) {
+                        Boolean shouldKeep = entry.getKey();
+                        Integer value = entry.getValue();
+                        int newValue = shouldKeep ? value : random.nextInt(6);
+                        updatedDiceList.add(new AbstractMap.SimpleEntry<>(false, newValue));
+                    }
+                    game.setDiceRolled(updatedDiceList);
                     for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.GIVE_DICE, game.getDiceRolled(), null), hero.getOs());
-
                 }
 
                 if (cfc.getCommand()==CommandFromClient.SWITCH_TURN)
@@ -116,9 +129,8 @@ public class ServerListener implements Runnable {
 
                 if (cfc.getCommand()==CommandFromClient.GAME_TEXT_DISPLAY)
                 {
-                    System.out.println("prisha i made it");
-                    String messageGame = (String) cfc.getData();
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    String messageGame = (String) cfc.getData();
                     for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.SEND_GAME_MESSAGE, messageGame, null), hero.getOs());
                 }
@@ -141,7 +153,6 @@ public class ServerListener implements Runnable {
         return gameDragons;
     }
 
-    //dice order is based on dragon guide
     //6: not equal to
     //7: equal
     private void setHeroValues(Hero hero) {

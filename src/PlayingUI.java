@@ -1,5 +1,7 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -8,26 +10,30 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.List;
+import java.util.stream.Collectors;
 
+//do we need to redraw dice after done turn?
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    private static ArrayList<Hero> gameHeroes;
-    private ArrayList<BufferedImage> dragonSheets;
+    private static ArrayList<Hero> gameHeroes = new ArrayList<>();
+    private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
     private static ArrayList<Integer> heroSheets = new ArrayList<>();
-    private ArrayList<BufferedImage> diceFaces;
-    private ArrayList<BufferedImage> warriorTokens;
-    private ArrayList<BufferedImage> wizardTokens;
-    private ArrayList<BufferedImage> clericTokens;
-    private ArrayList<BufferedImage> rangerTokens;
-    private ArrayList<BufferedImage> rogueTokens;
-    private ArrayList<BufferedImage> dragonTokens;
-    private ArrayList<BufferedImage> poisonTokens;
-    private ArrayList<BufferedImage> pinnedTokens;
-    private ArrayList<BufferedImage> blessedTokens;
+    private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
+    private ArrayList<BufferedImage> warriorTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> wizardTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> clericTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> rangerTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> rogueTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> dragonTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> poisonTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> pinnedTokens = new ArrayList<>();
+    private ArrayList<BufferedImage> blessedTokens = new ArrayList<>();
     private BufferedImage background;
     private Font customFont;
     private Font customBoldFont;
@@ -40,59 +46,35 @@ public class PlayingUI extends JPanel {
     private static JLabel levelText;
     private static JLabel expText;
     private static JLabel goldText;
-    private static ArrayList<Integer> diceRolled;
-    private static String username;
+    private static List<Map.Entry<Boolean, Integer>> diceRolled = new ArrayList<>();
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
+    private static String username;
     public static String accessCode;
     private static int turnTracker = 0;
     private int timesRolled;
-    private static ArrayList<JButton> skillButtons;
+    private static ArrayList<JButton> skillButtons = new ArrayList<>();
     private static JTextField gameMessages;
-    private static boolean rollState = false;
-    private static int playerHeroClass = 10;
-    private static boolean rollJustClicked = false;
-    private Color greenBackground = new Color(147, 195, 123);
-    private Color greenBorder = new Color(72, 129, 34);
-    private Color redBackground = new Color(228, 99, 98);
-    private Color redBorder = new Color(139, 0, 0);
-
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
         this.game = game;
-        gameHeroes = new ArrayList<>();
-        dragonSheets = new ArrayList<>();
-        heroSheets = new ArrayList<>();
-        diceFaces = new ArrayList<>();
-        warriorTokens = new ArrayList<>();
-        wizardTokens = new ArrayList<>();
-        clericTokens = new ArrayList<>();
-        rangerTokens = new ArrayList<>();
-        rogueTokens = new ArrayList<>();
-        dragonTokens = new ArrayList<>();
-        poisonTokens = new ArrayList<>();
-        pinnedTokens = new ArrayList<>();
-        blessedTokens = new ArrayList<>();
-        diceRolled = new ArrayList<>();
-        skillButtons = new ArrayList<>();
         setLayout(null);
         readImages();
         loadFonts();
         addComponents();
     }
 
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1200, 1000, this);
+        removeAllSkillButtons();
         //will change eventually
         g.drawImage(dragonSheets.get(0), 680, 400, 500, 550, this);
         for (int i = 0; i < diceRolled.size(); i++)
-            g.drawImage(diceFaces.get(diceRolled.get(i)), 450 + i*125, 100, 100, 100, this);
-
+            g.drawImage(diceFaces.get(diceRolled.get(i).getValue()), 450 + i*125, 100, 100, 100, this);
 
         if(heroClass==0) {
             try {
@@ -103,10 +85,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(warriorTokens.get(0), -35, 235 + (i*50), 350, 350, this);
             }
-            if(rollState == false){
-                removeAllSkillButtons();
-                addWarriorSkillButtons();
-            }
+            addWarriorSkillButtons();
         }
         if(heroClass==1) {
             try {
@@ -117,10 +96,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(wizardTokens.get(0), -60, 210 + (i*50), 425, 425, this);
             }
-            if(rollState == false ){
-                removeAllSkillButtons();
-                addWizardSkillButtons();
-            }
+            addWizardSkillButtons();
         }
         if(heroClass==2) {
             try {
@@ -133,10 +109,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(clericTokens.get(0), 17, 265 + (i*50), 300, 300, this);
             }
-            if(rollState == false){
-                removeAllSkillButtons();
-                addClericSkillButtons();
-            }
+            addClericSkillButtons();
         }
         if(heroClass==3) {
             try {
@@ -147,10 +120,7 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rangerTokens.get(0), -25, 250 + (i*50), 360, 360, this);
             }
-            if(rollState == false){
-                removeAllSkillButtons();
-                addRangerSkillButtons();
-            }
+            addRangerSkillButtons();
         }
         if(heroClass==4) {
             try {
@@ -161,13 +131,9 @@ public class PlayingUI extends JPanel {
             for (int i = 0; i < 3; i++) {
                 g.drawImage(rogueTokens.get(0), -30, 300 + (i*50), 360, 360, this);
             }
-            if(rollState == false){
-                removeAllSkillButtons();
-                addRogueSkillButtons();
-            }
+            addRogueSkillButtons();
         }
     }
-
 
     private void addComponents() {
         turn = new JLabel("Turn: ");
@@ -175,13 +141,11 @@ public class PlayingUI extends JPanel {
         turn.setBounds(450, 20, 400, 60);
         turn.setOpaque(true);
 
-
         JButton rules = new JButton("Rules");
         rules.setFont(customFont.deriveFont(20f));
         rules.setBounds(900, 20, 60, 60);
         rules.setBorder(BorderFactory.createLineBorder(Color.black));
         rules.setOpaque(true);
-
 
         rules.addActionListener(new ActionListener() {
             @Override
@@ -190,13 +154,11 @@ public class PlayingUI extends JPanel {
             }
         });
 
-
         JButton guide = new JButton("Guide");
         guide.setFont(customFont.deriveFont(20f));
         guide.setBounds(990, 20, 60, 60);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
-
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -205,18 +167,15 @@ public class PlayingUI extends JPanel {
             }
         });
 
-
         JScrollPane chatBox = new JScrollPane(chatMessages);
         chatBox.setVisible(true);
         chatBox.setBounds(20, 20, 270, 200);
-
 
         JTextField messageText = new JTextField();
         messageText.setFont(new Font("Times New Roman", Font.PLAIN, 18));
         messageText.setBounds(20, 230, 200, 65);
         messageText.setBackground(Color.white);
         messageText.setOpaque(true);
-
 
         JButton send = new JButton("Send");
         send.setFont(customFont.deriveFont(15f));
@@ -229,6 +188,125 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        JButton keep1 = new JButton("Keep");
+        keep1.setFont(customFont.deriveFont(20f));
+        keep1.setBounds(450, 205, 100, 25);
+        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep1.setOpaque(true);
+        keep1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(0).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep1.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep1.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep1.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(0, newEntry);
+                }
+            }
+        });
+
+        JButton keep2 = new JButton("Keep");
+        keep2.setFont(customFont.deriveFont(20f));
+        keep2.setBounds(575, 205, 100, 25);
+        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep2.setOpaque(true);
+        keep2.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(1).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep2.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep2.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep2.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(1, newEntry);
+                }
+            }
+        });
+
+        JButton keep3 = new JButton("Keep");
+        keep3.setFont(customFont.deriveFont(20f));
+        keep3.setBounds(700, 205, 100, 25);
+        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep3.setOpaque(true);
+        keep3.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(2).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep3.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep3.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep3.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(2, newEntry);
+                }
+            }
+        });
+
+        JButton keep4 = new JButton("Keep");
+        keep4.setFont(customFont.deriveFont(20f));
+        keep4.setBounds(825, 205, 100, 25);
+        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep4.setOpaque(true);
+        keep4.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(3).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep4.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep4.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep4.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(3, newEntry);
+                }
+            }
+        });
+
+        JButton keep5 = new JButton("Keep");
+        keep5.setFont(customFont.deriveFont(20f));
+        keep5.setBounds(950, 205, 100, 25);
+        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+        keep5.setOpaque(true);
+        keep5.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                if (turn.getText().substring(6).equals(username) && timesRolled>0)
+                {
+                    Integer value = diceRolled.get(4).getValue();
+                    Map.Entry<Boolean, Integer> newEntry = null;
+                    if (keep5.getBorder() instanceof MatteBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                    }
+                    else if (keep5.getBorder() instanceof LineBorder) {
+                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                        keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                    }
+                    diceRolled.set(4, newEntry);
+                }
+            }
+        });
 
         JButton roll = new JButton ("Roll");
         roll.setFont(customFont.deriveFont(20f));
@@ -237,22 +315,22 @@ public class PlayingUI extends JPanel {
         roll.setOpaque(true);
         roll.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                rollJustClicked = true;
-
                 if (turn.getText().substring(6).equals(username))
                 {
                     if (timesRolled<3) {
-                        PlayingUI.game.passDice(PlayingUI.game.getOs());
+                        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                        PlayingUI.game.passDice(PlayingUI.game.getOs(), diceRolled);
                         timesRolled++;
-                        String text = username + " has rolled the dice combinations above! They have " + (3-timesRolled) + " turns remaining!";
+                        String text = username + " has rolled the dice combinations above! " + username + " has " + (3-timesRolled) + " turns remaining!";
                         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
-                        rollState = true;
                     }
                 }
-                repaint();
             }
         });
-
 
         JButton doneWithTurn = new JButton ("Done with Turn");
         doneWithTurn.setBackground(new Color(228, 99, 98));
@@ -263,72 +341,16 @@ public class PlayingUI extends JPanel {
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (timesRolled>0) {
+                    keep1.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep2.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep3.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep4.setBorder(BorderFactory.createLineBorder(Color.black));
+                    keep5.setBorder(BorderFactory.createLineBorder(Color.black));
                     PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
                     timesRolled = 0;
                 }
             }
         });
-
-
-        JButton keep1 = new JButton("Keep");
-        keep1.setFont(customFont.deriveFont(20f));
-        keep1.setBounds(450, 210, 100, 20);
-        keep1.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep1.setOpaque(true);
-        keep1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-            }
-        });
-
-
-        JButton keep2 = new JButton("Keep");
-        keep2.setFont(customFont.deriveFont(20f));
-        keep2.setBounds(575, 210, 100, 20);
-        keep2.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep2.setOpaque(true);
-        keep2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-            }
-        });
-
-
-        JButton keep3 = new JButton("Keep");
-        keep3.setFont(customFont.deriveFont(20f));
-        keep3.setBounds(700, 210, 100, 20);
-        keep3.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep3.setOpaque(true);
-        keep3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-            }
-        });
-
-
-        JButton keep4 = new JButton("Keep");
-        keep4.setFont(customFont.deriveFont(20f));
-        keep4.setBounds(825, 210, 100, 20);
-        keep4.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep4.setOpaque(true);
-        keep4.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-            }
-        });
-
-
-        JButton keep5 = new JButton("Keep");
-        keep5.setFont(customFont.deriveFont(20f));
-        keep5.setBounds(950, 210, 100, 20);
-        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
-        keep5.setOpaque(true);
-        keep5.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-            }
-        });
-
 
         //special skills
         JButton specialSkills = new JButton("Special Skills");
@@ -336,16 +358,14 @@ public class PlayingUI extends JPanel {
         specialSkills.setBounds(30, 350, 150, 40);
         specialSkills.setBorder(BorderFactory.createLineBorder(Color.black));
         specialSkills.setOpaque(true);
-
-
         specialSkills.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //if (turn.getText().substring(6).equals(username))
-                SpecialSkillsUI.getDice(diceRolled);
-                cardLayout.show(mainPanel, "SpecialSkillsScreen");
+                if (turn.getText().substring(6).equals(username)) {
+                    SpecialSkillsUI.getDice(diceRolled);
+                    cardLayout.show(mainPanel, "SpecialSkillsScreen");
+                }
             }
         });
-
 
         gameMessages = new JTextField("Message: ");
         gameMessages.setEditable(false);
@@ -353,20 +373,17 @@ public class PlayingUI extends JPanel {
         gameMessages.setBounds(450, 280, 600, 50);
         gameMessages.setBorder(BorderFactory.createLineBorder(Color.black));
 
-
         currentPlayerSheet = new JLabel();
         currentPlayerSheet.setFont(customFont.deriveFont(30f));
         currentPlayerSheet.setBounds(160, 355, 500, 50);
         currentPlayerSheet.setHorizontalAlignment(SwingConstants.CENTER);
         currentPlayerSheet.setOpaque(false);
 
-
         characterNameText = new JLabel();
         characterNameText.setFont(customFont.deriveFont(17f));
         characterNameText.setBounds(375, 440, 100, 30);
         characterNameText.setHorizontalAlignment(SwingConstants.CENTER);
         characterNameText.setOpaque(false);
-
 
         armorClassText = new JLabel();
         armorClassText.setFont(customFont.deriveFont(17f));
@@ -375,13 +392,11 @@ public class PlayingUI extends JPanel {
         armorClassText.setOpaque(false);
         //for now box use x = 295
 
-
         hitPointsText = new JLabel();
         hitPointsText.setFont(customFont.deriveFont(17f));
         hitPointsText.setBounds(348, 505, 35, 45);
         hitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
         hitPointsText.setOpaque(false);
-
 
         levelText = new JLabel("0");
         levelText.setFont(customFont.deriveFont(15f));
@@ -389,13 +404,11 @@ public class PlayingUI extends JPanel {
         levelText.setHorizontalAlignment(SwingConstants.CENTER);
         levelText.setOpaque(false);
 
-
         expText = new JLabel("0");
         expText.setFont(customFont.deriveFont(15f));
         expText.setBounds(455, 545, 20, 20);
         expText.setHorizontalAlignment(SwingConstants.CENTER);
         expText.setOpaque(false);
-
 
         goldText = new JLabel("0");
         goldText.setFont(customFont.deriveFont(15f));
@@ -403,25 +416,15 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
-
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rollJustClicked = true;
                 int i = heroSheets.indexOf(heroClass);
                 if (i+1<=heroSheets.size()-1)
                 {
                     heroClass = heroSheets.get(i+1);
-                    if(playerHeroClass == heroClass){
-                        rollState = true;
-                    }
-                    else{
-                        rollState = false;
-                    }
                     repaint();
-
-                    System.out.println("NEXT: " + heroClass);
                 }
                 for (Hero hero: gameHeroes)
                 {
@@ -432,24 +435,15 @@ public class PlayingUI extends JPanel {
         });
         next.setBounds(525, 370, 100, 25);
 
-
         BasicArrowButton previous = new BasicArrowButton(BasicArrowButton.WEST);
         previous.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                rollJustClicked = true;
                 int i = heroSheets.indexOf(heroClass);
                 if (i-1>=0)
                 {
                     heroClass = heroSheets.get(i-1);
-                    if(playerHeroClass == heroClass){
-                        rollState = true;
-                    }
-                    else{
-                        rollState = false;
-                    }
                     repaint();
-                    System.out.println("PREV: " + heroClass);
                 }
                 for (Hero hero: gameHeroes)
                 {
@@ -459,7 +453,6 @@ public class PlayingUI extends JPanel {
             }
         });
         previous.setBounds(200, 370, 100, 25);
-
 
         add(turn);
         add(rules);
@@ -485,10 +478,7 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
-
-
     }
-
 
     private void addWarriorSkillButtons()
     {
@@ -499,14 +489,9 @@ public class PlayingUI extends JPanel {
         strike.setBackground(buttonSkillsColor);
         strike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    strike.setBackground(greenBackground);
-                    rollState = true;
-                }
+                System.out.println("hi");
             }
         });
-
 
         JButton slash = new JButton("Slash");
         slash.setFont(customFont.deriveFont(10f));
@@ -514,15 +499,8 @@ public class PlayingUI extends JPanel {
         slash.setBackground(buttonSkillsColor);
         slash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    slash.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
-
 
         JButton smashingBlow = new JButton("Smashing Blow");
         smashingBlow.setFont(customFont.deriveFont(7.4f));
@@ -530,15 +508,8 @@ public class PlayingUI extends JPanel {
         smashingBlow.setBackground(buttonSkillsColor);
         smashingBlow.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    smashingBlow.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
-
 
         JButton savageAttack = new JButton("Savage Attack");
         savageAttack.setFont(customFont.deriveFont(7.4f));
@@ -546,15 +517,8 @@ public class PlayingUI extends JPanel {
         savageAttack.setBackground(buttonSkillsColor);
         savageAttack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    savageAttack.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
-
 
         JButton parry = new JButton("Parry");
         parry.setFont(customFont.deriveFont(10f));
@@ -562,15 +526,8 @@ public class PlayingUI extends JPanel {
         parry.setBackground(buttonSkillsColor);
         parry.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    parry.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
-
 
         JButton criticalHit = new JButton("Critical Hit");
         criticalHit.setFont(customFont.deriveFont(10f));
@@ -578,15 +535,8 @@ public class PlayingUI extends JPanel {
         criticalHit.setBackground(buttonSkillsColor);
         criticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    criticalHit.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
-
 
         add(strike);
         add(slash);
@@ -602,7 +552,6 @@ public class PlayingUI extends JPanel {
         skillButtons.add(criticalHit);
     }
 
-
     private void addWizardSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
@@ -612,14 +561,8 @@ public class PlayingUI extends JPanel {
         strike.setBackground(buttonSkillsColor);
         strike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    strike.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton magicBolt = new JButton("Magic Bolt");
         magicBolt.setFont(customFont.deriveFont(10f));
@@ -627,14 +570,8 @@ public class PlayingUI extends JPanel {
         magicBolt.setBackground(buttonSkillsColor);
         magicBolt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    magicBolt.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton firebolt = new JButton("Firebolt");
         firebolt.setFont(customFont.deriveFont(10f));
@@ -642,14 +579,10 @@ public class PlayingUI extends JPanel {
         firebolt.setBackground(buttonSkillsColor);
         firebolt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    firebolt.setBackground(greenBackground);
-                    rollState = true;
-                }
+
+
             }
         });
-
 
         JButton lightningStorm = new JButton("Lightning Storm");
         lightningStorm.setFont(customFont.deriveFont(6.4f));
@@ -657,14 +590,8 @@ public class PlayingUI extends JPanel {
         lightningStorm.setBackground(buttonSkillsColor);
         lightningStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    lightningStorm.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton shield = new JButton("Shield");
         shield.setFont(customFont.deriveFont(10f));
@@ -672,14 +599,8 @@ public class PlayingUI extends JPanel {
         shield.setBackground(buttonSkillsColor);
         shield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    lightningStorm.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton criticalHit = new JButton("Critical Hit");
         criticalHit.setFont(customFont.deriveFont(10f));
@@ -687,14 +608,8 @@ public class PlayingUI extends JPanel {
         criticalHit.setBackground(buttonSkillsColor);
         criticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    criticalHit.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         add(strike);
         add(magicBolt);
@@ -710,7 +625,6 @@ public class PlayingUI extends JPanel {
         skillButtons.add(criticalHit);
     }
 
-
     private void addClericSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
@@ -720,14 +634,8 @@ public class PlayingUI extends JPanel {
         holyStrike.setBackground(buttonSkillsColor);
         holyStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    holyStrike.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton blessing = new JButton("Blessing");
         blessing.setFont(customFont.deriveFont(9.4f));
@@ -735,14 +643,8 @@ public class PlayingUI extends JPanel {
         blessing.setBackground(buttonSkillsColor);
         blessing.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    blessing.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton smite = new JButton("Smite");
         smite.setFont(customFont.deriveFont(10f));
@@ -750,14 +652,8 @@ public class PlayingUI extends JPanel {
         smite.setBackground(buttonSkillsColor);
         smite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    smite.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton healingHands = new JButton("Healing Hands");
         healingHands.setFont(customFont.deriveFont(10f));
@@ -765,14 +661,8 @@ public class PlayingUI extends JPanel {
         healingHands.setBackground(buttonSkillsColor);
         healingHands.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    healingHands.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton holyStorm = new JButton("Holy Storm");
         holyStorm.setFont(customFont.deriveFont(10f));
@@ -780,14 +670,8 @@ public class PlayingUI extends JPanel {
         holyStorm.setBackground(buttonSkillsColor);
         holyStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    holyStorm.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton shield = new JButton("Shield");
         shield.setFont(customFont.deriveFont(10f));
@@ -795,14 +679,8 @@ public class PlayingUI extends JPanel {
         shield.setBackground(buttonSkillsColor);
         shield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    shield.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         add(holyStrike);
         add(blessing);
@@ -818,7 +696,6 @@ public class PlayingUI extends JPanel {
         skillButtons.add(shield);
     }
 
-
     private void addRangerSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
@@ -828,14 +705,8 @@ public class PlayingUI extends JPanel {
         wildStrike.setBackground(buttonSkillsColor);
         wildStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    wildStrike.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton accurateShot = new JButton("Accurate Shot");
         accurateShot.setFont(customFont.deriveFont(9.4f));
@@ -843,14 +714,8 @@ public class PlayingUI extends JPanel {
         accurateShot.setBackground(buttonSkillsColor);
         accurateShot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    accurateShot.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton dualShot = new JButton("Dual Shot");
         dualShot.setFont(customFont.deriveFont(10f));
@@ -858,14 +723,8 @@ public class PlayingUI extends JPanel {
         dualShot.setBackground(buttonSkillsColor);
         dualShot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    dualShot.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton crossfire = new JButton("Crossfire");
         crossfire.setFont(customFont.deriveFont(10f));
@@ -873,14 +732,8 @@ public class PlayingUI extends JPanel {
         crossfire.setBackground(buttonSkillsColor);
         crossfire.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    crossfire.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton pinDown = new JButton("Pin Down");
         pinDown.setFont(customFont.deriveFont(10f));
@@ -888,14 +741,8 @@ public class PlayingUI extends JPanel {
         pinDown.setBackground(buttonSkillsColor);
         pinDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    pinDown.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         JButton criticalHit = new JButton("Critical Hit");
         criticalHit.setFont(customFont.deriveFont(10f));
@@ -903,14 +750,8 @@ public class PlayingUI extends JPanel {
         criticalHit.setBackground(buttonSkillsColor);
         criticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    criticalHit.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         add(wildStrike);
         add(accurateShot);
@@ -926,7 +767,6 @@ public class PlayingUI extends JPanel {
         skillButtons.add(criticalHit);
     }
 
-
     private void addRogueSkillButtons()
     {
         Color buttonSkillsColor = new Color(237,197,72,255);
@@ -936,11 +776,6 @@ public class PlayingUI extends JPanel {
         strike.setBackground(buttonSkillsColor);
         strike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    strike.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
 
@@ -950,11 +785,6 @@ public class PlayingUI extends JPanel {
         stab.setBackground(buttonSkillsColor);
         stab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    stab.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
 
@@ -964,11 +794,6 @@ public class PlayingUI extends JPanel {
         flankingStrike.setBackground(buttonSkillsColor);
         flankingStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    flankingStrike.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
 
@@ -978,11 +803,6 @@ public class PlayingUI extends JPanel {
         sneakAttack.setBackground(buttonSkillsColor);
         sneakAttack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    sneakAttack.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
 
@@ -992,12 +812,6 @@ public class PlayingUI extends JPanel {
         suddenDeath.setBackground(buttonSkillsColor);
         suddenDeath.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    suddenDeath.setBackground(greenBackground);
-                    rollState = true;
-                }
-
             }
         });
 
@@ -1007,14 +821,8 @@ public class PlayingUI extends JPanel {
         criticalHit.setBackground(buttonSkillsColor);
         criticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String help = turn.getText().substring(6);
-                if(help.equals(username) && heroClass == playerHeroClass){
-                    criticalHit.setBackground(greenBackground);
-                    rollState = true;
-                }
             }
         });
-
 
         add(strike);
         add(stab);
@@ -1030,13 +838,11 @@ public class PlayingUI extends JPanel {
         skillButtons.add(criticalHit);
     }
 
-
     private static void removeAllSkillButtons()
     {
         for (int i = 0; i< skillButtons.size(); i++)
             skillButtons.get(i).setVisible(false);
     }
-
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
         chatModel.clear();
@@ -1046,7 +852,6 @@ public class PlayingUI extends JPanel {
         chatMessages.ensureIndexIsVisible(chatModel.getSize()-1);
     }
 
-
     private void loadFonts() {
         try {
             customFont = Font.createFont(Font.TRUETYPE_FONT, new File("fonts/Almendra-Regular.ttf"));
@@ -1055,7 +860,6 @@ public class PlayingUI extends JPanel {
             e.printStackTrace();
         }
     }
-
 
     private void readImages() {
         try {
@@ -1069,7 +873,6 @@ public class PlayingUI extends JPanel {
             dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
 
-
             //for now, only added one image into arraylist - can change later
             warriorTokens.add(ImageIO.read(new File("images/WeaponBlue.png")));
             wizardTokens.add(ImageIO.read(new File("images/WeaponRed.png")));
@@ -1081,7 +884,6 @@ public class PlayingUI extends JPanel {
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));
             blessedTokens.add(ImageIO.read(new File("images/tokenBlue.png")));
 
-
             diceFaces.add(ImageIO.read(new File("images/dice0.png")));
             diceFaces.add(ImageIO.read(new File("images/dice1.png")));
             diceFaces.add(ImageIO.read(new File("images/dice2.png")));
@@ -1092,7 +894,6 @@ public class PlayingUI extends JPanel {
             e.printStackTrace();
         }
     }
-
 
     public static void addHeroes (ArrayList<Hero> currentHeroes)
     {
@@ -1106,37 +907,26 @@ public class PlayingUI extends JPanel {
         setTurnText(0);
     }
 
-
     public static void setTurnText(int turnNumber)
     {
         turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
         turnTracker = turnNumber;
-        gameMessages.setText("It is now " + gameHeroes.get(turnNumber).heroName + "'s turn! " + gameHeroes.get(turnNumber).heroName + " has 3 turns to use");
+        gameMessages.setText("It is now " + gameHeroes.get(turnNumber).heroName + "'s turn! " + gameHeroes.get(turnNumber).heroName + " has 3 turns to use.");
     }
-
 
     public static void setAccessCode(String num){
         accessCode = num;
     }
 
-
     public static String getAccessCode(){
         return accessCode;
     }
 
-
-    public static void setUsername (Hero hero)
-    {
+    public static void setUsername (Hero hero) {
         username = hero.heroName;
     }
-    public static void setHeroClass(Hero hero){
-        playerHeroClass = hero.classType;
-    }
 
-
-
-    public static void setFields (Hero hero)
-    {
+    public static void setFields (Hero hero) {
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
@@ -1147,26 +937,17 @@ public class PlayingUI extends JPanel {
         goldText.setText(String.valueOf(hero.gold));
     }
 
-
-    public static void getDice (ArrayList<Integer> dice)
-    {
+    public static void getDice (List<Map.Entry<Boolean, Integer>> dice) {
         diceRolled.clear();
         for (int i = 0; i< dice.size(); i++)
             diceRolled.add(dice.get(i));
 
-
         if (instance != null) {
             instance.repaint();
         }
-
     }
-
 
     public static void showGameMessage(String text){
         gameMessages.setText(text);
     }
 }
-
-
-//roll - y = 210
-//keep - y = 235

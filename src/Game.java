@@ -1,9 +1,10 @@
-import javax.swing.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class Game implements Runnable, Serializable {
 
@@ -15,7 +16,7 @@ public class Game implements Runnable, Serializable {
     private ObjectInputStream is;
     ArrayList<Hero> heroes;
     ArrayList<Dragon> dragons;
-    ArrayList<Integer> diceRolled;
+    List<Map.Entry<Boolean, Integer>> diceRolled;
     ArrayList<String> messages;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
@@ -80,7 +81,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.refreshChat((ArrayList<String>) cfs.getPlayer());
                 }
                 else if (cfs.getCommand()==CommandFromServer.GIVE_DICE) {
-                    PlayingUI.getDice((ArrayList<Integer>) cfs.getData());
+                    PlayingUI.getDice((List<Map.Entry<Boolean, Integer>>) cfs.getData());
                 }
                 else if (cfs.getCommand()==CommandFromServer.SWITCH_TURN) {
                     PlayingUI.setTurnText((Integer)cfs.getData());
@@ -98,77 +99,36 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
-    public void switchTurn (ObjectOutputStream os, int turnTracker)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.SWITCH_TURN, turnTracker, PlayingUI.getAccessCode());
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+    public void switchTurn (ObjectOutputStream os, int turnTracker) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.SWITCH_TURN, turnTracker, PlayingUI.getAccessCode()));
     }
 
-    public void gameMessageText (ObjectOutputStream os, String text)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.GAME_TEXT_DISPLAY, text, PlayingUI.getAccessCode());
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+    public void gameMessageText (ObjectOutputStream os, String text) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.GAME_TEXT_DISPLAY, text, PlayingUI.getAccessCode()));
     }
 
-    public void passDice (ObjectOutputStream os)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.PASS_DICE, null, PlayingUI.getAccessCode());
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+    public void passDice (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.PASS_DICE, dice, PlayingUI.getAccessCode()));
     }
 
-    public void playerJoin (ObjectOutputStream os, String info, String name)
-    {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.JOIN, info, name);
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+    public void playerJoin (ObjectOutputStream os, String info, String name) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.JOIN, info, name));
     }
 
     public void playerHost(ObjectOutputStream os, String info, String player)  {
-        try
-        {
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.HOST, info, player);
-            os.writeObject(cfc);
-            os.flush();
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
+        sendCommand(os, new CommandFromClient(CommandFromClient.HOST, info, player));
     }
 
     public void sendMessage (ObjectOutputStream os, String text) {
-        try{
-            CommandFromClient cfc = new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode());
+        sendCommand(os, new CommandFromClient(CommandFromClient.SEND_MESSAGE, text, PlayingUI.getAccessCode()));
+    }
+
+    private void sendCommand(ObjectOutputStream os, CommandFromClient cfc) {
+        try {
+            os.reset();
             os.writeObject(cfc);
             os.flush();
-        }
-        catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -188,7 +148,6 @@ public class Game implements Runnable, Serializable {
     public void setMaxPlayers(int maxPlayers) {
         this.maxPlayers = maxPlayers;
     }
-
 
     public String getAccessCode() {
         return accessCode;
@@ -234,12 +193,10 @@ public class Game implements Runnable, Serializable {
         this.dragons = dragons;
     }
 
-    public ArrayList<Integer> getDiceRolled() {
+    public List<Map.Entry<Boolean, Integer>> getDiceRolled() {
         return diceRolled;
     }
 
-    public void setDiceRolled(ArrayList<Integer> diceRolled) {
-        this.diceRolled = diceRolled;
-    }
+    public void setDiceRolled(List<Map.Entry<Boolean, Integer>> diceRolled) { this.diceRolled = diceRolled;}
 }
 
