@@ -586,7 +586,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && timesRolled>0)
                 {
-                    System.out.println("strike pressed");
+                    System.out.println(gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled));
                 }
             }
         });
@@ -600,7 +600,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && timesRolled>0)
                 {
-                    System.out.println("slash pressed");
+
                 }
             }
         });
