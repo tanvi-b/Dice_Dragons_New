@@ -156,7 +156,7 @@ public class Game implements Runnable, Serializable {
     public void setAccessCode(String accessCode) {
         this.accessCode = accessCode;
     }
-    
+
     public ArrayList<String> getMessagesChat(){
         return messages;
     }
@@ -199,4 +199,3 @@ public class Game implements Runnable, Serializable {
 
     public void setDiceRolled(List<Map.Entry<Boolean, Integer>> diceRolled) { this.diceRolled = diceRolled;}
 }
-

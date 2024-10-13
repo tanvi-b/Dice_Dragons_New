@@ -153,8 +153,6 @@ public class ServerListener implements Runnable {
         return gameDragons;
     }
 
-    //6: not equal to
-    //7: equal
     private void setHeroValues(Hero hero) {
         switch (hero.classType) {
             case 0: //warrior
