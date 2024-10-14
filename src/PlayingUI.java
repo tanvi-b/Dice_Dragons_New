@@ -595,15 +595,36 @@ public class PlayingUI extends JPanel {
         warriorStrike.setFont(customFont.deriveFont(10f));
         warriorStrike.setBounds(262, 620, 80, 20);
         warriorStrike.setBackground(buttonSkillsColor);
+
+        boolean[] warriorState= {false, false, false};
+        boolean[] wizardState = {false, false, false};
+        boolean[] clericState = {false, false, false};
+        boolean[] rangerState = {false, false, false};
+        boolean[] rogueState = {false, false, false};
         warriorStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    System.out.println(gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled));
                     //need to do networking
-                    gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 262;
-                    gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 500;
-                    skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 450;
+                        warriorState[0] = true;
+                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 450;
+                        warriorState[1] = true;
+                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 450;
+                        warriorState[2] = true;
+                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    }
+
                     //PlayingUI.game.activateSkill(PlayingUI.game.getOs(), skillButtons);
                 }
             }
@@ -617,7 +638,26 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 490;
+                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                        warriorState[0] = true;
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 490;
+                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                        warriorState[1] = true;
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 490;
+                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                        warriorState[2] = true;
+                    }
+                    //need to do networking
+                    //PlayingUI.game.activateSkill(PlayingUI.game.getOs(), skillButtons);
                 }
             }
         });
@@ -630,7 +670,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 530;
+                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                        warriorState[0] = true;
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 530;
+                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                        warriorState[1] = true;
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 530;
+                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                        warriorState[2] = true;
+                    }
                 }
             }
         });
@@ -643,7 +700,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
+                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                        warriorState[0] = true;
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 560;
+                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                        warriorState[1] = true;
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
+                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                        warriorState[2] = true;
+                    }
                 }
             }
         });
@@ -656,7 +730,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 600;
+                        skillButtons.set(4, new AbstractMap.SimpleEntry<>(false,parry));
+                        warriorState[0] = true;
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 600;
+                        skillButtons.set(4, new AbstractMap.SimpleEntry<>(false,parry));
+                        warriorState[1] = true;
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 600;
+                        skillButtons.set(4, new AbstractMap.SimpleEntry<>(false,parry));
+                        warriorState[2] = true;
+                    }
                 }
             }
         });
@@ -669,7 +760,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(warriorState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 640;
+                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
+                        warriorState[0] = true;
+                    }
+                    else if(warriorState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 640;
+                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
+                        warriorState[1] = true;
+                    }
+                    else if(warriorState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 640;
+                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
+                        warriorState[2] = true;
+                    }
                 }
             }
         });
@@ -682,7 +790,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 420;
+                        wizardState[0] = true;
+                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 420;
+                        wizardState[1] = true;
+                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 420;
+                        wizardState[2] = true;
+                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    }
                 }
             }
         });
@@ -695,7 +820,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 460;
+                        wizardState[0] = true;
+                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 460;
+                        wizardState[1] = true;
+                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 460;
+                        wizardState[2] = true;
+                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    }
                 }
             }
         });
@@ -708,7 +850,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 500;
+                        wizardState[0] = true;
+                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 500;
+                        wizardState[1] = true;
+                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 500;
+                        wizardState[2] = true;
+                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    }
                 }
             }
         });
@@ -721,7 +880,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 540;
+                        wizardState[0] = true;
+                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 540;
+                        wizardState[1] = true;
+                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 540;
+                        wizardState[2] = true;
+                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                    }
                 }
             }
         });
@@ -734,7 +910,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 580;
+                        wizardState[0] = true;
+                        skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 580;
+                        wizardState[1] = true;
+                        skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 580;
+                        wizardState[2] = true;
+                        skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
+                    }
                 }
             }
         });
@@ -747,7 +940,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(wizardState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 620;
+                        wizardState[0] = true;
+                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    }
+                    else if(wizardState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 620;
+                        wizardState[1] = true;
+                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    }
+                    else if(wizardState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 620;
+                        wizardState[2] = true;
+                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    }
                 }
             }
         });
@@ -760,7 +970,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
+                        clericState[0] = true;
+                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
+                        clericState[1] = true;
+                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
+                        clericState[2] = true;
+                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    }
                 }
             }
         });
@@ -773,7 +1000,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 510;
+                        clericState[0] = true;
+                        skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 510;
+                        clericState[1] = true;
+                        skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 510;
+                        clericState[2] = true;
+                        skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
+                    }
                 }
             }
         });
@@ -786,7 +1030,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
+                        clericState[0] = true;
+                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
+                        clericState[1] = true;
+                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
+                        clericState[2] = true;
+                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    }
                 }
             }
         });
@@ -799,7 +1060,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
+                        clericState[0] = true;
+                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
+                        clericState[1] = true;
+                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
+                        clericState[2] = true;
+                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                    }
                 }
             }
         });
@@ -812,7 +1090,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
+                        clericState[0] = true;
+                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
+                        clericState[1] = true;
+                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
+                        clericState[2] = true;
+                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    }
                 }
             }
         });
@@ -825,7 +1120,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(clericState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
+                        clericState[0] = true;
+                        skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
+                    }
+                    else if(clericState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
+                        clericState[1] = true;
+                        skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
+                    }
+                    else if(clericState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
+                        clericState[2] = true;
+                        skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
+                    }
                 }
             }
         });
@@ -838,6 +1150,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
+                       rangerState[0] = true;
+                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
+                        rangerState[1] = true;
+                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
+                        rangerState[2] = true;
+                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false,wildStrike));
+                    }
 
                 }
             }
@@ -851,7 +1181,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 510;
+                        rangerState[0] = true;
+                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 510;
+                        rangerState[1] = true;
+                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 510;
+                        rangerState[2] = true;
+                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false,accurateShot));
+                    }
                 }
             }
         });
@@ -864,7 +1211,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
+                        rangerState[0] = true;
+                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
+                        rangerState[1] = true;
+                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
+                        rangerState[2] = true;
+                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false,dualShot));
+                    }
                 }
             }
         });
@@ -877,7 +1241,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
+                        rangerState[0] = true;
+                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
+                        rangerState[1] = true;
+                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
+                        rangerState[2] = true;
+                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false,crossfire));
+                    }
                 }
             }
         });
@@ -890,7 +1271,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
+                        rangerState[0] = true;
+                        skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
+                        rangerState[1] = true;
+                        skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
+                        rangerState[2] = true;
+                        skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
+                    }
                 }
             }
         });
@@ -903,7 +1301,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rangerState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
+                        rangerState[0] = true;
+                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                    }
+                    else if(rangerState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
+                        rangerState[1] = true;
+                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                    }
+                    else if(rangerState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
+                        rangerState[2] = true;
+                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                    }
                 }
             }
         });
@@ -916,7 +1331,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 520;
+                        rogueState[0] = true;
+                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 520;
+                        rogueState[1] = true;
+                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 520;
+                        rogueState[2] = true;
+                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    }
                 }
             }
         });
@@ -929,7 +1361,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
+                        rogueState[0] = true;
+                        skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 560;
+                        rogueState[1] = true;
+                        skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
+                        rogueState[2] = true;
+                        skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                    }
                 }
             }
         });
@@ -942,7 +1391,24 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 600;
+                        rogueState[0] = true;
+                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 600;
+                        rogueState[1] = true;
+                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 600;
+                        rogueState[2] = true;
+                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    }
                 }
             }
         });
@@ -955,33 +1421,84 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
+                        rogueState[0] = true;
+                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
+                        rogueState[1] = true;
+                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
+                        rogueState[2] = true;
+                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                    }
                 }
             }
         });
 
         JButton suddenDeath = new JButton("Sudden Death");
         suddenDeath.setFont(customFont.deriveFont(8f));
-        suddenDeath.setBounds(265, 780, 85, 20);
+        suddenDeath.setBounds(265, 770, 85, 20);
         suddenDeath.setBackground(buttonSkillsColor);
         suddenDeath.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
+                        rogueState[0] = true;
+                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
+                        rogueState[1] = true;
+                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
+                        rogueState[2] = true;
+                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    }
                 }
             }
         });
 
         JButton rogueCriticalHit = new JButton("Critical Hit");
         rogueCriticalHit.setFont(customFont.deriveFont(10f));
-        rogueCriticalHit.setBounds(265, 820, 85, 18);
+        rogueCriticalHit.setBounds(265, 810, 85, 18);
         rogueCriticalHit.setBackground(buttonSkillsColor);
         rogueCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-
+                    if(rogueState[0] == false){
+                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 710;
+                        rogueState[0] = true;
+                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    }
+                    else if(rogueState[1] == false){
+                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 710;
+                        rogueState[1] = true;
+                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    }
+                    else if(rogueState[2] == false){
+                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 710;
+                        rogueState[2] = true;
+                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    }
                 }
             }
         });
