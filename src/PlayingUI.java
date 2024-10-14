@@ -607,26 +607,42 @@ public class PlayingUI extends JPanel {
                 {
                     //need to do networking
                     if(warriorState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 450;
-                        warriorState[0] = true;
-                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                             gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+5);
+                             hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                             gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                             gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 450;
+                             warriorState[0] = true;
+                             skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                        }
                     }
                     else if(warriorState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 450;
-                        warriorState[1] = true;
-                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+5);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 450;
+                            warriorState[1] = true;
+                            skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                        }
                     }
                     else if(warriorState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 450;
-                        warriorState[2] = true;
-                        skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+5);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 450;
+                            warriorState[2] = true;
+                            skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                        }
                     }
-
-                    //PlayingUI.game.activateSkill(PlayingUI.game.getOs(), skillButtons);
+                    //testing purposes
                 }
+
             }
         });
 
@@ -639,25 +655,39 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
                     if(warriorState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 490;
-                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
-                        warriorState[0] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 490;
+                            skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                            warriorState[0] = true;
+                        }
                     }
                     else if(warriorState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 490;
-                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
-                        warriorState[1] = true;
+
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 490;
+                            skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                            warriorState[1] = true;
+                        }
                     }
                     else if(warriorState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 490;
-                        skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
-                        warriorState[2] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 490;
+                            skillButtons.set(1, new AbstractMap.SimpleEntry<>(false,slash));
+                            warriorState[2] = true;
+                        }
                     }
-                    //need to do networking
-                    //PlayingUI.game.activateSkill(PlayingUI.game.getOs(), skillButtons);
                 }
             }
         });
@@ -671,22 +701,37 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
                     if(warriorState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 530;
-                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
-                        warriorState[0] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true) {
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            warriorState[0] = true;
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 530;
+                            skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                        }
                     }
                     else if(warriorState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 530;
-                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
-                        warriorState[1] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true) {
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            warriorState[1] = true;
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 530;
+                            skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                        }
                     }
                     else if(warriorState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 530;
-                        skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
-                        warriorState[2] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+6);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 530;
+                            skillButtons.set(2, new AbstractMap.SimpleEntry<>(false,smashingBlow));
+                            warriorState[2] = true;
+                        }
                     }
                 }
             }
@@ -701,22 +746,38 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
                     if(warriorState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
-                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
-                        warriorState[0] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+9);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
+                            skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                            warriorState[0] = true;
+                        }
                     }
                     else if(warriorState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 560;
-                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
-                        warriorState[1] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+9);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            warriorState[1] = true;
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 560;
+                            skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                        }
+
                     }
                     else if(warriorState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
-                        skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
-                        warriorState[2] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+9);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
+                            skillButtons.set(3, new AbstractMap.SimpleEntry<>(false,savageAttack));
+                            warriorState[2] = true;
+                        }
                     }
                 }
             }
@@ -727,6 +788,7 @@ public class PlayingUI extends JPanel {
         parry.setBounds(265, 772, 80, 20);
         parry.setBackground(buttonSkillsColor);
         parry.addActionListener(new ActionListener() {
+            //will check condition for parry later as AC
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -761,22 +823,37 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
                     if(warriorState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 640;
-                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
-                        warriorState[0] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+7);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            warriorState[0] = true;
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 640;
+                            skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
+                        }
                     }
                     else if(warriorState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 640;
-                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
-                        warriorState[1] = true;
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if(Integer.parseInt(hitPointsText.getText())>0 && state == true){
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText())+7);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 640;
+                            skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
+                            warriorState[1] = true;
+                        }
                     }
-                    else if(warriorState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 640;
-                        skillButtons.set(5, new AbstractMap.SimpleEntry<>(false,warriorCriticalHit));
-                        warriorState[2] = true;
+                    else if(warriorState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(0).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(0).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 135;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 640;
+                            skillButtons.set(5, new AbstractMap.SimpleEntry<>(false, warriorCriticalHit));
+                            warriorState[2] = true;
+                        }
                     }
                 }
             }
@@ -788,28 +865,43 @@ public class PlayingUI extends JPanel {
         wizardStrike.setBackground(buttonSkillsColor);
         wizardStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(wizardState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 420;
-                        wizardState[0] = true;
-                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (wizardState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 420;
+                            wizardState[0] = true;
+                            skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                        }
                     }
-                    else if(wizardState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 420;
-                        wizardState[1] = true;
-                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    else if (wizardState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 420;
+                            wizardState[1] = true;
+                            skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                        }
                     }
-                    else if(wizardState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 420;
-                        wizardState[2] = true;
-                        skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    else if (wizardState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 420;
+                            wizardState[2] = true;
+                            skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                        }
                     }
                 }
             }
+
         });
 
         JButton magicBolt = new JButton("Magic Bolt");
@@ -820,29 +912,44 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(wizardState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 460;
-                        wizardState[0] = true;
-                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    if(wizardState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 460;
+                            wizardState[0] = true;
+                            skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                        }
                     }
-                    else if(wizardState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 460;
-                        wizardState[1] = true;
-                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    else if(wizardState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 460;
+                            wizardState[1] = true;
+                            skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                        }
                     }
-                    else if(wizardState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 460;
-                        wizardState[2] = true;
-                        skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    else if(wizardState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            hitPointsText.setText(String.valueOf(gameHeroes.get(1).getHitPoints()));
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 460;
+                            wizardState[2] = true;
+                            skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                        }
                     }
                 }
             }
         });
 
-        JButton firebolt = new JButton("Firebolt");
+        JButton firebolt = new JButton("Fireball");
         firebolt.setFont(customFont.deriveFont(10f));
         firebolt.setBounds(265, 697, 80, 20);
         firebolt.setBackground(buttonSkillsColor);
@@ -850,23 +957,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(wizardState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 500;
-                        wizardState[0] = true;
-                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    if(wizardState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 500;
+                            wizardState[0] = true;
+                            skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                        }
                     }
-                    else if(wizardState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 500;
-                        wizardState[1] = true;
-                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    else if(wizardState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 500;
+                            wizardState[1] = true;
+                            skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                        }
                     }
-                    else if(wizardState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 500;
-                        wizardState[2] = true;
-                        skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    else if(wizardState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 500;
+                            wizardState[2] = true;
+                            skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                        }
                     }
                 }
             }
@@ -878,25 +997,34 @@ public class PlayingUI extends JPanel {
         lightningStorm.setBackground(buttonSkillsColor);
         lightningStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(wizardState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 540;
-                        wizardState[0] = true;
-                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
-                    }
-                    else if(wizardState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 540;
-                        wizardState[1] = true;
-                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
-                    }
-                    else if(wizardState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 540;
-                        wizardState[2] = true;
-                        skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (wizardState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 540;
+                            wizardState[0] = true;
+                            skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                        }
+                    } else if (wizardState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 540;
+                            wizardState[1] = true;
+                            skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                        }
+                    } else if (wizardState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 540;
+                            wizardState[2] = true;
+                            skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                        }
                     }
                 }
             }
@@ -906,6 +1034,7 @@ public class PlayingUI extends JPanel {
         wizardShield.setFont(customFont.deriveFont(10f));
         wizardShield.setBounds(263, 770, 80, 20);
         wizardShield.setBackground(buttonSkillsColor);
+        // do it later as it iS AC
         wizardShield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
@@ -940,23 +1069,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(wizardState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 620;
-                        wizardState[0] = true;
-                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    if(wizardState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 620;
+                            wizardState[0] = true;
+                            skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                        }
                     }
-                    else if(wizardState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 620;
-                        wizardState[1] = true;
-                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    else if(wizardState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 620;
+                            wizardState[1] = true;
+                            skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                        }
                     }
-                    else if(wizardState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 620;
-                        wizardState[2] = true;
-                        skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    else if(wizardState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(1).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 115;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 620;
+                            wizardState[2] = true;
+                            skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                        }
                     }
                 }
             }
@@ -970,23 +1111,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(clericState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
-                        clericState[0] = true;
-                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    if(clericState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
+                            clericState[0] = true;
+                            skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                        }
                     }
-                    else if(clericState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
-                        clericState[1] = true;
-                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    else if(clericState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
+                            clericState[1] = true;
+                            skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                        }
                     }
-                    else if(clericState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
-                        clericState[2] = true;
-                        skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    else if(clericState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
+                            clericState[2] = true;
+                            skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                        }
                     }
                 }
             }
@@ -997,6 +1150,7 @@ public class PlayingUI extends JPanel {
         blessing.setBounds(255, 655, 85, 20);
         blessing.setBackground(buttonSkillsColor);
         blessing.addActionListener(new ActionListener() {
+            //leaving blessing for later as it has reroll
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -1030,23 +1184,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(clericState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
-                        clericState[0] = true;
-                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    if(clericState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
+                            clericState[0] = true;
+                            skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                        }
                     }
-                    else if(clericState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
-                        clericState[1] = true;
-                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    else if(clericState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
+                            clericState[1] = true;
+                            skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                        }
                     }
-                    else if(clericState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
-                        clericState[2] = true;
-                        skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    else if(clericState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
+                            clericState[2] = true;
+                            skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                        }
                     }
                 }
             }
@@ -1058,25 +1224,34 @@ public class PlayingUI extends JPanel {
         healingHands.setBackground(buttonSkillsColor);
         healingHands.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(clericState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
-                        clericState[0] = true;
-                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
-                    }
-                    else if(clericState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
-                        clericState[1] = true;
-                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
-                    }
-                    else if(clericState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
-                        clericState[2] = true;
-                        skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (clericState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
+                            clericState[0] = true;
+                            skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                        }
+                    } else if (clericState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
+                            clericState[1] = true;
+                            skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                        }
+                    } else if (clericState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
+                            clericState[2] = true;
+                            skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                        }
                     }
                 }
             }
@@ -1090,23 +1265,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(clericState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
-                        clericState[0] = true;
-                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    if(clericState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
+                            clericState[0] = true;
+                            skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                        }
                     }
-                    else if(clericState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
-                        clericState[1] = true;
-                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    else if(clericState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
+                            clericState[1] = true;
+                            skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                        }
                     }
-                    else if(clericState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
-                        clericState[2] = true;
-                        skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    else if(clericState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(2).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 180;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
+                            clericState[2] = true;
+                            skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                        }
                     }
                 }
             }
@@ -1117,6 +1304,7 @@ public class PlayingUI extends JPanel {
         clericShield.setBounds(265, 812, 85, 18);
         clericShield.setBackground(buttonSkillsColor);
         clericShield.addActionListener(new ActionListener() {
+            //not doing it right now as have to do AC
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -1150,23 +1338,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rangerState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
-                       rangerState[0] = true;
-                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                    if(rangerState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 470;
+                            rangerState[0] = true;
+                            skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                        }
                     }
-                    else if(rangerState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
-                        rangerState[1] = true;
-                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
-                    }
-                    else if(rangerState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
-                        rangerState[2] = true;
-                        skillButtons.set(18, new AbstractMap.SimpleEntry<>(false,wildStrike));
+                    else if(rangerState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                           gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                           gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                           gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 470;
+                           rangerState[1] = true;
+                           skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                            }
+                        }
+                    else if(rangerState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 470;
+                            rangerState[2] = true;
+                            skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                        }
                     }
 
                 }
@@ -1179,25 +1379,34 @@ public class PlayingUI extends JPanel {
         accurateShot.setBackground(buttonSkillsColor);
         accurateShot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(rangerState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 510;
-                        rangerState[0] = true;
-                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
-                    }
-                    else if(rangerState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 510;
-                        rangerState[1] = true;
-                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
-                    }
-                    else if(rangerState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 510;
-                        rangerState[2] = true;
-                        skillButtons.set(19, new AbstractMap.SimpleEntry<>(false,accurateShot));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (rangerState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 510;
+                            rangerState[0] = true;
+                            skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                        }
+                    } else if (rangerState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 510;
+                            rangerState[1] = true;
+                            skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                        }
+                    } else if (rangerState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 510;
+                            rangerState[2] = true;
+                            skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                        }
                     }
                 }
             }
@@ -1211,23 +1420,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rangerState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
-                        rangerState[0] = true;
-                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                    if(rangerState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 550;
+                            rangerState[0] = true;
+                            skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                        }
                     }
-                    else if(rangerState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
-                        rangerState[1] = true;
-                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                    else if(rangerState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 550;
+                            rangerState[1] = true;
+                            skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                        }
                     }
-                    else if(rangerState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
-                        rangerState[2] = true;
-                        skillButtons.set(20, new AbstractMap.SimpleEntry<>(false,dualShot));
+                    else if(rangerState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 550;
+                            rangerState[2] = true;
+                            skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                        }
                     }
                 }
             }
@@ -1241,23 +1462,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rangerState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
-                        rangerState[0] = true;
-                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                    if(rangerState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 9);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 590;
+                            rangerState[0] = true;
+                            skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                        }
                     }
-                    else if(rangerState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
-                        rangerState[1] = true;
-                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                    else if(rangerState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 9);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 590;
+                            rangerState[1] = true;
+                            skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                        }
                     }
-                    else if(rangerState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
-                        rangerState[2] = true;
-                        skillButtons.set(21, new AbstractMap.SimpleEntry<>(false,crossfire));
+                    else if(rangerState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 9);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 590;
+                            rangerState[2] = true;
+                            skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                        }
                     }
                 }
             }
@@ -1268,6 +1501,7 @@ public class PlayingUI extends JPanel {
         pinDown.setBounds(255, 780, 85, 20);
         pinDown.setBackground(buttonSkillsColor);
         pinDown.addActionListener(new ActionListener() {
+            /// skip as AC
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
@@ -1299,25 +1533,34 @@ public class PlayingUI extends JPanel {
         rangerCriticalHit.setBackground(buttonSkillsColor);
         rangerCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(rangerState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
-                        rangerState[0] = true;
-                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
-                    }
-                    else if(rangerState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
-                        rangerState[1] = true;
-                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
-                    }
-                    else if(rangerState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
-                        rangerState[2] = true;
-                        skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (rangerState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
+                            rangerState[0] = true;
+                            skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                        }
+                    } else if (rangerState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
+                            rangerState[1] = true;
+                            skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                        }
+                    } else if (rangerState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(3).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 150;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
+                            rangerState[2] = true;
+                            skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                        }
                     }
                 }
             }
@@ -1331,23 +1574,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 520;
-                        rogueState[0] = true;
-                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    if(rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 520;
+                            rogueState[0] = true;
+                            skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                        }
                     }
-                    else if(rogueState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 520;
-                        rogueState[1] = true;
-                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    else if(rogueState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 520;
+                            rogueState[1] = true;
+                            skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                        }
                     }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 520;
-                        rogueState[2] = true;
-                        skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    else if(rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 5);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 520;
+                            rogueState[2] = true;
+                            skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                        }
                     }
                 }
             }
@@ -1361,23 +1616,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
-                        rogueState[0] = true;
-                        skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                    if(rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 560;
+                            rogueState[0] = true;
+                            skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                        }
                     }
                     else if(rogueState[1] == false){
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
                         gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
                         gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 560;
                         rogueState[1] = true;
                         skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
                     }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
-                        rogueState[2] = true;
-                        skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                        }
+                    else if(rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 4);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 560;
+                            rogueState[2] = true;
+                            skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                        }
                     }
                 }
             }
@@ -1391,23 +1658,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 600;
-                        rogueState[0] = true;
-                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    if(rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 600;
+                            rogueState[0] = true;
+                            skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                        }
                     }
-                    else if(rogueState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 600;
-                        rogueState[1] = true;
-                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    else if(rogueState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 600;
+                            rogueState[1] = true;
+                            skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                        }
                     }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 600;
-                        rogueState[2] = true;
-                        skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    else if(rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 600;
+                            rogueState[2] = true;
+                            skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                        }
                     }
                 }
             }
@@ -1419,25 +1698,34 @@ public class PlayingUI extends JPanel {
         sneakAttack.setBackground(buttonSkillsColor);
         sneakAttack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
-                {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
-                        rogueState[0] = true;
-                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
-                    }
-                    else if(rogueState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
-                        rogueState[1] = true;
-                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
-                    }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
-                        rogueState[2] = true;
-                        skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())) {
+                    if (rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 630;
+                            rogueState[0] = true;
+                            skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                        }
+                    } else if (rogueState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 630;
+                            rogueState[1] = true;
+                            skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                        }
+                    } else if (rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 6);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 630;
+                            rogueState[2] = true;
+                            skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                        }
                     }
                 }
             }
@@ -1451,23 +1739,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
-                        rogueState[0] = true;
-                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    if(rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 670;
+                            rogueState[0] = true;
+                            skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                        }
                     }
-                    else if(rogueState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
-                        rogueState[1] = true;
-                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    else if(rogueState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 670;
+                            rogueState[1] = true;
+                            skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                        }
                     }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
-                        rogueState[2] = true;
-                        skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    else if(rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 7);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 670;
+                            rogueState[2] = true;
+                            skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                        }
                     }
                 }
             }
@@ -1481,23 +1781,35 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText()))
                 {
-                    if(rogueState[0] == false){
-                        gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 710;
-                        rogueState[0] = true;
-                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    if(rogueState[0] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 8);
+                            gameHeroes.get(turnTracker).tokens.get(0).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(0).yCoordinate = 710;
+                            rogueState[0] = true;
+                            skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                        }
                     }
-                    else if(rogueState[1] == false){
-                        gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 710;
-                        rogueState[1] = true;
-                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    else if(rogueState[1] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 8);
+                            gameHeroes.get(turnTracker).tokens.get(1).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(1).yCoordinate = 710;
+                            rogueState[1] = true;
+                            skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                        }
                     }
-                    else if(rogueState[2] == false){
-                        gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
-                        gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 710;
-                        rogueState[2] = true;
-                        skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    else if(rogueState[2] == false) {
+                        boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
+                        if (Integer.parseInt(hitPointsText.getText()) > 0 && state == true) {
+                            gameHeroes.get(4).setHitPoints(Integer.parseInt(hitPointsText.getText()) + 8);
+                            gameHeroes.get(turnTracker).tokens.get(2).xCoordinate = 140;
+                            gameHeroes.get(turnTracker).tokens.get(2).yCoordinate = 710;
+                            rogueState[2] = true;
+                            skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                        }
                     }
                 }
             }
