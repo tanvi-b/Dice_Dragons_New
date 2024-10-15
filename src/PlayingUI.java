@@ -17,7 +17,8 @@ public class PlayingUI extends JPanel {
     public static Game game;
     private CardLayout cardLayout;
     private JPanel mainPanel;
-    private static ArrayList<Hero> gameHeroes = new ArrayList<>(); //use this to acccess hero info
+    private static ArrayList<Hero> gameHeroes = new ArrayList<>(); //use this to access hero info
+    private static ArrayList<Dragon> gameDragons = new ArrayList<>();
     private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
     private static ArrayList<Integer> heroSheets = new ArrayList<>();
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
@@ -36,6 +37,7 @@ public class PlayingUI extends JPanel {
     private static JLabel levelText;
     private static JLabel expText;
     private static JLabel goldText;
+    private static JLabel dragonHitPointsText;
     private static JTextField gameMessages;
     private static List<Map.Entry<Boolean, Integer>> diceRolled = new ArrayList<>();
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
@@ -377,7 +379,7 @@ public class PlayingUI extends JPanel {
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //if they weren't able to activate a skill put some message in textbox?
-                if (turn.getText().substring(6).equals(username) && turnsPlayed>1) {
+                if (turn.getText().substring(6).equals(username) && turnsPlayed>0) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -491,6 +493,12 @@ public class PlayingUI extends JPanel {
         });
         previous.setBounds(200, 370, 100, 25);
 
+        dragonHitPointsText = new JLabel();
+        dragonHitPointsText.setFont(customFont.deriveFont(23f));
+        dragonHitPointsText.setBounds(1055, 620, 25, 25);
+        dragonHitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
+        dragonHitPointsText.setOpaque(false);
+
         add(turn);
         add(rules);
         add(guide);
@@ -515,6 +523,7 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
+        add(dragonHitPointsText);
     }
 
     private static void addWarriorSkillButtons()
@@ -653,7 +662,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC to any chosen hero
+                    //+2 AC
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 600;
                     skillButtons.set(4, new AbstractMap.SimpleEntry<>(false, parry));
@@ -767,7 +776,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC to any chosen hero
+                    //+2 AC
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 580;
                     skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
@@ -862,7 +871,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //hero HP + 6
+                    //any chosen hero (including own) HP + 6
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
                     skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
@@ -900,7 +909,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC to any chosen hero
+                    //+2 AC
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
                     skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
@@ -991,7 +1000,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //-1 AC to any chosen hero
+                    //-1 AC
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
                     skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
@@ -1226,6 +1235,11 @@ public class PlayingUI extends JPanel {
         setTurnText(0);
     }
 
+    public static void addDragons (ArrayList<Dragon> currentDragons)
+    {
+        gameDragons = currentDragons;
+    }
+
     public static void setTurnText(int turnNumber)
     {
         turn.setText("Turn: " + gameHeroes.get(turnNumber).heroName);
@@ -1268,6 +1282,11 @@ public class PlayingUI extends JPanel {
             addRangerSkillButtons();
         else
             addRogueSkillButtons();
+    }
+
+    public static void setDragonFields (Dragon dragon)
+    {
+        dragonHitPointsText.setText(String.valueOf(dragon.hitPoints));
     }
 
     public static void getDice (List<Map.Entry<Boolean, Integer>> dice) {

@@ -149,6 +149,7 @@ public class ServerListener implements Runnable {
     }
 
     private ArrayList<Dragon> createDragonsList() {
+        //still need dragon skills
         ArrayList<Dragon> gameDragons = new ArrayList<>();
         gameDragons.add(new Dragon ("young red", 45, 3, 8, 1));
         gameDragons.add(new Dragon ("pale", 50, 4, 10, 2));

@@ -25,6 +25,7 @@ public class Game implements Runnable, Serializable {
         this.os = os;
         this.is = is;
         heroes = new ArrayList<>();
+        dragons = new ArrayList<>();
         diceRolled = new ArrayList<>();
         messages = new ArrayList<>();
     }
@@ -38,6 +39,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.addDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -51,6 +53,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.addDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
