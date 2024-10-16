@@ -4,6 +4,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +40,9 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setStartingTurn();
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
+                    PlayingUI.setOriginalFields((Hero) cfs.getPlayer());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -53,7 +56,9 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setStartingTurn();
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
+                    PlayingUI.setOriginalFields((Hero) cfs.getPlayer());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -66,7 +71,7 @@ public class Game implements Runnable, Serializable {
                     gameUI.cardLayout.show(gameUI.mainPanel, "LobbyScreen");
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-
+                    PlayingUI.setStartingTurn();
                 }
                 else if(cfs.getCommand() == CommandFromServer.INVALID_ACCESS_CODE){
                     JoinUI.invalidCodeShow();
@@ -102,6 +107,10 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setDragonFields((Dragon) cfs.getPlayer());
                 }
+                else if (cfs.getCommand() == CommandFromServer.INCREASE_ARMOR_CLASS) {
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setArmorClassNowText((Hero) cfs.getPlayer());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -116,9 +125,18 @@ public class Game implements Runnable, Serializable {
 //        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, , PlayingUI.getAccessCode()));
 //    }
 
+    public void increaseArmor (ObjectOutputStream os, int points, int heroClass) {
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(points);
+        data.add(heroClass);
+        sendCommand(os, new CommandFromClient(CommandFromClient.INCREASE_ARMOR_CLASS, data, PlayingUI.getAccessCode()));
+    }
+
     public void attackDragon (ObjectOutputStream os, int points, int gameLevel) {
-//        sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, -, PlayingUI.getAccessCode()));
-//        pass both values as string or list map entry
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(points);
+        data.add(gameLevel);
+        sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, data, PlayingUI.getAccessCode()));
     }
 
     public void activateSkill (ObjectOutputStream os, List<Map.Entry<Boolean, JButton>> skills) {

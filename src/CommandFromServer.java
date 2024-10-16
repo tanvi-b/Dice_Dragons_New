@@ -19,6 +19,7 @@ public class CommandFromServer implements Serializable {
     public static final int PLACE_TOKEN = 11;
     public static final int REMOVE_BUTTON = 12;
     public static final int ATTACK_DRAGON = 13;
+    public static final int INCREASE_ARMOR_CLASS = 14;
 
     public CommandFromServer(int command, Object data, Object player) {
         this.command = command;

@@ -16,6 +16,7 @@ public class CommandFromClient implements Serializable
     public static final int PLACE_TOKEN = 6;
     public static final int REMOVE_BUTTON = 7;
     public static final int ATTACK_DRAGON = 8;
+    public static final int INCREASE_ARMOR_CLASS = 9;
 
     public CommandFromClient(int command, Object data, String player) {
         this.command = command;

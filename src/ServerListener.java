@@ -151,11 +151,49 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand()==CommandFromClient.ATTACK_DRAGON)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    //get the dragon from game object based on level-1
-                    //subtract the hit points from the dragon
-                    //set game dragon array list to new dragon array list?
-                    //resend dragon arraylist in data as well as the specific dragon in player
-                    //can also resend whole game object in dragon arraylist
+                    ArrayList<Integer> data = (ArrayList<Integer>) cfc.getData();
+                    int attackPoints = data.get(0);
+                    int level = data.get(1);
+
+                    List<Dragon> dragons = game.getDragons();
+                    Dragon dragon = dragons.get(level - 1);
+                    int newHitPoints = dragon.hitPoints - attackPoints;
+                    if (newHitPoints <= 0) {
+                        dragon.setHitPoints(0);
+                        dragon.alive=false;
+                        //send command for dead dragon
+                    } else {
+                        dragon.hitPoints = newHitPoints;
+                    }
+                    dragons.set(level - 1, dragon);
+                    game.setDragons((ArrayList<Dragon>) dragons);
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.ATTACK_DRAGON, game, dragon), hero.getOs());
+                }
+
+                if (cfc.getCommand()==CommandFromClient.INCREASE_ARMOR_CLASS)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    ArrayList<Integer> data = (ArrayList<Integer>) cfc.getData();
+                    int points = data.get(0);
+                    int classType = data.get(1);
+                    Hero playingHero = null;
+                    for (Hero hero: game.getHeroes())
+                    {
+                        if (hero.classType==classType)
+                            playingHero = hero;
+                    }
+                    playingHero.armorClass += points;
+                    ArrayList<Hero> updatedHeroes = game.getHeroes();
+                    for (int i = 0; i < updatedHeroes.size(); i++) {
+                        if (updatedHeroes.get(i).getClassType() == classType) {
+                            updatedHeroes.set(i, playingHero);
+                            break;
+                        }
+                    }
+                    game.setHeroes(updatedHeroes);
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.INCREASE_ARMOR_CLASS, game, hero), hero.getOs());
                 }
             }
         } catch (Exception e) {
