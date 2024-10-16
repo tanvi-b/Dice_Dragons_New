@@ -39,7 +39,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.addDragons(((Game) cfs.getData()).getDragons());
+                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -53,7 +53,7 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.displayCode(((Game) cfs.getData()).getAccessCode());
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.addDragons(((Game) cfs.getData()).getDragons());
+                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -93,7 +93,14 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.showGameMessage((String) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.PLACE_TOKEN) {
+
+                }
+                else if (cfs.getCommand() == CommandFromServer.REMOVE_BUTTON) {
                     //PlayingUI.updateSkillButtons((List<Map.Entry<Boolean, JButton>>) cfs.getData());
+                }
+                else if (cfs.getCommand() == CommandFromServer.ATTACK_DRAGON) {
+                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
+                    PlayingUI.setDragonFields((Dragon) cfs.getPlayer());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -105,8 +112,17 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
+//    public void placeToken (ObjectOutputStream os) {
+//        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, , PlayingUI.getAccessCode()));
+//    }
+
+    public void attackDragon (ObjectOutputStream os, int points, int gameLevel) {
+//        sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, -, PlayingUI.getAccessCode()));
+//        pass both values as string or list map entry
+    }
+
     public void activateSkill (ObjectOutputStream os, List<Map.Entry<Boolean, JButton>> skills) {
-        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, skills, PlayingUI.getAccessCode()));
+        sendCommand(os, new CommandFromClient(CommandFromClient.REMOVE_BUTTON, skills, PlayingUI.getAccessCode()));
     }
 
     public void switchTurn (ObjectOutputStream os, int turnTracker) {

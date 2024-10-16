@@ -11,11 +11,11 @@ public class CommandFromClient implements Serializable
     public static final int HOST=1;
     public static final int SEND_MESSAGE = 2;
     public static final int PASS_DICE = 3;
-
     public static final int SWITCH_TURN = 4;
-
     public static final int GAME_TEXT_DISPLAY = 5;
     public static final int PLACE_TOKEN = 6;
+    public static final int REMOVE_BUTTON = 7;
+    public static final int ATTACK_DRAGON = 8;
 
     public CommandFromClient(int command, Object data, String player) {
         this.command = command;

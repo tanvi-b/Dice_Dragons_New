@@ -135,12 +135,27 @@ public class ServerListener implements Runnable {
                         sendCommand(new CommandFromServer(CommandFromServer.SEND_GAME_MESSAGE, messageGame, null), hero.getOs());
                 }
 
-                if (cfc.getCommand()==CommandFromClient.PLACE_TOKEN)
+                if (cfc.getCommand()==CommandFromClient.REMOVE_BUTTON)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
                     List<Map.Entry<Boolean, JButton>> skills = (List<Map.Entry<Boolean, JButton>>) cfc.getData();
                     for (Hero hero : game.getHeroes())
-                        sendCommand(new CommandFromServer(CommandFromServer.PLACE_TOKEN, skills, null), hero.getOs());
+                        sendCommand(new CommandFromServer(CommandFromServer.REMOVE_BUTTON, skills, null), hero.getOs());
+                }
+
+                if (cfc.getCommand()==CommandFromClient.PLACE_TOKEN)
+                {
+
+                }
+
+                if (cfc.getCommand()==CommandFromClient.ATTACK_DRAGON)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    //get the dragon from game object based on level-1
+                    //subtract the hit points from the dragon
+                    //set game dragon array list to new dragon array list?
+                    //resend dragon arraylist in data as well as the specific dragon in player
+                    //can also resend whole game object in dragon arraylist
                 }
             }
         } catch (Exception e) {
