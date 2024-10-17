@@ -93,6 +93,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addWarriorSkillButtons();
         }
         if(heroClass==1) {
             try {
@@ -109,6 +110,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addWizardSkillButtons();
         }
         if(heroClass==2) {
             try {
@@ -135,6 +137,7 @@ public class PlayingUI extends JPanel {
                     }
                 }
             }
+            addClericSkillButtons();
         }
         if(heroClass==3) {
             try {
@@ -151,6 +154,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addRangerSkillButtons();
         }
         if(heroClass==4) {
             try {
@@ -167,6 +171,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addRogueSkillButtons();
         }
     }
 
@@ -1139,6 +1144,8 @@ public class PlayingUI extends JPanel {
         String text = username + " has activated a skill!";
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
         PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
+        if (instance != null)
+            instance.repaint();
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {
@@ -1275,16 +1282,6 @@ public class PlayingUI extends JPanel {
         levelText.setText(String.valueOf(hero.level));
         expText.setText(String.valueOf(hero.exp));
         goldText.setText(String.valueOf(hero.gold));
-        if (heroClass == 0)
-            addWarriorSkillButtons();
-        else if (heroClass == 1)
-            addWizardSkillButtons();
-        else if (heroClass == 2)
-            addClericSkillButtons();
-        else if (heroClass == 3)
-            addRangerSkillButtons();
-        else
-            addRogueSkillButtons();
     }
 
     public static void setDragonFields (Dragon dragon)
@@ -1296,7 +1293,6 @@ public class PlayingUI extends JPanel {
         diceRolled.clear();
         for (int i = 0; i< dice.size(); i++)
             diceRolled.add(dice.get(i));
-
         if (instance != null)
             instance.repaint();
     }
