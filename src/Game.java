@@ -42,7 +42,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
-                    PlayingUI.setOriginalFields((Hero) cfs.getPlayer());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -58,7 +57,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
-                    PlayingUI.setOriginalFields((Hero) cfs.getPlayer());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -111,6 +109,10 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setArmorClassNowText((Hero) cfs.getPlayer());
                 }
+                else if (cfs.getCommand() == CommandFromServer.INCREASE_HP) {
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -124,6 +126,13 @@ public class Game implements Runnable, Serializable {
 //    public void placeToken (ObjectOutputStream os) {
 //        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, , PlayingUI.getAccessCode()));
 //    }
+
+    public void increaseHP (ObjectOutputStream os, int points, int heroClass) {
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(points);
+        data.add(heroClass);
+        sendCommand(os, new CommandFromClient(CommandFromClient.INCREASE_HP, data, PlayingUI.getAccessCode()));
+    }
 
     public void increaseArmor (ObjectOutputStream os, int points, int heroClass) {
         ArrayList<Integer> data = new ArrayList<>();

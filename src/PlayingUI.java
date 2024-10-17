@@ -6,13 +6,13 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-
-//make dropdown for cleric hero
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
@@ -46,11 +46,13 @@ public class PlayingUI extends JPanel {
     private static List<Map.Entry<Boolean, Integer>> diceRolled = new ArrayList<>();
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
+    private static JComboBox<String> nameChoice = new JComboBox<>();
+    private static JButton nameSelected = new JButton("OK");
     private static String username;
     public static String accessCode;
     public static int level;
     private static int turnTracker = 0;
-    private int timesRolled= 1;
+    private static int timesRolled= 1;
     private static int turnsPlayed = 0;
     private static boolean hasPlayed = false;
 
@@ -485,10 +487,8 @@ public class PlayingUI extends JPanel {
                 }
                 for (Hero hero: gameHeroes)
                 {
-                    if (hero.classType==heroClass) {
-                        setOriginalFields(hero);
+                    if (hero.classType==heroClass)
                         setFields(hero);
-                    }
                 }
             }
         });
@@ -506,14 +506,26 @@ public class PlayingUI extends JPanel {
                 }
                 for (Hero hero: gameHeroes)
                 {
-                    if (hero.classType==heroClass) {
-                        setOriginalFields(hero);
+                    if (hero.classType==heroClass)
                         setFields(hero);
-                    }
                 }
             }
         });
         previous.setBounds(200, 370, 100, 25);
+
+        nameChoice.setSize(160, 20);
+        nameChoice.setLocation(0, 735);
+
+        nameSelected.setFont(customFont.deriveFont(14f));
+        nameSelected.setBounds(160, 730, 25, 25);
+        nameSelected.setOpaque(true);
+        nameSelected.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                nameChoice.setVisible(false);
+                nameSelected.setVisible(false);
+            }
+        });
 
         dragonHitPointsText = new JLabel();
         dragonHitPointsText.setFont(customFont.deriveFont(23f));
@@ -547,7 +559,11 @@ public class PlayingUI extends JPanel {
         add(goldText);
         add(next);
         add(previous);
+        add(nameChoice);
+        add(nameSelected);
         add(dragonHitPointsText);
+        nameChoice.setVisible(false);
+        nameSelected.setVisible(false);
     }
 
     private static void addWarriorSkillButtons()
@@ -842,7 +858,6 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //reroll dice (maybe u can just subtract 1 from timesRolled?)
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 510;
                     skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
@@ -879,11 +894,15 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //any chosen hero (including own) HP + 6
+                    nameChoice.removeAllItems();
+                    for (Hero hero: gameHeroes)
+                        nameChoice.addItem(hero.heroName);
+                    nameChoice.setSelectedIndex(-1);
+                    nameChoice.setVisible(true);
+                    nameSelected.setVisible(true);
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
                     gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
                     skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
-                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
                 }
             }
         });
@@ -1173,17 +1192,18 @@ public class PlayingUI extends JPanel {
 
     public static void useSkill (Skill skill)
     {
+        //attacking dragon HP
         if (skill.skillType==0)
             PlayingUI.game.attackDragon(PlayingUI.game.getOs(), skill.amtEffect, level);
-        if (skill.skillType==1) {
-             //healing
-        }
-        if (skill.skillType==2) {
+        //increase hero HP
+        if (skill.skillType==1)
+            PlayingUI.game.increaseHP(PlayingUI.game.getOs(), skill.amtEffect, gameHeroes.get(nameChoice.getSelectedIndex()).classType);
+        //increase AC
+        if (skill.skillType==2)
             PlayingUI.game.increaseArmor(PlayingUI.game.getOs(), skill.amtEffect, heroClass);
-        }
-        if (skill.skillType==3) {
-            //reroll
-        }
+        //reroll
+        if (skill.skillType==3)
+            timesRolled--;
         //ally skill is type 4
         turnsPlayed++;
         hasPlayed=true;
@@ -1256,6 +1276,13 @@ public class PlayingUI extends JPanel {
         }
     }
 
+    public static void setHitPointsNowText (Hero hero)
+    {
+        if (hero.heroName.equals(username)) {
+            hitPointsNowText.setText(String.valueOf(hero.hitPoints));
+        }
+    }
+
     public static void setStartingTurn()
     {
         setTurnText(0);
@@ -1289,8 +1316,7 @@ public class PlayingUI extends JPanel {
         username = hero.heroName;
     }
 
-    public static void setOriginalFields (Hero hero)
-    {
+    public static void setFields (Hero hero) {
         if (hero.classType==0) {
             armorClassText.setText(String.valueOf(0));
             hitPointsText.setText(String.valueOf(23));
@@ -1311,9 +1337,6 @@ public class PlayingUI extends JPanel {
             armorClassText.setText(String.valueOf(0));
             hitPointsText.setText(String.valueOf(19));
         }
-    }
-
-    public static void setFields (Hero hero) {
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
