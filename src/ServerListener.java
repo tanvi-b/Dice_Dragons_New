@@ -138,9 +138,8 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand()==CommandFromClient.REMOVE_BUTTON)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    List<Map.Entry<Boolean, JButton>> skills = (List<Map.Entry<Boolean, JButton>>) cfc.getData();
                     for (Hero hero : game.getHeroes())
-                        sendCommand(new CommandFromServer(CommandFromServer.REMOVE_BUTTON, skills, null), hero.getOs());
+                        sendCommand(new CommandFromServer(CommandFromServer.REMOVE_BUTTON, cfc.getData(), null), hero.getOs());
                 }
 
                 if (cfc.getCommand()==CommandFromClient.PLACE_TOKEN)

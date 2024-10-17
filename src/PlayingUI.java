@@ -55,9 +55,8 @@ public class PlayingUI extends JPanel {
     private static int timesRolled= 1;
     private static int turnsPlayed = 0;
     private static boolean hasPlayed = false;
-
-    private static List<Map.Entry<Boolean, JButton>> skillButtons = new ArrayList<>();
-    //private static ArrayList<JButton> skillButtons = new ArrayList<>();
+    private static ArrayList<JButton> skillButtons = new ArrayList<>();
+    private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -513,11 +512,11 @@ public class PlayingUI extends JPanel {
         });
         previous.setBounds(200, 370, 100, 25);
 
-        nameChoice.setSize(160, 20);
-        nameChoice.setLocation(0, 735);
+        nameChoice.setSize(130, 25);
+        nameChoice.setLocation(2, 735);
 
-        nameSelected.setFont(customFont.deriveFont(14f));
-        nameSelected.setBounds(160, 730, 25, 25);
+        nameSelected.setFont(customFont.deriveFont(9f));
+        nameSelected.setBounds(138, 730, 45, 40);
         nameSelected.setOpaque(true);
         nameSelected.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -568,53 +567,46 @@ public class PlayingUI extends JPanel {
 
     private static void addWarriorSkillButtons()
     {
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
         for (int i  = 0; i<=5; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 6; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addWizardSkillButtons()
     {
-        for (int i = 0; i<=5; i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
         for (int i  = 6; i<=11; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 12; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addClericSkillButtons()
     {
-        for (int i = 0; i<=11; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 12; i<=17; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 18; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 12; i<=17; i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addRangerSkillButtons()
     {
-        for (int i = 0; i<=17; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 18; i<=23; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 24; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 18; i<=23; i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addRogueSkillButtons()
     {
-        for (int i = 0; i<=23; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 24; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 24; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private void addSkillButtons()
     {
-        //need to do networking
         Color buttonSkillsColor = new Color(237,197,72,255);
         JButton warriorStrike = new JButton("Strike");
         warriorStrike.setFont(customFont.deriveFont(10f));
@@ -626,7 +618,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                 && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
+                    booleanForButtons.set(0, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
                 }
             }
@@ -642,9 +634,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 490;
-                    skillButtons.set(1, new AbstractMap.SimpleEntry<>(false, slash));
+                    booleanForButtons.set(1, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
                 }
             }
@@ -660,9 +650,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 530;
-                    skillButtons.set(2, new AbstractMap.SimpleEntry<>(false, smashingBlow));
+                    booleanForButtons.set(2, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
                 }
             }
@@ -678,9 +666,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 560;
-                    skillButtons.set(3, new AbstractMap.SimpleEntry<>(false, savageAttack));
+                    booleanForButtons.set(3, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
                 }
             }
@@ -696,9 +682,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 600;
-                    skillButtons.set(4, new AbstractMap.SimpleEntry<>(false, parry));
+                    booleanForButtons.set(4, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
                 }
             }
@@ -714,9 +698,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 640;
-                    skillButtons.set(5, new AbstractMap.SimpleEntry<>(false, warriorCriticalHit));
+                    booleanForButtons.set(5, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
                 }
             }
@@ -732,9 +714,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 420;
-                    skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
+                    booleanForButtons.set(6, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
                 }
             }
@@ -750,9 +730,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 460;
-                    skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
+                    booleanForButtons.set(7, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
                 }
             }
@@ -768,9 +746,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 500;
-                    skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
+                    booleanForButtons.set(8, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
                 }
             }
@@ -786,9 +762,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
-                    skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
+                    booleanForButtons.set(9, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
                 }
             }
@@ -804,9 +778,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 580;
-                    skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
+                    booleanForButtons.set(10, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
                 }
             }
@@ -822,9 +794,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 620;
-                    skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
+                    booleanForButtons.set(11, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
                 }
             }
@@ -840,9 +810,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 470;
-                    skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
+                    booleanForButtons.set(12, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
                 }
             }
@@ -858,9 +826,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 510;
-                    skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
+                    booleanForButtons.set(13, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
                 }
             }
@@ -876,16 +842,14 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
-                    skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
+                    booleanForButtons.set(14, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
                 }
             }
         });
 
         JButton healingHands = new JButton("Healing Hands");
-        healingHands.setFont(customFont.deriveFont(10f));
+        healingHands.setFont(customFont.deriveFont(8f));
         healingHands.setBounds(255, 735, 85, 20);
         healingHands.setBackground(buttonSkillsColor);
         healingHands.addActionListener(new ActionListener() {
@@ -900,9 +864,7 @@ public class PlayingUI extends JPanel {
                     nameChoice.setSelectedIndex(-1);
                     nameChoice.setVisible(true);
                     nameSelected.setVisible(true);
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
-                    skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
+                    booleanForButtons.set(15, false);
                 }
             }
         });
@@ -917,9 +879,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
-                    skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
+                    booleanForButtons.set(16, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
                 }
             }
@@ -935,9 +895,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
-                    skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
+                    booleanForButtons.set(17, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
                 }
             }
@@ -953,9 +911,7 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 470;
-                    skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
+                    booleanForButtons.set(18, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
                 }
             }
@@ -970,9 +926,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 510;
-                    skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
+                    booleanForButtons.set(19, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
                 }
             }
@@ -987,9 +941,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
-                    skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
+                    booleanForButtons.set(20, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
                 }
             }
@@ -1004,9 +956,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
-                    skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
+                    booleanForButtons.set(21, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
                 }
             }
@@ -1021,10 +971,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //-1 AC
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
-                    skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
+                    booleanForButtons.set(22, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
                 }
             }
@@ -1039,9 +986,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
-                    skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
+                    booleanForButtons.set(23, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
                 }
             }
@@ -1056,9 +1001,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 520;
-                    skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
+                    booleanForButtons.set(24, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
                 }
             }
@@ -1073,9 +1016,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 560;
-                    skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
+                    booleanForButtons.set(25, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
                 }
             }
@@ -1090,9 +1031,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 600;
-                    skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
+                    booleanForButtons.set(26, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
                 }
             }
@@ -1107,9 +1046,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
-                    skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
+                    booleanForButtons.set(27, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
                 }
             }
@@ -1124,9 +1061,7 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
-                    skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
+                    booleanForButtons.set(28, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
                 }
             }
@@ -1141,52 +1076,46 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 710;
-                    skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
+                    booleanForButtons.set(29, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
                 }
             }
         });
 
-        //warrior (0-5)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, slash));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smashingBlow));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, savageAttack));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, parry));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorCriticalHit));
-        //wizard (6-11)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, magicBolt));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, firebolt));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, lightningStorm));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardShield));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardCriticalHit));
-        //cleric (12-17)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, blessing));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smite));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, healingHands));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStorm));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, clericShield));
-        //ranger (18-23)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wildStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, accurateShot));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, dualShot));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, crossfire));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, pinDown));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rangerCriticalHit));
-        //rogue (24-29)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, stab));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, suddenDeath));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, flankingStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, sneakAttack));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueCriticalHit));
+        skillButtons.add(warriorStrike);
+        skillButtons.add(slash);
+        skillButtons.add(smashingBlow);
+        skillButtons.add(savageAttack);
+        skillButtons.add(parry);
+        skillButtons.add(warriorCriticalHit);
+        skillButtons.add(wizardStrike);
+        skillButtons.add(magicBolt);
+        skillButtons.add(firebolt);
+        skillButtons.add(lightningStorm);
+        skillButtons.add(wizardShield);
+        skillButtons.add(wizardCriticalHit);
+        skillButtons.add(holyStrike);
+        skillButtons.add(blessing);
+        skillButtons.add(smite);
+        skillButtons.add(healingHands);
+        skillButtons.add(holyStorm);
+        skillButtons.add(clericShield);
+        skillButtons.add(wildStrike);
+        skillButtons.add(accurateShot);
+        skillButtons.add(dualShot);
+        skillButtons.add(crossfire);
+        skillButtons.add(pinDown);
+        skillButtons.add(rangerCriticalHit);
+        skillButtons.add(rogueStrike);
+        skillButtons.add(stab);
+        skillButtons.add(suddenDeath);
+        skillButtons.add(flankingStrike);
+        skillButtons.add(sneakAttack);
+        skillButtons.add(rogueCriticalHit);
         for (int i = 0; i< skillButtons.size(); i++) {
-            add(skillButtons.get(i).getValue());
-            skillButtons.get(i).getValue().setVisible(false);
+            add(skillButtons.get(i));
+            skillButtons.get(i).setVisible(false);
+            booleanForButtons.add(true);
         }
     }
 
@@ -1209,10 +1138,11 @@ public class PlayingUI extends JPanel {
         hasPlayed=true;
         String text = username + " has activated a skill!";
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+        PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
     }
 
-    public static void updateSkillButtons (List<Map.Entry<Boolean, JButton>> buttons) {
-        skillButtons = buttons;
+    public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {
+        booleanForButtons = booleans;
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {

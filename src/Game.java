@@ -99,7 +99,7 @@ public class Game implements Runnable, Serializable {
 
                 }
                 else if (cfs.getCommand() == CommandFromServer.REMOVE_BUTTON) {
-                    //PlayingUI.updateSkillButtons((List<Map.Entry<Boolean, JButton>>) cfs.getData());
+                    PlayingUI.updateBooleansForSkillButtons((ArrayList<Boolean>) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.ATTACK_DRAGON) {
                     PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
@@ -148,8 +148,8 @@ public class Game implements Runnable, Serializable {
         sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, data, PlayingUI.getAccessCode()));
     }
 
-    public void activateSkill (ObjectOutputStream os, List<Map.Entry<Boolean, JButton>> skills) {
-        sendCommand(os, new CommandFromClient(CommandFromClient.REMOVE_BUTTON, skills, PlayingUI.getAccessCode()));
+    public void removeButton (ObjectOutputStream os, ArrayList<Boolean> setVisibleValues) {
+        sendCommand(os, new CommandFromClient(CommandFromClient.REMOVE_BUTTON, setVisibleValues, PlayingUI.getAccessCode()));
     }
 
     public void switchTurn (ObjectOutputStream os, int turnTracker) {
