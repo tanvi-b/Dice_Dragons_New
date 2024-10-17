@@ -62,6 +62,10 @@ public class Skill implements Serializable {
         return true;
     }
 
+    public void setToken(){
+
+    }
+
     public static void activate() {
     }
 

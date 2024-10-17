@@ -93,7 +93,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.showGameMessage((String) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.PLACE_TOKEN) {
-                    //PlayingUI.updateSkillButtons((List<Map.Entry<Boolean, JButton>>) cfs.getData());
+                    PlayingUI.updateSkillButtons((Coordinate) cfs.getData());
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -105,8 +105,9 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
-    public void activateSkill (ObjectOutputStream os, List<Map.Entry<Boolean, JButton>> skills) {
-        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, skills, PlayingUI.getAccessCode()));
+    public void activateSkill (ObjectOutputStream os,  int x, int y, int hero) {
+        Coordinate point = new Coordinate(x, y, hero);
+        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN,point, PlayingUI.getAccessCode()));
     }
 
     public void switchTurn (ObjectOutputStream os, int turnTracker) {

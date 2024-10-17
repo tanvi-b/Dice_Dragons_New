@@ -47,7 +47,14 @@ public class PlayingUI extends JPanel {
     public static int level;
     private static int turnTracker = 0;
     private int timesRolled= 1;
-    private int turnsPlayed = 0;
+    private static int turnsPlayed = 0;
+    private static int warriorTokenTurns = 0;
+    private static int wizardTokenTurns =  0;
+    private static int clericTokenTurns = 0;
+    private static int rangerTokenTurns = 0;
+    private static int rogueTokenTurns = 0;
+    private static ArrayList<Coordinate> playedButtons = new ArrayList<>();
+
 
     private static List<Map.Entry<Boolean, JButton>> skillButtons = new ArrayList<>();
     //private static ArrayList<JButton> skillButtons = new ArrayList<>();
@@ -379,7 +386,7 @@ public class PlayingUI extends JPanel {
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //if they weren't able to activate a skill put some message in textbox?
-                if (turn.getText().substring(6).equals(username) && turnsPlayed>0) {
+                if (turn.getText().substring(6).equals(username)) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -584,13 +591,12 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
                     //dragon HP - 5
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 450;
                     skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(),  135, 450,0);
                 }
             }
         });
@@ -606,11 +612,11 @@ public class PlayingUI extends JPanel {
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
                     //dragon HP - 4
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 490;
                     skillButtons.set(1, new AbstractMap.SimpleEntry<>(false, slash));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 490,0);
                 }
+
             }
         });
 
@@ -625,10 +631,9 @@ public class PlayingUI extends JPanel {
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
                     //dragon HP - 6
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 530;
                     skillButtons.set(2, new AbstractMap.SimpleEntry<>(false, smashingBlow));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 530, 0);
                 }
             }
         });
@@ -644,11 +649,11 @@ public class PlayingUI extends JPanel {
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
                     //dragon HP - 9
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 560;
                     skillButtons.set(3, new AbstractMap.SimpleEntry<>(false, savageAttack));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 560, 0);
                 }
+
             }
         });
 
@@ -662,11 +667,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 600;
                     skillButtons.set(4, new AbstractMap.SimpleEntry<>(false, parry));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 600, 0);
                 }
             }
         });
@@ -681,11 +684,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 135;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 640;
                     skillButtons.set(5, new AbstractMap.SimpleEntry<>(false, warriorCriticalHit));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 640,0);
                 }
             }
         });
@@ -700,11 +701,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 5
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 420;
                     skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115 ,420, 1);
                 }
             }
         });
@@ -719,11 +718,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 4
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 460;
                     skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 460,1);
                 }
             }
         });
@@ -738,11 +735,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 6
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 500;
                     skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 500, 1);
                 }
             }
         });
@@ -757,12 +752,11 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
                     skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 550, 1);
                 }
+
             }
         });
 
@@ -776,11 +770,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 580;
                     skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 580, 1);
                 }
             }
         });
@@ -793,13 +785,10 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
-                {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 115;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 620;
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
                     skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 620, 1);
                 }
             }
         });
@@ -814,11 +803,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 5
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 470;
                     skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 470,2);
                 }
             }
         });
@@ -833,11 +820,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //reroll dice (maybe u can just subtract 1 from timesRolled?)
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 510;
                     skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 510, 2);
                 }
             }
         });
@@ -852,11 +837,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 4
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
                     skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 550, 2);
                 }
             }
         });
@@ -871,11 +854,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //any chosen hero (including own) HP + 6
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
                     skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 590, 2);
                 }
             }
         });
@@ -890,11 +871,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
                     skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(),180, 630,2);
                 }
             }
         });
@@ -909,11 +888,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //+2 AC
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 180;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
                     skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 670, 2);
                 }
             }
         });
@@ -928,11 +905,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
                 {
-                    //dragon HP - 5
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 470;
                     skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 470, 3);
                 }
             }
         });
@@ -946,11 +921,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 4
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 510;
                     skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 510, 3);
                 }
             }
         });
@@ -964,11 +937,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 550;
                     skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150,550,3);
                 }
             }
         });
@@ -982,11 +953,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 9
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 590;
                     skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 590, 3);
                 }
             }
         });
@@ -1000,11 +969,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //-1 AC
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
                     skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 630, 3);
                 }
             }
         });
@@ -1018,11 +985,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 150;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
                     skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 670, 3);
                 }
             }
         });
@@ -1036,11 +1001,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 5
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 520;
                     skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 520, 4);
                 }
             }
         });
@@ -1054,11 +1017,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 4
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 560;
                     skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 560, 4);
                 }
             }
         });
@@ -1072,11 +1033,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 6
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 600;
                     skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 600, 4);
                 }
             }
         });
@@ -1090,11 +1049,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 6
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 630;
                     skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 630, 4);
                 }
             }
         });
@@ -1108,11 +1065,9 @@ public class PlayingUI extends JPanel {
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 7
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 670;
                     skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 670, 4);
                 }
             }
         });
@@ -1127,10 +1082,9 @@ public class PlayingUI extends JPanel {
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
                         && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
                     //dragon HP - 8
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).xCoordinate = 140;
-                    gameHeroes.get(turnTracker).tokens.get(turnsPlayed).yCoordinate = 710;
                     skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
                     turnsPlayed++;
+                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 710, 4);
                 }
             }
         });
@@ -1176,8 +1130,21 @@ public class PlayingUI extends JPanel {
         }
     }
 
-    public static void updateSkillButtons (List<Map.Entry<Boolean, JButton>> buttons) {
-        skillButtons = buttons;
+    //network heroClassType
+
+    public static void updateSkillButtons (Coordinate p) {
+        int hero = p.getHero();
+        playedButtons.add(new Coordinate(p.getX(), p.getY(), p.getHero()));
+        int heroButtonsTrack = 0;
+        for(int i =0; i<playedButtons.size(); i++){
+            if(playedButtons.get(i).getHero() == playedButtons.get(0).getHero()) {
+                heroButtonsTrack++;
+            }
+                gameHeroes.get(turnTracker).tokens.get(heroButtonsTrack).xCoordinate = playedButtons.get(i).getX();
+                gameHeroes.get(turnTracker).tokens.get(heroButtonsTrack).yCoordinate = playedButtons.get(i).getY();
+        }
+        if (instance != null)
+            instance.repaint();
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
