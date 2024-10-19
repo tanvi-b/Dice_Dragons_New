@@ -144,7 +144,10 @@ public class ServerListener implements Runnable {
 
                 if (cfc.getCommand()==CommandFromClient.PLACE_TOKEN)
                 {
-
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    Coordinate p = (Coordinate) cfc.getData();
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.PLACE_TOKEN, p, null), hero.getOs());
                 }
 
                 if (cfc.getCommand()==CommandFromClient.ATTACK_DRAGON)
