@@ -53,13 +53,6 @@ public class HostUI extends JPanel {
 
         Integer[] numbers = {1, 2, 3, 4, 5};
         JComboBox<Integer> numbersOfPlayersChoice = new JComboBox<Integer>(numbers);
-        numbersOfPlayersChoice.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                }
-            }
-        });
         numbersOfPlayersChoice.setSize(350, 75);
         numbersOfPlayersChoice.setLocation(600, 200);
 
@@ -69,13 +62,6 @@ public class HostUI extends JPanel {
 
         String[] heroClasses = {"Warrior", "Wizard", "Cleric", "Ranger", "Rogue"};
         JComboBox<String> heroClassChoice = new JComboBox<String>(heroClasses);
-        heroClassChoice.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                }
-            }
-        });
         heroClassChoice.setSize(350, 75);
         heroClassChoice.setLocation(600, 500);
 
@@ -101,8 +87,6 @@ public class HostUI extends JPanel {
         createGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //send message to server and receive access code
-                //get number of players, class type, and username
                 if (numbersOfPlayersChoice.getSelectedIndex() != -1 && !characterNameText.getText().equals("") &&
                         heroClassChoice.getSelectedIndex() != -1) {
                     String info = numbersOfPlayersChoice.getSelectedIndex() + "," + characterNameText.getText() + "," + heroClassChoice.getSelectedIndex();
