@@ -6,11 +6,14 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
@@ -33,7 +36,9 @@ public class PlayingUI extends JPanel {
     private static JLabel currentPlayerSheet;
     private static JLabel characterNameText;
     private static JLabel armorClassText;
+    private static JLabel armorClassNowText;
     private static JLabel hitPointsText;
+    private static JLabel hitPointsNowText;
     private static JLabel levelText;
     private static JLabel expText;
     private static JLabel goldText;
@@ -42,22 +47,19 @@ public class PlayingUI extends JPanel {
     private static List<Map.Entry<Boolean, Integer>> diceRolled = new ArrayList<>();
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
+    private static JComboBox<String> nameChoice = new JComboBox<>();
+    private static JButton nameSelected = new JButton("OK");
     private static String username;
     public static String accessCode;
     public static int level;
     private static int turnTracker = 0;
-    private int timesRolled= 1;
+    private static int timesRolled= 1;
+
+    private static int turnsShouldHavePlayed = 1;
     private static int turnsPlayed = 0;
-    private static int warriorTokenTurns = 0;
-    private static int wizardTokenTurns =  0;
-    private static int clericTokenTurns = 0;
-    private static int rangerTokenTurns = 0;
-    private static int rogueTokenTurns = 0;
-    private static ArrayList<Coordinate> playedButtons = new ArrayList<>();
-
-
-    private static List<Map.Entry<Boolean, JButton>> skillButtons = new ArrayList<>();
-    //private static ArrayList<JButton> skillButtons = new ArrayList<>();
+    private static boolean hasPlayed = false;
+    private static ArrayList<JButton> skillButtons = new ArrayList<>();
+    private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -94,6 +96,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addWarriorSkillButtons();
         }
         if(heroClass==1) {
             try {
@@ -110,6 +113,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addWizardSkillButtons();
         }
         if(heroClass==2) {
             try {
@@ -136,6 +140,7 @@ public class PlayingUI extends JPanel {
                     }
                 }
             }
+            addClericSkillButtons();
         }
         if(heroClass==3) {
             try {
@@ -152,6 +157,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addRangerSkillButtons();
         }
         if(heroClass==4) {
             try {
@@ -168,6 +174,7 @@ public class PlayingUI extends JPanel {
                     throw new RuntimeException(e);
                 }
             }
+            addRogueSkillButtons();
         }
     }
 
@@ -247,8 +254,7 @@ public class PlayingUI extends JPanel {
                     if (keep1.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep1.getBorder() instanceof LineBorder) {
+                    } else if (keep1.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep1.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -271,8 +277,7 @@ public class PlayingUI extends JPanel {
                     if (keep2.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep2.getBorder() instanceof LineBorder) {
+                    } else if (keep2.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep2.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -295,8 +300,7 @@ public class PlayingUI extends JPanel {
                     if (keep3.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep3.getBorder() instanceof LineBorder) {
+                    } else if (keep3.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep3.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -319,8 +323,7 @@ public class PlayingUI extends JPanel {
                     if (keep4.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep4.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep4.getBorder() instanceof LineBorder) {
+                    } else if (keep4.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep4.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -338,17 +341,18 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (turn.getText().substring(6).equals(username))
                 {
-                    Integer value = diceRolled.get(4).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = null;
-                    if (keep5.getBorder() instanceof MatteBorder) {
-                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
-                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                    if (!(turnTracker == gameHeroes.size()-1 && turnsPlayed == 3)) {
+                        Integer value = diceRolled.get(4).getValue();
+                        Map.Entry<Boolean, Integer> newEntry = null;
+                        if (keep5.getBorder() instanceof MatteBorder) {
+                            newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                            keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                        } else if (keep5.getBorder() instanceof LineBorder) {
+                            newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                            keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                        }
+                        diceRolled.set(4, newEntry);
                     }
-                    else if (keep5.getBorder() instanceof LineBorder) {
-                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                        keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
-                    }
-                    diceRolled.set(4, newEntry);
                 }
             }
         });
@@ -362,7 +366,7 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (turn.getText().substring(6).equals(username))
                 {
-                    if (timesRolled<3) {
+                    if (timesRolled<3 && !hasPlayed) {
                         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -385,8 +389,7 @@ public class PlayingUI extends JPanel {
         doneWithTurn.setOpaque(true);
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //if they weren't able to activate a skill put some message in textbox?
-                if (turn.getText().substring(6).equals(username)) {
+                if (turn.getText().substring(6).equals(username) && turnsPlayed==turnsShouldHavePlayed) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -395,6 +398,8 @@ public class PlayingUI extends JPanel {
                     PlayingUI.game.passDice(PlayingUI.game.getOs(), diceRolled);
                     PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
                     timesRolled = 1;
+                    hasPlayed=false;
+                    turnsShouldHavePlayed++;
                 }
             }
         });
@@ -436,13 +441,24 @@ public class PlayingUI extends JPanel {
         armorClassText.setBounds(258, 505, 35, 45);
         armorClassText.setHorizontalAlignment(SwingConstants.CENTER);
         armorClassText.setOpaque(false);
-        //for now box use x = 295
+
+        armorClassNowText = new JLabel();
+        armorClassNowText.setFont(customFont.deriveFont(17f));
+        armorClassNowText.setBounds(295, 505, 35, 45);
+        armorClassNowText.setHorizontalAlignment(SwingConstants.CENTER);
+        armorClassNowText.setOpaque(false);
 
         hitPointsText = new JLabel();
         hitPointsText.setFont(customFont.deriveFont(17f));
         hitPointsText.setBounds(348, 505, 35, 45);
         hitPointsText.setHorizontalAlignment(SwingConstants.CENTER);
         hitPointsText.setOpaque(false);
+
+        hitPointsNowText = new JLabel();
+        hitPointsNowText.setFont(customFont.deriveFont(17f));
+        hitPointsNowText.setBounds(385, 505, 35, 45);
+        hitPointsNowText.setHorizontalAlignment(SwingConstants.CENTER);
+        hitPointsNowText.setOpaque(false);
 
         levelText = new JLabel("0");
         levelText.setFont(customFont.deriveFont(15f));
@@ -500,6 +516,20 @@ public class PlayingUI extends JPanel {
         });
         previous.setBounds(200, 370, 100, 25);
 
+        nameChoice.setSize(130, 25);
+        nameChoice.setLocation(2, 735);
+
+        nameSelected.setFont(customFont.deriveFont(9f));
+        nameSelected.setBounds(138, 730, 45, 40);
+        nameSelected.setOpaque(true);
+        nameSelected.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                nameChoice.setVisible(false);
+                nameSelected.setVisible(false);
+            }
+        });
+
         dragonHitPointsText = new JLabel();
         dragonHitPointsText.setFont(customFont.deriveFont(23f));
         dragonHitPointsText.setBounds(1055, 620, 25, 25);
@@ -523,65 +553,64 @@ public class PlayingUI extends JPanel {
         add(gameMessages);
         add(currentPlayerSheet);
         add(characterNameText);
-        add (armorClassText);
+        add(armorClassText);
+        add(armorClassNowText);
         add(hitPointsText);
+        add(hitPointsNowText);
         add(levelText);
         add(expText);
         add(goldText);
         add(next);
         add(previous);
+        add(nameChoice);
+        add(nameSelected);
         add(dragonHitPointsText);
+        nameChoice.setVisible(false);
+        nameSelected.setVisible(false);
     }
 
     private static void addWarriorSkillButtons()
     {
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
         for (int i  = 0; i<=5; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 6; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addWizardSkillButtons()
     {
-        for (int i = 0; i<=5; i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
         for (int i  = 6; i<=11; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 12; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addClericSkillButtons()
     {
-        for (int i = 0; i<=11; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 12; i<=17; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 18; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 12; i<=17; i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addRangerSkillButtons()
     {
-        for (int i = 0; i<=17; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 18; i<=23; i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
-        for (int i = 24; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(false);
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 18; i<=23; i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private static void addRogueSkillButtons()
     {
-        for (int i = 0; i<=23; i++)
-            skillButtons.get(i).getValue().setVisible(false);
-        for (int i = 24; i< skillButtons.size(); i++)
-            skillButtons.get(i).getValue().setVisible(skillButtons.get(i).getKey());
+        for (int i = 0; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(false);
+        for (int i  = 24; i< skillButtons.size(); i++)
+            skillButtons.get(i).setVisible(booleanForButtons.get(i));
     }
 
     private void addSkillButtons()
     {
-        //need to do networking
         Color buttonSkillsColor = new Color(237,197,72,255);
         JButton warriorStrike = new JButton("Strike");
         warriorStrike.setFont(customFont.deriveFont(10f));
@@ -589,14 +618,18 @@ public class PlayingUI extends JPanel {
         warriorStrike.setBackground(buttonSkillsColor);
         warriorStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(0, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 450);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    //dragon HP - 5
-                    skillButtons.set(0, new AbstractMap.SimpleEntry<>(false, warriorStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(),  135, 450,0);
+                    booleanForButtons.set(0, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 450);
                 }
             }
         });
@@ -607,16 +640,19 @@ public class PlayingUI extends JPanel {
         slash.setBackground(buttonSkillsColor);
         slash.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(1, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 490);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    //dragon HP - 4
-                    skillButtons.set(1, new AbstractMap.SimpleEntry<>(false, slash));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 490,0);
+                    booleanForButtons.set(1, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 490);
                 }
-
             }
         });
 
@@ -626,14 +662,18 @@ public class PlayingUI extends JPanel {
         smashingBlow.setBackground(buttonSkillsColor);
         smashingBlow.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(2, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 530);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    //dragon HP - 6
-                    skillButtons.set(2, new AbstractMap.SimpleEntry<>(false, smashingBlow));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 530, 0);
+                    booleanForButtons.set(2, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 530);
                 }
             }
         });
@@ -644,16 +684,19 @@ public class PlayingUI extends JPanel {
         savageAttack.setBackground(buttonSkillsColor);
         savageAttack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(3, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 560);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    //dragon HP - 9
-                    skillButtons.set(3, new AbstractMap.SimpleEntry<>(false, savageAttack));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 560, 0);
+                    booleanForButtons.set(3, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 560);
                 }
-
             }
         });
 
@@ -663,13 +706,18 @@ public class PlayingUI extends JPanel {
         parry.setBackground(buttonSkillsColor);
         parry.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(4, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 600);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(4, new AbstractMap.SimpleEntry<>(false, parry));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 600, 0);
+                    booleanForButtons.set(4, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 600);
                 }
             }
         });
@@ -680,13 +728,18 @@ public class PlayingUI extends JPanel {
         warriorCriticalHit.setBackground(buttonSkillsColor);
         warriorCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(5, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 640);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(5, new AbstractMap.SimpleEntry<>(false, warriorCriticalHit));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 135, 640,0);
+                    booleanForButtons.set(5, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 135, 640);
                 }
             }
         });
@@ -697,13 +750,18 @@ public class PlayingUI extends JPanel {
         wizardStrike.setBackground(buttonSkillsColor);
         wizardStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(6, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 420);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(6, new AbstractMap.SimpleEntry<>(false, wizardStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115 ,420, 1);
+                    booleanForButtons.set(6, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 420);
                 }
             }
         });
@@ -714,13 +772,18 @@ public class PlayingUI extends JPanel {
         magicBolt.setBackground(buttonSkillsColor);
         magicBolt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(7, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 460);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(7, new AbstractMap.SimpleEntry<>(false, magicBolt));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 460,1);
+                    booleanForButtons.set(7, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 460);
                 }
             }
         });
@@ -731,13 +794,18 @@ public class PlayingUI extends JPanel {
         firebolt.setBackground(buttonSkillsColor);
         firebolt.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(8, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 500);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(8, new AbstractMap.SimpleEntry<>(false, firebolt));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 500, 1);
+                    booleanForButtons.set(8, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 500);
                 }
             }
         });
@@ -748,15 +816,19 @@ public class PlayingUI extends JPanel {
         lightningStorm.setBackground(buttonSkillsColor);
         lightningStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(9, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 550);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(9, new AbstractMap.SimpleEntry<>(false, lightningStorm));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 550, 1);
+                    booleanForButtons.set(9, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 550);
                 }
-
             }
         });
 
@@ -766,13 +838,18 @@ public class PlayingUI extends JPanel {
         wizardShield.setBackground(buttonSkillsColor);
         wizardShield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(10, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 580);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(10, new AbstractMap.SimpleEntry<>(false, wizardShield));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 580, 1);
+                    booleanForButtons.set(10, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 580);
                 }
             }
         });
@@ -783,12 +860,18 @@ public class PlayingUI extends JPanel {
         wizardCriticalHit.setBackground(buttonSkillsColor);
         wizardCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(11, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 620);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(11, new AbstractMap.SimpleEntry<>(false, wizardCriticalHit));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 115, 620, 1);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
+                {
+                    booleanForButtons.set(11, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 115, 620);
                 }
             }
         });
@@ -799,13 +882,18 @@ public class PlayingUI extends JPanel {
         holyStrike.setBackground(buttonSkillsColor);
         holyStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(12, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 470);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(12, new AbstractMap.SimpleEntry<>(false, holyStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 470,2);
+                    booleanForButtons.set(12, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 470);
                 }
             }
         });
@@ -816,13 +904,18 @@ public class PlayingUI extends JPanel {
         blessing.setBackground(buttonSkillsColor);
         blessing.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(13, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 510);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(13, new AbstractMap.SimpleEntry<>(false, blessing));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 510, 2);
+                    booleanForButtons.set(13, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 510);
                 }
             }
         });
@@ -833,30 +926,45 @@ public class PlayingUI extends JPanel {
         smite.setBackground(buttonSkillsColor);
         smite.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(14, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 550);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(14, new AbstractMap.SimpleEntry<>(false, smite));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 550, 2);
+                    booleanForButtons.set(14, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 550);
                 }
             }
         });
 
         JButton healingHands = new JButton("Healing Hands");
-        healingHands.setFont(customFont.deriveFont(10f));
+        healingHands.setFont(customFont.deriveFont(8f));
         healingHands.setBounds(255, 735, 85, 20);
         healingHands.setBackground(buttonSkillsColor);
         healingHands.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(15, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 590);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(15, new AbstractMap.SimpleEntry<>(false, healingHands));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 590, 2);
+                    nameChoice.removeAllItems();
+                    for (Hero hero: gameHeroes)
+                        nameChoice.addItem(hero.heroName);
+                    nameChoice.setSelectedIndex(-1);
+                    nameChoice.setVisible(true);
+                    nameSelected.setVisible(true);
+                    booleanForButtons.set(15, false);
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 590);
                 }
             }
         });
@@ -867,13 +975,18 @@ public class PlayingUI extends JPanel {
         holyStorm.setBackground(buttonSkillsColor);
         holyStorm.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(16, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 630);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(16, new AbstractMap.SimpleEntry<>(false, holyStorm));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(),180, 630,2);
+                    booleanForButtons.set(16, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 630);
                 }
             }
         });
@@ -884,13 +997,18 @@ public class PlayingUI extends JPanel {
         clericShield.setBackground(buttonSkillsColor);
         clericShield.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(17, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 670);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(17, new AbstractMap.SimpleEntry<>(false, clericShield));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 180, 670, 2);
+                    booleanForButtons.set(17, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 180, 670);
                 }
             }
         });
@@ -901,13 +1019,18 @@ public class PlayingUI extends JPanel {
         wildStrike.setBackground(buttonSkillsColor);
         wildStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(18, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 470);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
-                    skillButtons.set(18, new AbstractMap.SimpleEntry<>(false, wildStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 470, 3);
+                    booleanForButtons.set(18, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 470);
                 }
             }
         });
@@ -918,12 +1041,17 @@ public class PlayingUI extends JPanel {
         accurateShot.setBackground(buttonSkillsColor);
         accurateShot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(19, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 510);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(19, new AbstractMap.SimpleEntry<>(false, accurateShot));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 510, 3);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(19, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 510);
                 }
             }
         });
@@ -934,12 +1062,17 @@ public class PlayingUI extends JPanel {
         dualShot.setBackground(buttonSkillsColor);
         dualShot.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(20, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 550);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(20, new AbstractMap.SimpleEntry<>(false, dualShot));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150,550,3);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(20, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 550);
                 }
             }
         });
@@ -950,12 +1083,17 @@ public class PlayingUI extends JPanel {
         crossfire.setBackground(buttonSkillsColor);
         crossfire.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(21, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 590);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(21, new AbstractMap.SimpleEntry<>(false, crossfire));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 590, 3);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(21, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 590);
                 }
             }
         });
@@ -966,12 +1104,17 @@ public class PlayingUI extends JPanel {
         pinDown.setBackground(buttonSkillsColor);
         pinDown.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(22, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 630);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(22, new AbstractMap.SimpleEntry<>(false, pinDown));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 630, 3);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(22, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 630);
                 }
             }
         });
@@ -982,12 +1125,17 @@ public class PlayingUI extends JPanel {
         rangerCriticalHit.setBackground(buttonSkillsColor);
         rangerCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(23, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 670);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(23, new AbstractMap.SimpleEntry<>(false, rangerCriticalHit));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 150, 670, 3);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(23, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 150, 670);
                 }
             }
         });
@@ -998,12 +1146,17 @@ public class PlayingUI extends JPanel {
         rogueStrike.setBackground(buttonSkillsColor);
         rogueStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(24, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 520);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(24, new AbstractMap.SimpleEntry<>(false, rogueStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 520, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(24, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 520);
                 }
             }
         });
@@ -1014,12 +1167,17 @@ public class PlayingUI extends JPanel {
         stab.setBackground(buttonSkillsColor);
         stab.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(25, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 560);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(1).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(25, new AbstractMap.SimpleEntry<>(false, stab));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 560, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(25, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(1));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 560);
                 }
             }
         });
@@ -1030,12 +1188,17 @@ public class PlayingUI extends JPanel {
         flankingStrike.setBackground(buttonSkillsColor);
         flankingStrike.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(26, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 600);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(2).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(26, new AbstractMap.SimpleEntry<>(false, flankingStrike));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 600, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(26, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(2));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 600);
                 }
             }
         });
@@ -1046,12 +1209,17 @@ public class PlayingUI extends JPanel {
         sneakAttack.setBackground(buttonSkillsColor);
         sneakAttack.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(27, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 630);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(3).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(27, new AbstractMap.SimpleEntry<>(false, sneakAttack));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 630, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(27, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(3));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 630);
                 }
             }
         });
@@ -1062,12 +1230,17 @@ public class PlayingUI extends JPanel {
         suddenDeath.setBackground(buttonSkillsColor);
         suddenDeath.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(28, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 670);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(4).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    skillButtons.set(28, new AbstractMap.SimpleEntry<>(false, suddenDeath));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 670, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(28, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(4));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 670);
                 }
             }
         });
@@ -1078,73 +1251,176 @@ public class PlayingUI extends JPanel {
         rogueCriticalHit.setBackground(buttonSkillsColor);
         rogueCriticalHit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
+                if (timesRolled==3 && allSkillsFalse()) {
+                    booleanForButtons.set(29, false);
+                    useSkillAtEnd();
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 710);
+                }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(5).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0) {
-                    //dragon HP - 8
-                    skillButtons.set(29, new AbstractMap.SimpleEntry<>(false, rogueCriticalHit));
-                    turnsPlayed++;
-                    PlayingUI.game.activateSkill(PlayingUI.game.getOs(), 140, 710, 4);
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed) {
+                    booleanForButtons.set(29, false);
+                    useSkill(gameHeroes.get(turnTracker).playerSkills.get(5));
+                    PlayingUI.game.placeToken(PlayingUI.game.getOs(), gameHeroes.get(turnTracker).classType, turnsPlayed-1, 140, 710);
                 }
             }
         });
 
-        //warrior (0-5)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, slash));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smashingBlow));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, savageAttack));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, parry));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, warriorCriticalHit));
-        //wizard (6-11)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, magicBolt));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, firebolt));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, lightningStorm));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardShield));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wizardCriticalHit));
-        //cleric (12-17)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, blessing));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, smite));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, healingHands));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, holyStorm));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, clericShield));
-        //ranger (18-23)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, wildStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, accurateShot));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, dualShot));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, crossfire));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, pinDown));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rangerCriticalHit));
-        //rogue (24-29)
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, stab));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, suddenDeath));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, flankingStrike));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, sneakAttack));
-        skillButtons.add(new AbstractMap.SimpleEntry<>(true, rogueCriticalHit));
+        skillButtons.add(warriorStrike);
+        skillButtons.add(slash);
+        skillButtons.add(smashingBlow);
+        skillButtons.add(savageAttack);
+        skillButtons.add(parry);
+        skillButtons.add(warriorCriticalHit);
+        skillButtons.add(wizardStrike);
+        skillButtons.add(magicBolt);
+        skillButtons.add(firebolt);
+        skillButtons.add(lightningStorm);
+        skillButtons.add(wizardShield);
+        skillButtons.add(wizardCriticalHit);
+        skillButtons.add(holyStrike);
+        skillButtons.add(blessing);
+        skillButtons.add(smite);
+        skillButtons.add(healingHands);
+        skillButtons.add(holyStorm);
+        skillButtons.add(clericShield);
+        skillButtons.add(wildStrike);
+        skillButtons.add(accurateShot);
+        skillButtons.add(dualShot);
+        skillButtons.add(crossfire);
+        skillButtons.add(pinDown);
+        skillButtons.add(rangerCriticalHit);
+        skillButtons.add(rogueStrike);
+        skillButtons.add(stab);
+        skillButtons.add(suddenDeath);
+        skillButtons.add(flankingStrike);
+        skillButtons.add(sneakAttack);
+        skillButtons.add(rogueCriticalHit);
         for (int i = 0; i< skillButtons.size(); i++) {
-            add(skillButtons.get(i).getValue());
-            skillButtons.get(i).getValue().setVisible(false);
+            add(skillButtons.get(i));
+            skillButtons.get(i).setVisible(false);
+            booleanForButtons.add(true);
         }
     }
 
-    //network heroClassType
+    public static boolean allSkillsFalse() {
+        int startIndex;
+        int endIndex;
+        Hero hero = gameHeroes.get(turnTracker);
+        int heroClass = hero.classType;
 
-    public static void updateSkillButtons (Coordinate p) {
-        int hero = p.getHero();
-        playedButtons.add(new Coordinate(p.getX(), p.getY(), p.getHero()));
-        int heroButtonsTrack = 0;
-        for(int i =0; i<playedButtons.size(); i++){
-            if(playedButtons.get(i).getHero() == playedButtons.get(0).getHero()) {
-                heroButtonsTrack++;
-            }
-                gameHeroes.get(turnTracker).tokens.get(heroButtonsTrack).xCoordinate = playedButtons.get(i).getX();
-                gameHeroes.get(turnTracker).tokens.get(heroButtonsTrack).yCoordinate = playedButtons.get(i).getY();
+        switch (heroClass) {
+            case 0:
+                startIndex = 0;
+                endIndex = 5;
+                break;
+            case 1:
+                startIndex = 6;
+                endIndex = 11;
+                break;
+            case 2:
+                startIndex = 12;
+                endIndex = 17;
+                break;
+            case 3:
+                startIndex = 18;
+                endIndex = 23;
+                break;
+            case 4:
+                startIndex = 24;
+                endIndex = 29;
+                break;
+            default:
+                return true;
         }
+
+        for (int i = startIndex; i <= endIndex; i++) {
+            boolean diceMatch = hero.playerSkills.get(i % 6).checkDiceCombo(diceRolled);
+            boolean skillActive = booleanForButtons.get(i);
+
+            if (diceMatch && skillActive)
+                return false;
+        }
+        return true;
+    }
+
+    public static void useSkill (Skill skill)
+    {
+        //attacking dragon HP
+        if (skill.skillType==0)
+            PlayingUI.game.attackDragon(PlayingUI.game.getOs(), skill.amtEffect, level);
+        //increase hero HP
+        if (skill.skillType==1)
+            PlayingUI.game.increaseHP(PlayingUI.game.getOs(), skill.amtEffect, gameHeroes.get(nameChoice.getSelectedIndex()).classType);
+        //increase AC
+        if (skill.skillType==2)
+            PlayingUI.game.increaseArmor(PlayingUI.game.getOs(), skill.amtEffect, heroClass);
+        //reroll
+        if (skill.skillType==3)
+            timesRolled--;
+        //ally skill is type 4
+        turnsPlayed++;
+        hasPlayed=true;
+        String text = username + " has activated a skill!";
+        PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
+        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+        PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
         if (instance != null)
             instance.repaint();
+        if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
+            diceRolled.replaceAll(entry -> new AbstractMap.SimpleEntry<>(false, entry.getValue()));
+            dragonCounterAttack();
+        }
+    }
+
+    public static void useSkillAtEnd ()
+    {
+        turnsPlayed++;
+        hasPlayed=true;
+        String text = username + " wasn't able to activate a skill.";
+        PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
+        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+        PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
+        if (instance != null)
+            instance.repaint();
+        if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
+            diceRolled.replaceAll(entry -> new AbstractMap.SimpleEntry<>(false, entry.getValue()));
+            dragonCounterAttack();
+        }
+    }
+
+    public static void dragonCounterAttack() {
+        Timer timer = new Timer();
+        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Now it's time for the dragon counter attack!");
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttack(PlayingUI.game.getOs(), diceRolled);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 2 rolls left.");
+            }
+        }, 3000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttack(PlayingUI.game.getOs(), diceRolled);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 1 roll left.");
+            }
+        }, 6000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttacksFinal(PlayingUI.game.getOs(), diceRolled, level);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 0 rolls left.");
+                timer.cancel();
+            }
+        }, 9000);
+    }
+
+    public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {
+        booleanForButtons = booleans;
     }
 
     public static void refreshChat(ArrayList<String> text) throws IOException {
@@ -1199,10 +1475,28 @@ public class PlayingUI extends JPanel {
             gameHeroes.add(currentHeroes.get(i));
         }
         gameHeroes.sort(Comparator.comparingInt(h -> h.incentiveOrder));
+    }
+
+    public static void setArmorClassNowText (Hero hero)
+    {
+        if (hero.heroName.equals(username)) {
+            armorClassNowText.setText(String.valueOf(hero.armorClass));
+        }
+    }
+
+    public static void setHitPointsNowText (Hero hero)
+    {
+        if (hero.heroName.equals(username)) {
+            hitPointsNowText.setText(String.valueOf(hero.hitPoints));
+        }
+    }
+
+    public static void setStartingTurn()
+    {
         setTurnText(0);
     }
 
-    public static void addDragons (ArrayList<Dragon> currentDragons)
+    public static void setDragons (ArrayList<Dragon> currentDragons)
     {
         gameDragons = currentDragons;
     }
@@ -1231,24 +1525,34 @@ public class PlayingUI extends JPanel {
     }
 
     public static void setFields (Hero hero) {
+        if (hero.classType==0) {
+            armorClassText.setText(String.valueOf(0));
+            hitPointsText.setText(String.valueOf(23));
+        }
+        else if (hero.classType==1) {
+            armorClassText.setText(String.valueOf(0));
+            hitPointsText.setText(String.valueOf(22));
+        }
+        else if (hero.classType==2) {
+            armorClassText.setText(String.valueOf(0));
+            hitPointsText.setText(String.valueOf(24));
+        }
+        else if (hero.classType==3) {
+            armorClassText.setText(String.valueOf(1));
+            hitPointsText.setText(String.valueOf(21));
+        }
+        else {
+            armorClassText.setText(String.valueOf(0));
+            hitPointsText.setText(String.valueOf(19));
+        }
         heroClass = hero.classType;
         currentPlayerSheet.setText(hero.heroName);
         characterNameText.setText(hero.heroName);
-        armorClassText.setText(String.valueOf(hero.armorClass));
-        hitPointsText.setText(String.valueOf(hero.hitPoints));
+        armorClassNowText.setText(String.valueOf(hero.armorClass));
+        hitPointsNowText.setText(String.valueOf(hero.hitPoints));
         levelText.setText(String.valueOf(hero.level));
         expText.setText(String.valueOf(hero.exp));
         goldText.setText(String.valueOf(hero.gold));
-        if (heroClass == 0)
-            addWarriorSkillButtons();
-        else if (heroClass == 1)
-            addWizardSkillButtons();
-        else if (heroClass == 2)
-            addClericSkillButtons();
-        else if (heroClass == 3)
-            addRangerSkillButtons();
-        else
-            addRogueSkillButtons();
     }
 
     public static void setDragonFields (Dragon dragon)
@@ -1260,7 +1564,12 @@ public class PlayingUI extends JPanel {
         diceRolled.clear();
         for (int i = 0; i< dice.size(); i++)
             diceRolled.add(dice.get(i));
+        if (instance != null)
+            instance.repaint();
+    }
 
+    public static void repaintScreen()
+    {
         if (instance != null)
             instance.repaint();
     }

@@ -138,9 +138,30 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand()==CommandFromClient.PLACE_TOKEN)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    Coordinate p = (Coordinate) cfc.getData();
+                    ArrayList<Integer> data = (ArrayList<Integer>) cfc.getData();
+                    int heroClass = data.get(0);
+                    int tokenNumber = data.get(1);
+                    int xCoor = data.get(2);
+                    int yCoor = data.get(3);
+                    Hero playingHero = null;
+                    for (Hero hero: game.getHeroes())
+                    {
+                        if (hero.classType==heroClass)
+                            playingHero = hero;
+                    }
+                    playingHero.tokens.get(tokenNumber).xCoordinate = xCoor;
+                    playingHero.tokens.get(tokenNumber).yCoordinate = yCoor;
+
+                    ArrayList<Hero> updatedHeroes = game.getHeroes();
+                    for (int i = 0; i < updatedHeroes.size(); i++) {
+                        if (updatedHeroes.get(i).getClassType() == heroClass) {
+                            updatedHeroes.set(i, playingHero);
+                            break;
+                        }
+                    }
+                    game.setHeroes(updatedHeroes);
                     for (Hero hero : game.getHeroes())
-                        sendCommand(new CommandFromServer(CommandFromServer.PLACE_TOKEN, p, null), hero.getOs());
+                        sendCommand(new CommandFromServer(CommandFromServer.PLACE_TOKEN, game, null), hero.getOs());
                 }
             }
         } catch (Exception e) {
@@ -149,7 +170,6 @@ public class ServerListener implements Runnable {
     }
 
     private ArrayList<Dragon> createDragonsList() {
-        //still need dragon skills
         ArrayList<Dragon> gameDragons = new ArrayList<>();
         gameDragons.add(new Dragon ("young red", 45, 3, 8, 1));
         gameDragons.add(new Dragon ("pale", 50, 4, 10, 2));
@@ -235,7 +255,6 @@ public class ServerListener implements Runnable {
                 hero.setIncentiveOrder(1);
                 break;
         }
-
         hero.setExp(0);
         hero.setGold(0);
         hero.setAlive(true);
