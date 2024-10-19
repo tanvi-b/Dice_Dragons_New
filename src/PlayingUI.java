@@ -1291,6 +1291,7 @@ public class PlayingUI extends JPanel {
         String text = username + " wasn't able to activate a skill.";
         PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+        PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
         if (instance != null)
             instance.repaint();
         if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
