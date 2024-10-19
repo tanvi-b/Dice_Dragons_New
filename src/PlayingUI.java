@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
@@ -253,8 +254,7 @@ public class PlayingUI extends JPanel {
                     if (keep1.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep1.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep1.getBorder() instanceof LineBorder) {
+                    } else if (keep1.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep1.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -277,8 +277,7 @@ public class PlayingUI extends JPanel {
                     if (keep2.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep2.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep2.getBorder() instanceof LineBorder) {
+                    } else if (keep2.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep2.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -301,8 +300,7 @@ public class PlayingUI extends JPanel {
                     if (keep3.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep3.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep3.getBorder() instanceof LineBorder) {
+                    } else if (keep3.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep3.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -325,8 +323,7 @@ public class PlayingUI extends JPanel {
                     if (keep4.getBorder() instanceof MatteBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(false, value);
                         keep4.setBorder(BorderFactory.createLineBorder(Color.black));
-                    }
-                    else if (keep4.getBorder() instanceof LineBorder) {
+                    } else if (keep4.getBorder() instanceof LineBorder) {
                         newEntry = new AbstractMap.SimpleEntry<>(true, value);
                         keep4.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
                     }
@@ -344,17 +341,18 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (turn.getText().substring(6).equals(username))
                 {
-                    Integer value = diceRolled.get(4).getValue();
-                    Map.Entry<Boolean, Integer> newEntry = null;
-                    if (keep5.getBorder() instanceof MatteBorder) {
-                        newEntry = new AbstractMap.SimpleEntry<>(false, value);
-                        keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                    if (!(turnTracker == gameHeroes.size()-1 && turnsPlayed == 3)) {
+                        Integer value = diceRolled.get(4).getValue();
+                        Map.Entry<Boolean, Integer> newEntry = null;
+                        if (keep5.getBorder() instanceof MatteBorder) {
+                            newEntry = new AbstractMap.SimpleEntry<>(false, value);
+                            keep5.setBorder(BorderFactory.createLineBorder(Color.black));
+                        } else if (keep5.getBorder() instanceof LineBorder) {
+                            newEntry = new AbstractMap.SimpleEntry<>(true, value);
+                            keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+                        }
+                        diceRolled.set(4, newEntry);
                     }
-                    else if (keep5.getBorder() instanceof LineBorder) {
-                        newEntry = new AbstractMap.SimpleEntry<>(true, value);
-                        keep5.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
-                    }
-                    diceRolled.set(4, newEntry);
                 }
             }
         });
@@ -392,6 +390,7 @@ public class PlayingUI extends JPanel {
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 //if they weren't able to activate a skill put some message in textbox?
+                //must place token before doing done with turn
                 if (turn.getText().substring(6).equals(username) && turnsPlayed>0) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -1245,11 +1244,11 @@ public class PlayingUI extends JPanel {
         }
     }
 
-    public static boolean allSkillsFalse (boolean used)
+    public static boolean allSkillsFalse (boolean unused)
     {
         for (int i = 0; i<6; i++) {
             boolean state = gameHeroes.get(turnTracker).playerSkills.get(i).checkDiceCombo(diceRolled);
-            if (state==true && !used)
+            if (state==true && unused)
                 return false;
         }
         return true;
@@ -1273,12 +1272,13 @@ public class PlayingUI extends JPanel {
         turnsPlayed++;
         hasPlayed=true;
         String text = username + " has activated a skill!";
+        PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
         PlayingUI.game.removeButton(PlayingUI.game.getOs(), booleanForButtons);
         if (instance != null)
             instance.repaint();
         if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
-            PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Now it's time for the dragon counter attack!");
+            diceRolled.replaceAll(entry -> new AbstractMap.SimpleEntry<>(false, entry.getValue()));
             dragonCounterAttack();
         }
     }
@@ -1289,17 +1289,44 @@ public class PlayingUI extends JPanel {
         turnsPlayed++;
         hasPlayed=true;
         String text = username + " wasn't able to activate a skill.";
+        PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
         if (instance != null)
             instance.repaint();
         if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
-            PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Now it's time for the dragon counter attack!");
+            diceRolled.replaceAll(entry -> new AbstractMap.SimpleEntry<>(false, entry.getValue()));
             dragonCounterAttack();
         }
     }
 
     public static void dragonCounterAttack() {
+        Timer timer = new Timer();
+        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Now it's time for the dragon counter attack!");
 
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttack(PlayingUI.game.getOs(), diceRolled);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 2 rolls left.");
+            }
+        }, 3000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttack(PlayingUI.game.getOs(), diceRolled);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 1 roll left.");
+            }
+        }, 6000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.dragonAttacksFinal(PlayingUI.game.getOs(), diceRolled, level);
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 0 rolls left.");
+                timer.cancel();
+            }
+        }, 9000);
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {

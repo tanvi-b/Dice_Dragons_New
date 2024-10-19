@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -113,6 +110,18 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
+                else if (cfs.getCommand() == CommandFromServer.USED_DRAGON_DICE) {
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
+                }
+                else if (cfs.getCommand() == CommandFromServer.DRAGON_ATTACK) {
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
+                }
+                else if (cfs.getCommand() == CommandFromServer.DRAGON_ATTACK_FINAL) {
+                    PlayingUI.getDice(((Game) cfs.getData()).getDiceRolled());
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -123,9 +132,27 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
-//    public void placeToken (ObjectOutputStream os) {
-//        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, , PlayingUI.getAccessCode()));
-//    }
+    public void dragonAttack (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice)
+    {
+        sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK, dice, PlayingUI.getAccessCode()));
+    }
+
+    public void dragonAttacksFinal (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, int gameLevel)
+    {
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(Integer.valueOf(PlayingUI.getAccessCode()));
+        data.add(gameLevel);
+        sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK_FINAL, dice, data));
+    }
+
+    public void checkDragonDice (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, String name, int gameLevel)
+    {
+        ArrayList<String> data = new ArrayList<>();
+        data.add(PlayingUI.getAccessCode());
+        data.add(name);
+        data.add(String.valueOf(gameLevel));
+        sendCommand(os, new CommandFromClient(CommandFromClient.CHECK_DRAGON_DICE, dice, data));
+    }
 
     public void increaseHP (ObjectOutputStream os, int points, int heroClass) {
         ArrayList<Integer> data = new ArrayList<>();
