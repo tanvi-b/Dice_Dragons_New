@@ -55,7 +55,7 @@ public class PlayingUI extends JPanel {
     private static int turnTracker = 0;
     private static int timesRolled= 1;
 
-    private static int dragonTimesRolled;
+    private static int turnsShouldHavePlayed = 1;
     private static int turnsPlayed = 0;
     private static boolean hasPlayed = false;
     private static ArrayList<JButton> skillButtons = new ArrayList<>();
@@ -389,8 +389,7 @@ public class PlayingUI extends JPanel {
         doneWithTurn.setOpaque(true);
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //must place token before doing done with turn
-                if (turn.getText().substring(6).equals(username) && turnsPlayed>0) {
+                if (turn.getText().substring(6).equals(username) && turnsPlayed==turnsShouldHavePlayed) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -400,6 +399,7 @@ public class PlayingUI extends JPanel {
                     PlayingUI.game.switchTurn(PlayingUI.game.getOs(), turnTracker);
                     timesRolled = 1;
                     hasPlayed=false;
+                    turnsShouldHavePlayed++;
                 }
             }
         });
