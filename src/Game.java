@@ -93,7 +93,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.showGameMessage((String) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.PLACE_TOKEN) {
-
+                    PlayingUI.updateSkillButtons((Coordinate) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.REMOVE_BUTTON) {
                     PlayingUI.updateBooleansForSkillButtons((ArrayList<Boolean>) cfs.getData());
@@ -135,6 +135,11 @@ public class Game implements Runnable, Serializable {
     public void dragonAttack (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice)
     {
         sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK, dice, PlayingUI.getAccessCode()));
+    }
+
+    public void activateSkill(ObjectOutputStream os, int x, int y, int hero) {
+        Coordinate point = new Coordinate(x, y, hero);
+        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, point, PlayingUI.getAccessCode()));
     }
 
     public void dragonAttacksFinal (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, int gameLevel)
