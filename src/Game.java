@@ -93,7 +93,8 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.showGameMessage((String) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.PLACE_TOKEN) {
-                    PlayingUI.updateSkillButtons((Coordinate) cfs.getData());
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.repaintScreen();
                 }
                 else if (cfs.getCommand() == CommandFromServer.REMOVE_BUTTON) {
                     PlayingUI.updateBooleansForSkillButtons((ArrayList<Boolean>) cfs.getData());
@@ -137,11 +138,6 @@ public class Game implements Runnable, Serializable {
         sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK, dice, PlayingUI.getAccessCode()));
     }
 
-    public void activateSkill(ObjectOutputStream os, int x, int y, int hero) {
-        Coordinate point = new Coordinate(x, y, hero);
-        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, point, PlayingUI.getAccessCode()));
-    }
-
     public void dragonAttacksFinal (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, int gameLevel)
     {
         ArrayList<Integer> data = new ArrayList<>();
@@ -182,6 +178,15 @@ public class Game implements Runnable, Serializable {
 
     public void removeButton (ObjectOutputStream os, ArrayList<Boolean> setVisibleValues) {
         sendCommand(os, new CommandFromClient(CommandFromClient.REMOVE_BUTTON, setVisibleValues, PlayingUI.getAccessCode()));
+    }
+
+    public void placeToken (ObjectOutputStream os, int heroClass, int tokenNumber, int xCoor, int yCoor) {
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(heroClass);
+        data.add(tokenNumber);
+        data.add(xCoor);
+        data.add(yCoor);
+        sendCommand(os, new CommandFromClient(CommandFromClient.PLACE_TOKEN, data, PlayingUI.getAccessCode()));
     }
 
     public void switchTurn (ObjectOutputStream os, int turnTracker) {
