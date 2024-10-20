@@ -625,7 +625,7 @@ public class PlayingUI extends JPanel {
                 }
                 boolean state = gameHeroes.get(turnTracker).playerSkills.get(0).checkDiceCombo(diceRolled);
                 if (username.equals(turn.getText().substring(6)) && username.equals(characterNameText.getText())
-                && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
+                        && turnsPlayed<3 && state && Integer.parseInt(hitPointsText.getText()) > 0 && !hasPlayed)
                 {
                     booleanForButtons.set(0, false);
                     useSkill(gameHeroes.get(turnTracker).playerSkills.get(0));
@@ -1414,9 +1414,23 @@ public class PlayingUI extends JPanel {
             public void run() {
                 PlayingUI.game.dragonAttacksFinal(PlayingUI.game.getOs(), diceRolled, level);
                 PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 0 rolls left.");
-                timer.cancel();
             }
         }, 9000);
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Get Prepared! We are about to go to the market place!");
+            }
+        }, 12000);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs());
+                timer.cancel();
+            }
+        }, 15000);
+
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {

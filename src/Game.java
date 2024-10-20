@@ -123,6 +123,9 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
+                else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
+                    MarketPlaceUI.goToMarketPlace();
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -174,6 +177,9 @@ public class Game implements Runnable, Serializable {
         data.add(points);
         data.add(gameLevel);
         sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, data, PlayingUI.getAccessCode()));
+    }
+    public void joinMarketPlace(ObjectOutputStream os){
+        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_MARKET, "testing", PlayingUI.getAccessCode()));
     }
 
     public void removeButton (ObjectOutputStream os, ArrayList<Boolean> setVisibleValues) {

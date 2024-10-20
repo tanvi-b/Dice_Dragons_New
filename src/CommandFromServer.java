@@ -24,6 +24,7 @@ public class CommandFromServer implements Serializable {
     public static final int USED_DRAGON_DICE = 16;
     public static final int DRAGON_ATTACK = 17;
     public static final int DRAGON_ATTACK_FINAL = 18;
+    public static final int GO_TO_MARKET = 19;
 
     public CommandFromServer(int command, Object data, Object player) {
         this.command = command;
