@@ -21,9 +21,8 @@ public class PlayingUI extends JPanel {
     private CardLayout cardLayout;
     private JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes = new ArrayList<>(); //use this to access hero info
-    private static ArrayList<Dragon> gameDragons = new ArrayList<>();
-    private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
     private static ArrayList<Integer> heroSheets = new ArrayList<>();
+    private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
     private ArrayList<BufferedImage> dragonTokens = new ArrayList<>();
     private ArrayList<BufferedImage> poisonTokens = new ArrayList<>();
@@ -32,31 +31,17 @@ public class PlayingUI extends JPanel {
     private Font customFont;
     private Font customBoldFont;
     private static int heroClass; //changes as person flips through sheets
-    private static JLabel turn;
-    private static JLabel currentPlayerSheet;
-    private static JLabel characterNameText;
-    private static JLabel armorClassText;
-    private static JLabel armorClassNowText;
-    private static JLabel hitPointsText;
-    private static JLabel hitPointsNowText;
-    private static JLabel levelText;
-    private static JLabel expText;
-    private static JLabel goldText;
-    private static JLabel dragonHitPointsText;
+    private static JLabel turn, currentPlayerSheet, characterNameText, armorClassText, armorClassNowText,
+            hitPointsText, hitPointsNowText, levelText, expText, goldText, dragonHitPointsText;
     private static JTextField gameMessages;
     private static List<Map.Entry<Boolean, Integer>> diceRolled = new ArrayList<>();
     private static DefaultListModel<String> chatModel = new DefaultListModel<>();
     public static JList<String> chatMessages = new JList<>(chatModel);
     private static JComboBox<String> nameChoice = new JComboBox<>();
     private static JButton nameSelected = new JButton("OK");
-    private static String username;
+    private static String username; //does not change
     public static String accessCode;
-    public static int level;
-    private static int turnTracker = 0;
-    private static int timesRolled= 1;
-
-    private static int turnsShouldHavePlayed = 1;
-    private static int turnsPlayed = 0;
+    public static int level, turnTracker = 0, timesRolled= 1 ,turnsShouldHavePlayed = 1, turnsPlayed = 0;
     private static boolean hasPlayed = false;
     private static ArrayList<JButton> skillButtons = new ArrayList<>();
     private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
@@ -1508,11 +1493,6 @@ public class PlayingUI extends JPanel {
     public static void setStartingTurn()
     {
         setTurnText(0);
-    }
-
-    public static void setDragons (ArrayList<Dragon> currentDragons)
-    {
-        gameDragons = currentDragons;
     }
 
     public static void setTurnText(int turnNumber)

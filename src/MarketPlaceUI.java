@@ -20,7 +20,7 @@ public class MarketPlaceUI extends JPanel{
     private Color greenBackground = new Color(147, 195, 123);
     private Color goldColor = new Color(212, 175, 55);
     //for now, this will be modified with networking
-    private static String typeDragon = "Young Black Dragon";
+    private static int typeDragon = 0;
 
 
     public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel) {
@@ -111,8 +111,7 @@ public class MarketPlaceUI extends JPanel{
         data.addColumn("Cost");
         data.addColumn("Quantity");
 
-        if(typeDragon.equals("Young Red Dragon")) {
-            /// bearWood (first dragon)
+        if(typeDragon == 0) {
             typeMarket.setText("Bearwood Market");
             data.addRow(new Object[]{"Small Healing Potion", "Instant", "Heals +4 HP", "1 Gold", "2"});
             data.addRow(new Object[]{"Scroll of Knowledge", "Instant", "Re-use a Skill", "1 Gold", "1"});
@@ -121,7 +120,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Mana Potion", "Instant", "Add a Magic Symbol", "1 Gold", "1"});
         }
 
-        else if(typeDragon.equals("Pale Dragon")){
+        else if(typeDragon == 1){
             typeMarket.setText("Agelos Market");
             data.addRow(new Object[]{"Small Healing Potion", "Instant", "Heals +4 HP", "1 Gold", "1" });
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "1 Gold", "1"});
@@ -133,7 +132,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Steel Shield", "Durable", "+1 AC", "2 Gold", "1"});
         }
 
-        else if(typeDragon.equals("Young Black Dragon")){
+        else if(typeDragon == 2){
             typeMarket.setText("Raindrop Keep Market");
             data.addRow(new Object[]{"Small Healing Potion", "Instant", "Heals +4 HP", "1 Gold", "1" });
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "1 Gold", "2"});
@@ -145,7 +144,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Pinpoint Crossbow", "Durable", "Add a Crossbow Symbol each turn", "5 Gold", "1"});
         }
 
-        else if(typeDragon.equals("Green Dragon")){
+        else if(typeDragon == 3){
             typeMarket.setText("Deepridge Burrow Market");
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "2 Gold", "1"});
             data.addRow(new Object[]{"Great Healing Potion", "Instant", "Heals +9 HP", "3 Gold", "1"});
@@ -157,7 +156,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Magic Staff", "Durable", "Add a Magic Symbol each turn", "2 Gold", "1"});
         }
 
-        else if(typeDragon.equals("Red Dragon")){
+        else if(typeDragon == 4){
             typeMarket.setText("Bearwood Market");
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "2 Gold", "1"});
             data.addRow(new Object[]{"Great Healing Potion", "Instant", "Heals +9 HP", "3 Gold", "1"});
@@ -168,7 +167,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Gauntlets of Power", "Durable", "1 HP extra damage when activating a Strike Skill", "1 Gold", "1"});
             data.addRow(new Object[]{"Magic Staff", "Durable", "Add a Magic Symbol each turn", "2 Gold", "1"});
         }
-        else if(typeDragon.equals("Blue Dragon")){
+        else if(typeDragon == 5){
             typeMarket.setText("Kemora Market");
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "2 Gold", "1"});
             data.addRow(new Object[]{"Great Healing Potion", "Instant", "Heals +9 HP", "3 Gold", "1"});
@@ -177,7 +176,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Great Haste Portion", "Instant", "Re-roll up to 3 Dragon Dice", "2 Gold", "1"});
             data.addRow(new Object[]{"Magic Sword", "Durable", "Add a Sword Symbol each turn", "1 Gold", "1"});
         }
-        else if(typeDragon.equals("Undead Dragon")){
+        else if(typeDragon == 6){
             typeMarket.setText("Jowryk Market");
             data.addRow(new Object[]{"Healing Potion", "Instant", "Heals +7 HP", "2 Gold", "2"});
             data.addRow(new Object[]{"Great Healing Potion", "Instant", "Heals +9 HP", "3 Gold", "1"});
@@ -195,11 +194,11 @@ public class MarketPlaceUI extends JPanel{
         }
 
         JTable marketTable = new JTable(data);
-        marketTable.getTableHeader().setBounds(275, 480, 750, 20);
+        marketTable.getTableHeader().setBounds(370, 480, 750, 20);
         for(int i =0; i<marketTable.getRowCount(); i++){
             marketTable.setRowHeight(25);
         }
-        marketTable.setBounds(250, 500, 750, 25* marketTable.getRowCount());
+        marketTable.setBounds(345, 500, 750, 25* marketTable.getRowCount());
         marketTable.setCellSelectionEnabled(false);
         marketTable.setColumnSelectionAllowed(false);
         marketTable.getColumnModel().getColumn(2).setPreferredWidth(250);
@@ -214,7 +213,6 @@ public class MarketPlaceUI extends JPanel{
                 }
             }
         });
-
 
         add(amountOfGold);
         add(gold);

@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-//dragon face is on dice side 5
-
 public class GameUI extends JFrame implements Serializable {
-    //might need to make the JPanels attributes to get access in other classes?
     Game game;
     public JPanel mainPanel;
     public CardLayout cardLayout;
@@ -61,7 +58,7 @@ public class GameUI extends JFrame implements Serializable {
 
         add(mainPanel, BorderLayout.CENTER);
         cardLayout.show(mainPanel, "IntroScreen");
-        //cardLayout.show(mainPanel, "MarketPlaceScreen"); -- testing purposes
+        //cardLayout.show(mainPanel, "MarketPlaceScreen");
 
         setVisible(true);
         setSize(1200, 1000);

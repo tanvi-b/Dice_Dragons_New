@@ -38,7 +38,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -53,7 +52,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -100,7 +98,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.updateBooleansForSkillButtons((ArrayList<Boolean>) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.ATTACK_DRAGON) {
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setDragonFields((Dragon) cfs.getPlayer());
                 }
                 else if (cfs.getCommand() == CommandFromServer.INCREASE_ARMOR_CLASS) {

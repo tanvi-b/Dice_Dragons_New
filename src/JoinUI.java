@@ -17,10 +17,7 @@ public class JoinUI extends JPanel {
     private BufferedImage loginBackground;
     private Font customFont;
     private Font customBoldFont;
-    private static JLabel invalidAccessCode;
-    private static JLabel duplicateName;
-    private static JLabel duplicateClass;
-    private static JLabel maxPlayersReached;
+    private static JLabel invalidAccessCode, duplicateName, duplicateClass, maxPlayersReached;
     private static JButton custom;
 
     public JoinUI(CardLayout cardLayout, JPanel mainPanel) {
@@ -160,6 +157,10 @@ public class JoinUI extends JPanel {
                 heroClassChoice.setVisible(true);
                 custom.setVisible(true);
                 customHeroMade.setVisible(false);
+                invalidAccessCode.setVisible(false);
+                duplicateName.setVisible(false);
+                duplicateClass.setVisible(false);
+                maxPlayersReached.setVisible(false);
                 cardLayout.show(mainPanel, "IntroScreen");
             }
         });
