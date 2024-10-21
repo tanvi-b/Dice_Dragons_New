@@ -23,6 +23,7 @@ public class MarketPlaceUI extends JPanel{
     private Color goldColor = new Color(212, 175, 55);
     //for now, this will be modified with networking
     private static int typeDragon = 0;
+    private static JLabel goldText, xpText;
 
 
     public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel) {
@@ -56,14 +57,13 @@ public class MarketPlaceUI extends JPanel{
         amountOfGold.setOpaque(true);
         amountOfGold.setBackground(Color.white);
 
-        // will change number
-        JLabel gold = new JLabel("0");
-        gold.setForeground(Color.black);
-        gold.setFont(customFont.deriveFont(20f));
-        gold.setBounds(550, 120, 400, 50);
-        gold.setHorizontalAlignment(SwingConstants.CENTER);
-        gold.setOpaque(true);
-        gold.setBackground(goldColor);
+        goldText = new JLabel();
+        goldText.setForeground(Color.black);
+        goldText.setFont(customFont.deriveFont(20f));
+        goldText.setBounds(550, 120, 400, 50);
+        goldText.setHorizontalAlignment(SwingConstants.CENTER);
+        goldText.setOpaque(true);
+        goldText.setBackground(goldColor);
 
         JLabel amountOfXP = new JLabel("Amount of XP You Have: ");
         amountOfXP.setForeground(Color.black);
@@ -73,14 +73,13 @@ public class MarketPlaceUI extends JPanel{
         amountOfXP.setOpaque(true);
         amountOfXP.setBackground(Color.white);
 
-        // will change number depending on player
-        JLabel xp = new JLabel("0");
-        xp.setForeground(Color.black);
-        xp.setFont(customFont.deriveFont(20f));
-        xp.setBounds(550, 190, 400, 50);
-        xp.setHorizontalAlignment(SwingConstants.CENTER);
-        xp.setOpaque(true);
-        xp.setBackground(goldColor);
+        xpText = new JLabel();
+        xpText.setForeground(Color.black);
+        xpText.setFont(customFont.deriveFont(20f));
+        xpText.setBounds(550, 190, 400, 50);
+        xpText.setHorizontalAlignment(SwingConstants.CENTER);
+        xpText.setOpaque(true);
+        xpText.setBackground(goldColor);
 
         JLabel typeMarket = new JLabel("");
         typeMarket.setForeground(Color.black);
@@ -104,7 +103,6 @@ public class MarketPlaceUI extends JPanel{
                 return false;
             }
         };
-        // put this line of code as it will clear previous dragon marketplace data
         data.setRowCount(0);
 
         data.addColumn("Item");
@@ -216,31 +214,28 @@ public class MarketPlaceUI extends JPanel{
             }
         });
 
-        /*
-        JButton back = new JButton("Back");
-        back.setFont(customFont.deriveFont(20f));
-        back.setBounds(60, 830, 130, 50);
-        back.setOpaque(true);
-        back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "PlayingScreen");
-            }
-        });
-
-         */
-
         add(amountOfGold);
-        add(gold);
+        add(goldText);
         add(title);
         add(amountOfXP);
-        add(xp);
+        add(xpText);
         add(marketTable.getTableHeader());
         add(marketTable);
         add(typeMarket);
         add(directions);
-        //add(back);
     }
+
+    public static void setTypeDragon (int level)
+    {
+        typeDragon = level;
+    }
+
+    public static void setGoldAndXpText (Hero hero)
+    {
+        goldText.setText(String.valueOf(hero.gold));
+        xpText.setText(String.valueOf(hero.exp));
+    }
+
     private void readImages() {
         try {
             background = ImageIO.read(new File("images/marketOption3.png"));

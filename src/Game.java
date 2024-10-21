@@ -119,6 +119,19 @@ public class Game implements Runnable, Serializable {
                 }
                 else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
                     MarketPlaceUI.goToMarketPlace();
+                    MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
+                    MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
+                }
+                else if(cfs.getCommand() == CommandFromServer.FLEE){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.makeFleeOptionsVisible();
+                }
+                else if(cfs.getCommand() == CommandFromServer.NO_FLEE){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.makeFleeOptionsUnvisible();
+                }
+                else if(cfs.getCommand() == CommandFromServer.EVERYONE_FLEE){
+                    PlayingUI.sendEndingMessage();
                 }
             }
         } catch (IOException | ClassNotFoundException e) {
@@ -128,6 +141,21 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void flee (ObjectOutputStream os, String username){
+        sendCommand(os, new CommandFromClient(CommandFromClient.FLEE, username, PlayingUI.getAccessCode()));
+    }
+
+    public void noFlee (ObjectOutputStream os, String username){
+        sendCommand(os, new CommandFromClient(CommandFromClient.NO_FLEE, username, PlayingUI.getAccessCode()));
+    }
+
+    public void joinMarketPlace(ObjectOutputStream os, int gameLevel){
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(Integer.valueOf(PlayingUI.getAccessCode()));
+        data.add(gameLevel);
+        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_MARKET, null, data));
     }
 
     public void dragonAttack (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice)
@@ -153,10 +181,6 @@ public class Game implements Runnable, Serializable {
         sendCommand(os, new CommandFromClient(CommandFromClient.CHECK_DRAGON_DICE, dice, data));
     }
 
-    public void quit (ObjectOutputStream os, ArrayList<Hero> heroes){
-        sendCommand(os, new CommandFromClient(CommandFromClient.FLEE, heroes, PlayingUI.getAccessCode()));
-    }
-
     public void increaseHP (ObjectOutputStream os, int points, int heroClass) {
         ArrayList<Integer> data = new ArrayList<>();
         data.add(points);
@@ -176,9 +200,6 @@ public class Game implements Runnable, Serializable {
         data.add(points);
         data.add(gameLevel);
         sendCommand(os, new CommandFromClient(CommandFromClient.ATTACK_DRAGON, data, PlayingUI.getAccessCode()));
-    }
-    public void joinMarketPlace(ObjectOutputStream os){
-        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_MARKET, "testing", PlayingUI.getAccessCode()));
     }
 
     public void removeButton (ObjectOutputStream os, ArrayList<Boolean> setVisibleValues) {

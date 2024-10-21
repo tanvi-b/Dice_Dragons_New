@@ -341,14 +341,66 @@ public class ServerListener implements Runnable {
                 }
 
                 if(cfc.getCommand() == CommandFromClient.GO_TO_MARKET){
-                   Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    for (Hero hero : game.getHeroes())
-                        sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, game, null), hero.getOs());
+                    ArrayList<Integer> data = (ArrayList<Integer>) cfc.getPlayer();
+                    Game game = currentGames.get(String.valueOf(data.get(0)));
+                    Dragon defeatedDragon = game.dragons.get(data.get(1)-1);
+                    int totalGold = defeatedDragon.gold;
+                    int totalXp = defeatedDragon.exp;
+                    ArrayList<Hero> heroes = game.getHeroes();
+                    int numHeroes = heroes.size();
+                    int goldPerHero = totalGold/numHeroes;
+                    int xpPerHero = totalXp/numHeroes;
+                    for (Hero hero : heroes) {
+                        hero.gold += goldPerHero;
+                        hero.exp += xpPerHero;
+                    }
+                    int remainingGold = totalGold % numHeroes;
+                    int remainingXp = totalXp % numHeroes;
+
+                    for (int i = 0; i < remainingGold; i++)
+                        heroes.get(i).gold++;
+
+                    for (int i = 0; i < remainingXp; i++)
+                        heroes.get(i).exp++;
+
+                  for (Hero hero : game.getHeroes())
+                     sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
                 }
+
                 if(cfc.getCommand() == CommandFromClient.FLEE){
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-                    for(Hero hero: game.getHeroes())
-                        sendCommand(new CommandFromServer(CommandFromServer.FLEE, game, null), hero.getOs());
+                    for (Hero hero : game.getHeroes()) {
+                        if (hero.heroName.equals(cfc.getData())) {
+                            hero.flee= true;
+                            break;
+                        }
+                    }
+
+                    boolean everyoneFled = true;
+                    for (Hero hero : game.getHeroes()) {
+                        if (hero.flee==false) {
+                            everyoneFled = false;
+                            break;
+                        }
+                    }
+
+                    if (everyoneFled) {
+                        for(Hero hero: game.getHeroes())
+                            sendCommand(new CommandFromServer(CommandFromServer.EVERYONE_FLEE, null, null), hero.getOs());
+                    } else {
+                        for(Hero hero: game.getHeroes())
+                            sendCommand(new CommandFromServer(CommandFromServer.FLEE, game, null), hero.getOs());
+                    }
+                }
+
+                if(cfc.getCommand() == CommandFromClient.NO_FLEE){
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    for(Hero hero: game.getHeroes()) {
+                        hero.flee = false;
+                    }
+                    for(Hero hero: game.getHeroes()) {
+                        sendCommand(new CommandFromServer(CommandFromServer.NO_FLEE, game, null), hero.getOs());
+                    }
                 }
             }
         } catch (Exception e) {

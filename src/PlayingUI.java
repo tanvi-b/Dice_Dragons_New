@@ -46,7 +46,7 @@ public class PlayingUI extends JPanel {
     private static boolean hasPlayed = false;
     private static ArrayList<JButton> skillButtons = new ArrayList<>();
     private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
-    private static ArrayList<Hero> fleeHeroes = new ArrayList<>();
+    private static JButton yesFlee, noFlee;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -212,14 +212,42 @@ public class PlayingUI extends JPanel {
         flee.setBorder(BorderFactory.createLineBorder(new Color(139, 0, 0)));
         flee.setOpaque(true);
         flee.setBackground(new Color(228, 99, 98));
-
         flee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = username + " wants to flee and quit the game!";
+                String text = username + " wants to flee and quit the game! Click yes or no to share your choice.";
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+                PlayingUI.game.flee(PlayingUI.game.getOs(), username);
             }
         });
 
+        yesFlee  = new JButton("Yes");
+        yesFlee.setFont(customFont.deriveFont(13f));
+        yesFlee.setBounds(1145, 25, 50, 20);
+        yesFlee.setOpaque(true);
+        yesFlee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = username + " has agreed to flee and quit the game.";
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+                PlayingUI.game.flee(PlayingUI.game.getOs(), username);
+                //might be better to broadcast message after flee command
+            }
+        });
+
+        noFlee = new JButton("No");
+        noFlee.setFont(customFont.deriveFont(13f));
+        noFlee.setBounds(1145, 55, 50, 20);
+        noFlee.setOpaque(true);
+        noFlee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = username + " does not want to flee.";
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+                PlayingUI.game.noFlee(PlayingUI.game.getOs(), username);
+                //might be better to broadcast message after flee command
+            }
+        });
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -398,7 +426,8 @@ public class PlayingUI extends JPanel {
         doneWithTurn.setOpaque(true);
         doneWithTurn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (turn.getText().substring(6).equals(username) && turnsPlayed==turnsShouldHavePlayed) {
+                if (turn.getText().substring(6).equals(username) && turnsPlayed==turnsShouldHavePlayed &&
+                        !(turnTracker == gameHeroes.size()-1 && turnsPlayed == 3)) {
                     keep1.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep2.setBorder(BorderFactory.createLineBorder(Color.black));
                     keep3.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -548,6 +577,9 @@ public class PlayingUI extends JPanel {
         add(turn);
         add(rules);
         add(guide);
+        add(flee);
+        add(yesFlee);
+        add(noFlee);
         add(chatBox);
         add(messageText);
         add(send);
@@ -576,7 +608,47 @@ public class PlayingUI extends JPanel {
         add(dragonHitPointsText);
         nameChoice.setVisible(false);
         nameSelected.setVisible(false);
-        add(flee);
+        yesFlee.setVisible(false);
+        noFlee.setVisible(false);
+    }
+
+    public static void sendEndingMessage()
+    {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                String text = "Everyone has agreed to flee. The game will now be ending.";
+                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        System.exit(0);
+                    }
+                }, 2000);
+            }
+        }, 0);
+    }
+
+    public static void makeFleeOptionsVisible()
+    {
+        yesFlee.setVisible(true);
+        noFlee.setVisible(true);
+        if (instance != null) {
+            instance.revalidate();
+            instance.repaint();
+        }
+    }
+
+    public static void makeFleeOptionsUnvisible()
+    {
+        yesFlee.setVisible(false);
+        noFlee.setVisible(false);
+        if (instance != null) {
+            instance.revalidate();
+            instance.repaint();
+        }
     }
 
     private static void addWarriorSkillButtons()
@@ -1466,7 +1538,7 @@ public class PlayingUI extends JPanel {
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs());
+                PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
                 timer.cancel();
             }
         }, 15000);
