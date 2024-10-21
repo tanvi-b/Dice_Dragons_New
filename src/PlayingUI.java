@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.border.MatteBorder;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -45,6 +46,7 @@ public class PlayingUI extends JPanel {
     private static boolean hasPlayed = false;
     private static ArrayList<JButton> skillButtons = new ArrayList<>();
     private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
+    private static ArrayList<Hero> fleeHeroes = new ArrayList<>();
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -196,6 +198,28 @@ public class PlayingUI extends JPanel {
         guide.setBounds(990, 20, 60, 60);
         guide.setBorder(BorderFactory.createLineBorder(Color.black));
         guide.setOpaque(true);
+
+        guide.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "DragonGuideScreen");
+            }
+        });
+
+        JButton flee = new JButton("Flee");
+        flee.setFont(customFont.deriveFont(20f));
+        flee.setBounds(1080, 20, 60, 60);
+        flee.setBorder(BorderFactory.createLineBorder(new Color(139, 0, 0)));
+        flee.setOpaque(true);
+        flee.setBackground(new Color(228, 99, 98));
+
+        flee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = username + " wants to flee and quit the game!";
+            }
+        });
+
 
         guide.addActionListener(new ActionListener() {
             @Override
@@ -552,6 +576,7 @@ public class PlayingUI extends JPanel {
         add(dragonHitPointsText);
         nameChoice.setVisible(false);
         nameSelected.setVisible(false);
+        add(flee);
     }
 
     private static void addWarriorSkillButtons()

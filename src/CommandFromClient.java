@@ -22,6 +22,7 @@ public class CommandFromClient implements Serializable
     public static final int DRAGON_ATTACK = 12;
     public static final int DRAGON_ATTACK_FINAL = 13;
     public static final int GO_TO_MARKET = 14;
+    public static final int FLEE = 15;
 
     public CommandFromClient(int command, Object data, Object player) {
         this.command = command;

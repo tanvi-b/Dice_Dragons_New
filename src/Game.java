@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game implements Runnable, Serializable {
 
@@ -146,6 +143,7 @@ public class Game implements Runnable, Serializable {
         sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK_FINAL, dice, data));
     }
 
+
     public void checkDragonDice (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, String name, int gameLevel)
     {
         ArrayList<String> data = new ArrayList<>();
@@ -153,6 +151,10 @@ public class Game implements Runnable, Serializable {
         data.add(name);
         data.add(String.valueOf(gameLevel));
         sendCommand(os, new CommandFromClient(CommandFromClient.CHECK_DRAGON_DICE, dice, data));
+    }
+
+    public void quit (ObjectOutputStream os, ArrayList<Hero> heroes){
+        sendCommand(os, new CommandFromClient(CommandFromClient.FLEE, heroes, PlayingUI.getAccessCode()));
     }
 
     public void increaseHP (ObjectOutputStream os, int points, int heroClass) {

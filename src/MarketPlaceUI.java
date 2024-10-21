@@ -4,6 +4,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -194,7 +196,7 @@ public class MarketPlaceUI extends JPanel{
         }
 
         JTable marketTable = new JTable(data);
-        marketTable.getTableHeader().setBounds(370, 480, 750, 20);
+        marketTable.getTableHeader().setBounds(345, 480, 750, 20);
         for(int i =0; i<marketTable.getRowCount(); i++){
             marketTable.setRowHeight(25);
         }
@@ -214,6 +216,20 @@ public class MarketPlaceUI extends JPanel{
             }
         });
 
+        /*
+        JButton back = new JButton("Back");
+        back.setFont(customFont.deriveFont(20f));
+        back.setBounds(60, 830, 130, 50);
+        back.setOpaque(true);
+        back.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(mainPanel, "PlayingScreen");
+            }
+        });
+
+         */
+
         add(amountOfGold);
         add(gold);
         add(title);
@@ -223,6 +239,7 @@ public class MarketPlaceUI extends JPanel{
         add(marketTable);
         add(typeMarket);
         add(directions);
+        //add(back);
     }
     private void readImages() {
         try {
