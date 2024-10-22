@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -21,8 +22,7 @@ public class MarketPlaceUI extends JPanel{
     private BufferedImage marketPic;
     private Color greenBackground = new Color(147, 195, 123);
     private Color goldColor = new Color(212, 175, 55);
-    //for now, this will be modified with networking
-    private static int typeDragon = 0;
+    private static int typeDragon;
     private static JLabel goldText, xpText;
 
 
@@ -207,12 +207,38 @@ public class MarketPlaceUI extends JPanel{
 
         marketTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent event) {
-                if (!event.getValueIsAdjusting()) {
-                    int selectedRow = marketTable.getSelectedRow();
-                    System.out.println("Testing Row" + selectedRow);
+            }
+        });
+
+        JButton buy = new JButton ("Buy");
+        buy.setFont(customFont.deriveFont(20f));
+        buy.setBounds(350, 675, 245, 50);
+        buy.setOpaque(true);
+        buy.setBackground(new Color(147, 195, 123));
+        buy.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
+        buy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int selectedRow = marketTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    System.out.println(selectedRow);
                 }
             }
         });
+
+        JLabel tooManyItemsError = new JLabel("You already have 2 items.");
+        tooManyItemsError.setHorizontalAlignment(SwingConstants.CENTER);
+        tooManyItemsError.setForeground(Color.red);
+        tooManyItemsError.setFont(customFont.deriveFont(20f));
+        tooManyItemsError.setBounds(700, 675, 245, 50);
+        tooManyItemsError.setOpaque(true);
+
+        JLabel notEnoughGoldError = new JLabel("You do not have enough gold.");
+        notEnoughGoldError.setHorizontalAlignment(SwingConstants.CENTER);
+        notEnoughGoldError.setForeground(Color.red);
+        notEnoughGoldError.setFont(customFont.deriveFont(20f));
+        notEnoughGoldError.setBounds(700, 675, 260, 50);
+        notEnoughGoldError.setOpaque(true);
 
         add(amountOfGold);
         add(goldText);
@@ -223,6 +249,11 @@ public class MarketPlaceUI extends JPanel{
         add(marketTable);
         add(typeMarket);
         add(directions);
+        add(buy);
+        add(tooManyItemsError);
+        add(notEnoughGoldError);
+        tooManyItemsError.setVisible(false);
+        notEnoughGoldError.setVisible(false);
     }
 
     public static void setTypeDragon (int level)
