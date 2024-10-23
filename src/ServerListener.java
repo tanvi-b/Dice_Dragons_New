@@ -35,6 +35,7 @@ public class ServerListener implements Runnable {
                         if (game != null) {
                             Hero newHero = new Hero(classType, characterName, os, 0, 0, 0, 0);
                             setHeroValues(newHero);
+                            newHero.items = new ArrayList<MarketItem>();
                             game.getHeroes().add(newHero);
                             sendCommand(new CommandFromServer(CommandFromServer.MAKE_HERO, game, newHero));
                             for (Hero hero : game.getHeroes()) {
@@ -82,6 +83,7 @@ public class ServerListener implements Runnable {
                     String characterName = playerInfo[1];
                     Hero hostHero = new Hero(classType, characterName, os, 0, 0, 0, 0);
                     setHeroValues(hostHero);
+                    hostHero.items = new ArrayList<MarketItem>();
 
                     newGame.getHeroes().add(hostHero);
                     newGame.setMaxPlayers(Integer.parseInt(playerInfo[0]) + 1);
@@ -405,7 +407,7 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand() == CommandFromClient.BUY_ITEM) {
                     ArrayList<Integer> data = (ArrayList<Integer>) cfc.getPlayer();
                     Game game = currentGames.get(String.valueOf(data.get(0)));
-                    Dragon dragon = game.dragons.get(data.get(1));
+                    Dragon dragon = game.dragons.get(data.get(1)-1);
                     MarketItem item = dragon.items.get(data.get(2));
                     Hero playingHero = null;
                     for (Hero hero: game.getHeroes())
@@ -413,10 +415,16 @@ public class ServerListener implements Runnable {
                         if (hero.heroName.equals(cfc.getData()))
                             playingHero = hero;
                     }
-                    if (playingHero.gold>= item.gold)
+                    if (playingHero.items!=null && playingHero.items.size()==2)
+                        sendCommand(new CommandFromServer(CommandFromServer.TOO_MANY_ITEMS, null, null), playingHero.getOs());
+                    else if (playingHero.gold<item.gold)
+                        sendCommand(new CommandFromServer(CommandFromServer.NOT_ENOUGH_GOLD, null, null), playingHero.getOs());
+                    else
                     {
-                        playingHero.items.add(item);
+                        for (int i = 0; i<item.quantity; i++)
+                            playingHero.items.add(item);
                         playingHero.gold-=item.gold;
+                        sendCommand(new CommandFromServer(CommandFromServer.SUCCESSFUL_PURCHASE, null, playingHero), playingHero.getOs());
                     }
                 }
             }

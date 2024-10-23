@@ -1529,7 +1529,8 @@ public class PlayingUI extends JPanel {
             }
         }, 9000);
 
-        if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
+        //commented so marketing ui testing is possible
+//        if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -1544,23 +1545,23 @@ public class PlayingUI extends JPanel {
                     timer.cancel();
                 }
             }, 15000);
-        }
-        else {
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Unfortunately, you were not able to defeat the dragon.");
-                }
-            }, 12000);
-
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    cardLayout.show(mainPanel, "DefeatedScreen");
-                    timer.cancel();
-                }
-            }, 15000);
-        }
+        //}
+//        else {
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Unfortunately, you were not able to defeat the dragon.");
+//                }
+//            }, 12000);
+//
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    cardLayout.show(mainPanel, "DefeatedScreen");
+//                    timer.cancel();
+//                }
+//            }, 15000);
+//        }
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {

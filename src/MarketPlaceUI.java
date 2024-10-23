@@ -26,7 +26,7 @@ public class MarketPlaceUI extends JPanel{
     private Color goldColor = new Color(212, 175, 55);
     private static int typeDragon;
     private static String username;
-    private static JLabel goldText, xpText;
+    private static JLabel goldText, xpText, tooManyItemsError, notEnoughGoldError, successfulPurchaseMessage;
 
     public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -224,24 +224,34 @@ public class MarketPlaceUI extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = marketTable.getSelectedRow();
                 if (selectedRow != -1) {
+                    tooManyItemsError.setVisible(false);
+                    notEnoughGoldError.setVisible(false);
+                    successfulPurchaseMessage.setVisible(false);
                     MarketPlaceUI.game.buyItem(MarketPlaceUI.game.getOs(), username, selectedRow, typeDragon);
                 }
             }
         });
 
-        JLabel tooManyItemsError = new JLabel("You already have 2 items.");
+        tooManyItemsError = new JLabel("You already have 2 items.");
         tooManyItemsError.setHorizontalAlignment(SwingConstants.CENTER);
         tooManyItemsError.setForeground(Color.red);
         tooManyItemsError.setFont(customFont.deriveFont(20f));
         tooManyItemsError.setBounds(700, 675, 245, 50);
         tooManyItemsError.setOpaque(true);
 
-        JLabel notEnoughGoldError = new JLabel("You do not have enough gold.");
+        notEnoughGoldError = new JLabel("You do not have enough gold.");
         notEnoughGoldError.setHorizontalAlignment(SwingConstants.CENTER);
         notEnoughGoldError.setForeground(Color.red);
         notEnoughGoldError.setFont(customFont.deriveFont(20f));
         notEnoughGoldError.setBounds(700, 675, 260, 50);
         notEnoughGoldError.setOpaque(true);
+
+        successfulPurchaseMessage = new JLabel("Successful purchase!");
+        successfulPurchaseMessage.setHorizontalAlignment(SwingConstants.CENTER);
+        successfulPurchaseMessage.setForeground(Color.red);
+        successfulPurchaseMessage.setFont(customFont.deriveFont(20f));
+        successfulPurchaseMessage.setBounds(700, 675, 260, 50);
+        successfulPurchaseMessage.setOpaque(true);
 
         add(amountOfGold);
         add(goldText);
@@ -255,8 +265,25 @@ public class MarketPlaceUI extends JPanel{
         add(buy);
         add(tooManyItemsError);
         add(notEnoughGoldError);
+        add(successfulPurchaseMessage);
         tooManyItemsError.setVisible(false);
         notEnoughGoldError.setVisible(false);
+        successfulPurchaseMessage.setVisible(false);
+    }
+
+    public static void tooManyItems ()
+    {
+        tooManyItemsError.setVisible(true);
+    }
+
+    public static void notEnoughGold ()
+    {
+        notEnoughGoldError.setVisible(true);
+    }
+
+    public static void successfulPurchase()
+    {
+        successfulPurchaseMessage.setVisible(true);
     }
 
     public static void setTypeDragon (int level) {

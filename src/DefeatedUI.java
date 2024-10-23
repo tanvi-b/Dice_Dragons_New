@@ -34,11 +34,20 @@ public class DefeatedUI extends JPanel {
 
     private void addComponents()
     {
-        JButton homeScreen = new JButton ("Home Screen");
-        homeScreen.setFont(customFont.deriveFont(20f));
-        //homeScreen.setBounds(1045, 5, 130, 40);
-        homeScreen.setBorder(BorderFactory.createLineBorder(Color.black));
-        homeScreen.setOpaque(true);
+        JLabel failedHunt = new JLabel ("YOUR HUNT HAS FAILED");
+        failedHunt.setFont(customBoldFont.deriveFont(40f));
+        failedHunt.setForeground(new Color(145, 0, 0));
+        failedHunt.setBounds(390, 10, 500, 50);
+        failedHunt.setOpaque(false);
+
+        JButton homeScreen = new JButton ("New Game");
+        homeScreen.setForeground(Color.white);
+        homeScreen.setFont(customFont.deriveFont(50f));
+        homeScreen.setBounds(100, 225, 300, 100);
+        homeScreen.setBorderPainted(false);
+        homeScreen.setOpaque(false);
+        homeScreen.setContentAreaFilled(false);
+        homeScreen.setFocusPainted(false);
         homeScreen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(mainPanel, "IntroScreen");
@@ -46,16 +55,20 @@ public class DefeatedUI extends JPanel {
         });
 
         JButton exit = new JButton ("Exit");
-        exit.setFont(customFont.deriveFont(20f));
-        //exit.setBounds(1045, 5, 130, 40);
-        exit.setBorder(BorderFactory.createLineBorder(Color.black));
-        exit.setOpaque(true);
+        exit.setForeground(Color.white);
+        exit.setFont(customFont.deriveFont(50f));
+        exit.setBounds(800, 225, 300, 100);
+        exit.setBorderPainted(false);
+        exit.setOpaque(false);
+        exit.setContentAreaFilled(false);
+        exit.setFocusPainted(false);
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
             }
         });
 
+        add(failedHunt);
         add(homeScreen);
         add(exit);
     }
@@ -73,7 +86,7 @@ public class DefeatedUI extends JPanel {
     private void readImages()
     {
         try {
-            background = ImageIO.read(new File("images/backgroundImage.png"));
+            background = ImageIO.read(new File("images/defeated.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

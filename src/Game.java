@@ -123,6 +123,16 @@ public class Game implements Runnable, Serializable {
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
                     MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
                 }
+                else if(cfs.getCommand() == CommandFromServer.NOT_ENOUGH_GOLD){
+                    MarketPlaceUI.notEnoughGold();
+                }
+                else if(cfs.getCommand() == CommandFromServer.TOO_MANY_ITEMS){
+                    MarketPlaceUI.tooManyItems();
+                }
+                else if(cfs.getCommand() == CommandFromServer.SUCCESSFUL_PURCHASE){
+                    MarketPlaceUI.successfulPurchase();
+                    MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
+                }
                 else if(cfs.getCommand() == CommandFromServer.FLEE){
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.makeFleeOptionsVisible();
