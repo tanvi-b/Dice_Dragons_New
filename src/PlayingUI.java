@@ -208,7 +208,7 @@ public class PlayingUI extends JPanel {
 
         JButton flee = new JButton("Flee");
         flee.setFont(customFont.deriveFont(20f));
-        flee.setBounds(1080, 20, 60, 60);
+        flee.setBounds(1060, 20, 60, 60);
         flee.setBorder(BorderFactory.createLineBorder(new Color(139, 0, 0)));
         flee.setOpaque(true);
         flee.setBackground(new Color(228, 99, 98));
@@ -222,8 +222,8 @@ public class PlayingUI extends JPanel {
         });
 
         yesFlee  = new JButton("Yes");
-        yesFlee.setFont(customFont.deriveFont(13f));
-        yesFlee.setBounds(1145, 25, 50, 20);
+        yesFlee.setFont(customFont.deriveFont(11f));
+        yesFlee.setBounds(1125, 25, 50, 20);
         yesFlee.setOpaque(true);
         yesFlee.addActionListener(new ActionListener() {
             @Override
@@ -237,7 +237,7 @@ public class PlayingUI extends JPanel {
 
         noFlee = new JButton("No");
         noFlee.setFont(customFont.deriveFont(13f));
-        noFlee.setBounds(1145, 55, 50, 20);
+        noFlee.setBounds(1125, 55, 50, 20);
         noFlee.setOpaque(true);
         noFlee.addActionListener(new ActionListener() {
             @Override
