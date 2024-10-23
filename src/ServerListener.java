@@ -344,27 +344,34 @@ public class ServerListener implements Runnable {
                     ArrayList<Integer> data = (ArrayList<Integer>) cfc.getPlayer();
                     Game game = currentGames.get(String.valueOf(data.get(0)));
                     Dragon defeatedDragon = game.dragons.get(data.get(1)-1);
-                    int totalGold = defeatedDragon.gold;
-                    int totalXp = defeatedDragon.exp;
-                    ArrayList<Hero> heroes = game.getHeroes();
-                    int numHeroes = heroes.size();
-                    int goldPerHero = totalGold/numHeroes;
-                    int xpPerHero = totalXp/numHeroes;
-                    for (Hero hero : heroes) {
-                        hero.gold += goldPerHero;
-                        hero.exp += xpPerHero;
+                    if (defeatedDragon.hitPoints<=0) {
+                        for (Hero hero : game.getHeroes())
+                            sendCommand(new CommandFromServer(CommandFromServer.HEROES_DEFEATED, null, null), hero.getOs());
                     }
-                    int remainingGold = totalGold % numHeroes;
-                    int remainingXp = totalXp % numHeroes;
+                    else {
+                        int totalGold = defeatedDragon.gold;
+                        int totalXp = defeatedDragon.exp;
+                        ArrayList<Hero> heroes = game.getHeroes();
+                        int numHeroes = heroes.size();
+                        int goldPerHero = totalGold / numHeroes;
+                        int xpPerHero = totalXp / numHeroes;
+                        for (Hero hero : heroes) {
+                            hero.gold += goldPerHero;
+                            hero.exp += xpPerHero;
+                        }
+                        int remainingGold = totalGold % numHeroes;
+                        int remainingXp = totalXp % numHeroes;
 
-                    for (int i = 0; i < remainingGold; i++)
-                        heroes.get(i).gold++;
+                        for (int i = 0; i < remainingGold; i++)
+                            heroes.get(i).gold++;
 
-                    for (int i = 0; i < remainingXp; i++)
-                        heroes.get(i).exp++;
+                        for (int i = 0; i < remainingXp; i++)
+                            heroes.get(i).exp++;
 
-                  for (Hero hero : game.getHeroes())
-                     sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
+                        //pass the whole data so u hv access code too
+                        for (Hero hero : game.getHeroes())
+                            sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
+                    }
                 }
 
                 if(cfc.getCommand() == CommandFromClient.FLEE){
@@ -414,34 +421,101 @@ public class ServerListener implements Runnable {
         gameDragons.get(0).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Slashing Claws", null, null, 5, 0),
                 new Skill("Tail Strike", null, null, 7, 0),
                 new Skill("Fire Breath", null, null, 10, 0))));
+        gameDragons.get(0).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Small Healing Potion", 0, true, 4, 1, 2),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 1),
+                new MarketItem("Haste Potion", 3, true, -1, 1, 1),
+                new MarketItem("Holy Water", 4, true, -1, 1, 1),
+                new MarketItem("Mana Potion", 4, true, -1, 1, 1))));
+
         gameDragons.add(new Dragon ("pale", 50, 4, 10, 2));
         gameDragons.get(1).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Brutal Stomp", null, null, 6, 0),
                 new Skill("Winged Attack", null, null, 9, 0),
                 new Skill("White Inferno", null, null, 12, 0))));
+        gameDragons.get(1).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Small Healing Potion", 0, true, 4, 1, 1),
+                new MarketItem("Healing Potion", 0, true, 7, 1, 1),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 1),
+                new MarketItem("Haste Potion", 3, true, -1, 1, 2),
+                new MarketItem("Vision Portion", 4, true, -1, 1, 1),
+                new MarketItem("Mana Portion", 4, true, -1, 1, 1),
+                new MarketItem("Stealth Potion", 4, true, -1, 1, 1),
+                new MarketItem("Steel Shield", 1, false, 1, 2, 1))));
+
         gameDragons.add(new Dragon ("young black", 55, 5, 12, 3));
         gameDragons.get(2).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Reaping Jaws", null, null, 6, 0),
                 new Skill("Tail Strike", null, null, 10, 0),
                 new Skill("Strike From Above", null, null, 13, 0))));
+        gameDragons.get(2).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Small Healing Potion", 0, true, 4, 1, 1),
+                new MarketItem("Healing Potion", 0, true, 7, 1, 2),
+                new MarketItem("Holy Water", 4, true, -1, 1, 1),
+                new MarketItem("Stealth Potion", 4, true, -1, 1, 1),
+                new MarketItem("Steel Shield", 1, false, 1, 2, 1),
+                new MarketItem("Magic Shield", 1, false, 2, 4, 1),
+                new MarketItem("Magic Sword", 4, false, -1, 5, 1),
+                new MarketItem("Pinpoint Crossbow", 4, false, -1, 5, 1))));
+
         gameDragons.add(new Dragon ("green", 65, 6, 14, 4));
         gameDragons.get(3).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Bite Attack", null, null, 6, 0),
                 new Skill("Slashing Claws", null, null, 10, 0),
                 new Skill("Green Inferno", null, null, 13, 0))));
+        gameDragons.get(3).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Healing Potion", 0, true, 7, 2, 1),
+                new MarketItem("Great Healing Potion", 0, true, 9, 3, 1),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 1),
+                new MarketItem("Strength Potion", 4, true, -1, 1, 2),
+                new MarketItem("Great Haste Portion", 3, true, -1, 2, 1),
+                new MarketItem("Blessed Hammer", 4, false, -1, 1, 1),
+                new MarketItem("Gauntlets of Power", 5, false, 1, 1, 1),
+                new MarketItem("Magic Staff", 4, false, -1, 2, 1))));
+
         gameDragons.add(new Dragon ("red", 80, 8, 16, 5));
         gameDragons.get(4).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Slashing Claws", null, null, 7, 0),
                 new Skill("Tail Strike", null, null, 11, 0),
                 new Skill("Red Inferno", null, null, 15, 0))));
+        gameDragons.get(4).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Healing Potion", 0, true, 7, 2, 1),
+                new MarketItem("Great Healing Potion", 0, true, 9, 3, 1),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 1),
+                new MarketItem("Strength Potion", 4, true, -1, 1, 2),
+                new MarketItem("Great Haste Portion", 3, true, -1, 2, 1),
+                new MarketItem("Blessed Hammer", 4, false, -1, 1, 1),
+                new MarketItem("Gauntlets of Power", 5, false, 1, 1, 1),
+                new MarketItem("Magic Staff", 4, false, -1, 2, 1))));
+
         gameDragons.add(new Dragon ("blue", 75, 8, 18, 6));
         gameDragons.get(5).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("A Cold One", null, null, 6, 0),
                 new Skill("Winged Attack", null, null, 10, 0),
                 new Skill("Cold Inferno", null, null, 13, 0))));
+        gameDragons.get(5).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Healing Potion", 0, true, 7, 2, 1),
+                new MarketItem("Great Healing Potion", 0, true, 9, 3, 1),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 1),
+                new MarketItem("Holy Water", 4, true, -1, 1, 2),
+                new MarketItem("Great Haste Portion", 3, true, -1, 2, 1),
+                new MarketItem("Magic Sword", 4, false, -1, 1, 1))));
+
         gameDragons.add(new Dragon ("undead", 75, 10, 20, 7));
         gameDragons.get(6).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Brutal Stomp", null, null, 7, 0),
                 new Skill("Winged Attack", null, null, 11, 0),
                 new Skill("Death From Above", null, null, 14, 0))));
+        gameDragons.get(6).setItems(new ArrayList<MarketItem>(Arrays.asList(
+                new MarketItem("Healing Potion", 0, true, 7, 2, 2),
+                new MarketItem("Great Healing Potion", 0, true, 9, 3, 1),
+                new MarketItem("Scroll of Knowledge", 2, true, -1, 1, 2),
+                new MarketItem("Stealth Potion", 4, true, -1, 1, 2),
+                new MarketItem("Great Haste Portion", 3, true, -1, 2, 1),
+                new MarketItem("Vision Portion", 4, true, -1, 1, 1),
+                new MarketItem("Gauntlets of Power", 5, false, 1, 4, 1),
+                new MarketItem("Staff of Healing", 5, false, 1, 4, 1))));
+
         gameDragons.add(new Dragon ("black", 80, 12, 24, 8));
         gameDragons.get(7).setPlayerSkills(new ArrayList<Skill>(Arrays.asList(new Skill("Reaping Jaws", null, null, 7, 0),
                 new Skill("Tail Strike", null, null, 13, 0),
                 new Skill("Black Inferno", null, null, 18, 0))));
+        //no market items
+
         return gameDragons;
     }
 

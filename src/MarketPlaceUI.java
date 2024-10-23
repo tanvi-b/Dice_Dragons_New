@@ -12,10 +12,12 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class MarketPlaceUI extends JPanel{
     private Font customFont;
     private Font customBoldFont;
+    public static Game game;
     private static JPanel mainPanel;
     private static CardLayout cardLayout;
     private BufferedImage background;
@@ -23,12 +25,13 @@ public class MarketPlaceUI extends JPanel{
     private Color greenBackground = new Color(147, 195, 123);
     private Color goldColor = new Color(212, 175, 55);
     private static int typeDragon;
+    private static String username;
     private static JLabel goldText, xpText;
 
-
-    public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel) {
+    public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.game = game;
         setLayout(null);
         readImages();
         loadFonts();
@@ -185,7 +188,7 @@ public class MarketPlaceUI extends JPanel{
             data.addRow(new Object[]{"Great Haste Portion", "Instant", "Re-roll up to 3 Dragon Dice", "2 Gold", "1"});
             data.addRow(new Object[]{"Vision Portion", "Instant", "Add a Crossbow Symbol", "1 Gold", "1"});
             data.addRow(new Object[]{"Gauntlets of Power", "Durable", "1 HP extra damage when activating a Strike Skill", "4 Gold", "1"});
-            data.addRow(new Object[]{"Staff of Healing", "Durable", "+1HP extra healing when activating a Healing Skill", "4 Gold", "1"});
+            data.addRow(new Object[]{"Staff of Healing", "Durable", "+1 HP extra healing when activating a Healing Skill", "4 Gold", "1"});
 
         }
         else{
@@ -256,8 +259,7 @@ public class MarketPlaceUI extends JPanel{
         notEnoughGoldError.setVisible(false);
     }
 
-    public static void setTypeDragon (int level)
-    {
+    public static void setTypeDragon (int level) {
         typeDragon = level;
     }
 
@@ -265,6 +267,10 @@ public class MarketPlaceUI extends JPanel{
     {
         goldText.setText(String.valueOf(hero.gold));
         xpText.setText(String.valueOf(hero.exp));
+    }
+
+    public static void setUsername (Hero hero) {
+        username = hero.heroName;
     }
 
     private void readImages() {

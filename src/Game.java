@@ -121,6 +121,7 @@ public class Game implements Runnable, Serializable {
                     MarketPlaceUI.goToMarketPlace();
                     MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
+                    MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.FLEE){
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
@@ -141,6 +142,11 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void buyItem (ObjectOutputStream os, String username, int row, int level)
+    {
+
     }
 
     public void flee (ObjectOutputStream os, String username){
