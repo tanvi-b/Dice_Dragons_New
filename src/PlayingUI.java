@@ -19,8 +19,8 @@ import java.util.Timer;
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private static CardLayout cardLayout;
+    private static JPanel mainPanel;
     private static ArrayList<Hero> gameHeroes = new ArrayList<>(); //use this to access hero info
     private static ArrayList<Integer> heroSheets = new ArrayList<>();
     private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
@@ -1528,21 +1528,39 @@ public class PlayingUI extends JPanel {
                 PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Dragon has 0 rolls left.");
             }
         }, 9000);
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Get Prepared! We are about to go to the market place!");
-            }
-        }, 12000);
 
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
-                timer.cancel();
-            }
-        }, 15000);
+        if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Get Prepared! We are about to go to the market place!");
+                }
+            }, 12000);
 
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
+                    timer.cancel();
+                }
+            }, 15000);
+        }
+        else {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Unfortunately, you were not able to defeat the dragon.");
+                }
+            }, 12000);
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    cardLayout.show(mainPanel, "DefeatedScreen");
+                    timer.cancel();
+                }
+            }, 15000);
+        }
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {

@@ -344,34 +344,27 @@ public class ServerListener implements Runnable {
                     ArrayList<Integer> data = (ArrayList<Integer>) cfc.getPlayer();
                     Game game = currentGames.get(String.valueOf(data.get(0)));
                     Dragon defeatedDragon = game.dragons.get(data.get(1)-1);
-                    if (defeatedDragon.hitPoints<=0) {
-                        for (Hero hero : game.getHeroes())
-                            sendCommand(new CommandFromServer(CommandFromServer.HEROES_DEFEATED, null, null), hero.getOs());
+                    int totalGold = defeatedDragon.gold;
+                    int totalXp = defeatedDragon.exp;
+                    ArrayList<Hero> heroes = game.getHeroes();
+                    int numHeroes = heroes.size();
+                    int goldPerHero = totalGold / numHeroes;
+                    int xpPerHero = totalXp / numHeroes;
+                    for (Hero hero : heroes) {
+                        hero.gold += goldPerHero;
+                        hero.exp += xpPerHero;
                     }
-                    else {
-                        int totalGold = defeatedDragon.gold;
-                        int totalXp = defeatedDragon.exp;
-                        ArrayList<Hero> heroes = game.getHeroes();
-                        int numHeroes = heroes.size();
-                        int goldPerHero = totalGold / numHeroes;
-                        int xpPerHero = totalXp / numHeroes;
-                        for (Hero hero : heroes) {
-                            hero.gold += goldPerHero;
-                            hero.exp += xpPerHero;
-                        }
-                        int remainingGold = totalGold % numHeroes;
-                        int remainingXp = totalXp % numHeroes;
+                    int remainingGold = totalGold % numHeroes;
+                    int remainingXp = totalXp % numHeroes;
 
-                        for (int i = 0; i < remainingGold; i++)
-                            heroes.get(i).gold++;
+                    for (int i = 0; i < remainingGold; i++)
+                        heroes.get(i).gold++;
 
-                        for (int i = 0; i < remainingXp; i++)
-                            heroes.get(i).exp++;
+                    for (int i = 0; i < remainingXp; i++)
+                        heroes.get(i).exp++;
 
-                        //pass the whole data so u hv access code too
-                        for (Hero hero : game.getHeroes())
-                            sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
-                    }
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
                 }
 
                 if(cfc.getCommand() == CommandFromClient.FLEE){
@@ -407,6 +400,23 @@ public class ServerListener implements Runnable {
                     }
                     for(Hero hero: game.getHeroes()) {
                         sendCommand(new CommandFromServer(CommandFromServer.NO_FLEE, game, null), hero.getOs());
+                    }
+                }
+                if (cfc.getCommand() == CommandFromClient.BUY_ITEM) {
+                    ArrayList<Integer> data = (ArrayList<Integer>) cfc.getPlayer();
+                    Game game = currentGames.get(String.valueOf(data.get(0)));
+                    Dragon dragon = game.dragons.get(data.get(1));
+                    MarketItem item = dragon.items.get(data.get(2));
+                    Hero playingHero = null;
+                    for (Hero hero: game.getHeroes())
+                    {
+                        if (hero.heroName.equals(cfc.getData()))
+                            playingHero = hero;
+                    }
+                    if (playingHero.gold>= item.gold)
+                    {
+                        playingHero.items.add(item);
+                        playingHero.gold-=item.gold;
                     }
                 }
             }

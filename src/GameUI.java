@@ -44,9 +44,6 @@ public class GameUI extends JFrame implements Serializable {
         JPanel wonPanel = new WonUI(cardLayout, mainPanel);
         mainPanel.add(wonPanel, "WonScreen");
 
-        JPanel successfulHuntPanel = new SuccessfulHuntUI(cardLayout, mainPanel);
-        mainPanel.add(successfulHuntPanel, "SuccessfulHuntScreen");
-
         JPanel specialSkillsPanel = new SpecialSkillsUI(cardLayout, mainPanel);
         mainPanel.add(specialSkillsPanel, "SpecialSkillsScreen");
 

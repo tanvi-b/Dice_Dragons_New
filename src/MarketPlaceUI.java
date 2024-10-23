@@ -224,7 +224,7 @@ public class MarketPlaceUI extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 int selectedRow = marketTable.getSelectedRow();
                 if (selectedRow != -1) {
-                    System.out.println(selectedRow);
+                    MarketPlaceUI.game.buyItem(MarketPlaceUI.game.getOs(), username, selectedRow, typeDragon);
                 }
             }
         });

@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DefeatedUI extends JPanel {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private static CardLayout cardLayout;
+    private static JPanel mainPanel;
     private Font customFont;
     private Font customBoldFont;
     private BufferedImage background;

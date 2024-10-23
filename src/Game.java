@@ -146,7 +146,11 @@ public class Game implements Runnable, Serializable {
 
     public void buyItem (ObjectOutputStream os, String username, int row, int level)
     {
-
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(Integer.valueOf(PlayingUI.getAccessCode()));
+        data.add(level);
+        data.add(row);
+        sendCommand(os, new CommandFromClient(CommandFromClient.BUY_ITEM, username, data));
     }
 
     public void flee (ObjectOutputStream os, String username){

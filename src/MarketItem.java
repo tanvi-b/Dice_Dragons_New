@@ -1,4 +1,6 @@
-public class MarketItem {
+import java.io.Serializable;
+
+public class MarketItem implements Serializable {
     String name;
     int type; //0: heals hp, 1: +AC, 2: re use skill, 3: reroll dice, 4: add symbols, 5: extra damage/healing w/ skill
     boolean instant;
