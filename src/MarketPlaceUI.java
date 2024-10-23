@@ -26,7 +26,9 @@ public class MarketPlaceUI extends JPanel{
     private Color goldColor = new Color(212, 175, 55);
     private static int typeDragon;
     private static String username;
-    private static JLabel goldText, xpText, tooManyItemsError, notEnoughGoldError, successfulPurchaseMessage;
+    private static JLabel goldText, xpText, tooManyItemsError, notEnoughGoldError, successfulPurchaseMessage, startingNewGame;
+    private static Timer countdownTimer;
+    private static int countdown = 3;
 
     public MarketPlaceUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -215,7 +217,7 @@ public class MarketPlaceUI extends JPanel{
 
         JButton buy = new JButton ("Buy");
         buy.setFont(customFont.deriveFont(20f));
-        buy.setBounds(350, 675, 245, 50);
+        buy.setBounds(615, 650, 175, 50);
         buy.setOpaque(true);
         buy.setBackground(new Color(147, 195, 123));
         buy.setBorder(new MatteBorder(4, 4, 4, 4, new Color(72, 129, 34)));
@@ -236,22 +238,40 @@ public class MarketPlaceUI extends JPanel{
         tooManyItemsError.setHorizontalAlignment(SwingConstants.CENTER);
         tooManyItemsError.setForeground(Color.red);
         tooManyItemsError.setFont(customFont.deriveFont(20f));
-        tooManyItemsError.setBounds(700, 675, 245, 50);
+        tooManyItemsError.setBounds(580, 715, 245, 50);
         tooManyItemsError.setOpaque(true);
 
         notEnoughGoldError = new JLabel("You do not have enough gold.");
         notEnoughGoldError.setHorizontalAlignment(SwingConstants.CENTER);
         notEnoughGoldError.setForeground(Color.red);
         notEnoughGoldError.setFont(customFont.deriveFont(20f));
-        notEnoughGoldError.setBounds(700, 675, 260, 50);
+        notEnoughGoldError.setBounds(570, 715, 260, 50);
         notEnoughGoldError.setOpaque(true);
 
         successfulPurchaseMessage = new JLabel("Successful purchase!");
         successfulPurchaseMessage.setHorizontalAlignment(SwingConstants.CENTER);
         successfulPurchaseMessage.setForeground(Color.red);
         successfulPurchaseMessage.setFont(customFont.deriveFont(20f));
-        successfulPurchaseMessage.setBounds(700, 675, 260, 50);
+        successfulPurchaseMessage.setBounds(570, 715, 260, 50);
         successfulPurchaseMessage.setOpaque(true);
+
+        JButton done = new JButton ("Done");
+        done.setFont(customFont.deriveFont(20f));
+        done.setBounds(1050, 730, 130, 50);
+        done.setOpaque(true);
+        done.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                MarketPlaceUI.game.readyToMoveOn(MarketPlaceUI.game.getOs(), username);
+            }
+        });
+
+        startingNewGame = new JLabel("Next hunt begins in 3...");
+        startingNewGame.setHorizontalAlignment(SwingConstants.CENTER);
+        startingNewGame.setForeground(Color.red);
+        startingNewGame.setFont(customFont.deriveFont(20f));
+        startingNewGame.setBounds(550, 715, 300, 50);
+        startingNewGame.setOpaque(true);
 
         add(amountOfGold);
         add(goldText);
@@ -265,10 +285,34 @@ public class MarketPlaceUI extends JPanel{
         add(buy);
         add(tooManyItemsError);
         add(notEnoughGoldError);
+        add(done);
+        add(startingNewGame);
         add(successfulPurchaseMessage);
         tooManyItemsError.setVisible(false);
         notEnoughGoldError.setVisible(false);
         successfulPurchaseMessage.setVisible(false);
+        startingNewGame.setVisible(false);
+    }
+
+    public static void readyToMoveOn()
+    {
+        startingNewGame.setVisible(true);
+        countdown = 3;
+        countdownTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (countdown > 0) {
+                    startingNewGame.setText("Next hunt begins in " + countdown + "...");
+                    countdown--;
+                } else {
+                    countdownTimer.stop();
+                    startingNewGame.setVisible(false);
+                    cardLayout.show(mainPanel, "PlayingScreen");
+                    //obviously will hv to reset game
+                }
+            }
+        });
+        countdownTimer.start();
     }
 
     public static void tooManyItems ()

@@ -144,6 +144,9 @@ public class Game implements Runnable, Serializable {
                 else if(cfs.getCommand() == CommandFromServer.EVERYONE_FLEE){
                     PlayingUI.sendEndingMessage();
                 }
+                else if (cfs.getCommand()==CommandFromServer.EVERYONE_READY_NEXT){
+                    MarketPlaceUI.readyToMoveOn();
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -152,6 +155,11 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void readyToMoveOn (ObjectOutputStream os, String username)
+    {
+        sendCommand(os, new CommandFromClient(CommandFromClient.READY_NEXT, username, PlayingUI.getAccessCode()));
     }
 
     public void buyItem (ObjectOutputStream os, String username, int row, int level)
