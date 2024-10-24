@@ -47,6 +47,8 @@ public class PlayingUI extends JPanel {
     private static ArrayList<JButton> skillButtons = new ArrayList<>();
     private static ArrayList<Boolean> booleanForButtons = new ArrayList<>();
     private static JButton yesFlee, noFlee;
+    private static boolean item1state, item2state;
+    private static JButton item1, item2;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -516,6 +518,20 @@ public class PlayingUI extends JPanel {
         goldText.setHorizontalAlignment(SwingConstants.CENTER);
         goldText.setOpaque(false);
 
+        item1 = new JButton("");
+        item1.setBounds(260, 580, 75, 20);
+        item1.setFont(customFont.deriveFont(7.5f));
+        item1.setOpaque(false);
+        item1.setFocusPainted(false);
+        item1.setContentAreaFilled(false);
+
+        item2 = new JButton("");
+        item2.setBounds(350, 580, 75, 20);
+        item2.setFont(customFont.deriveFont(7.5f));
+        item2.setOpaque(false);
+        item2.setFocusPainted(false);
+        item2.setContentAreaFilled(false);
+
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
             @Override
@@ -606,6 +622,8 @@ public class PlayingUI extends JPanel {
         add(nameChoice);
         add(nameSelected);
         add(dragonHitPointsText);
+        add(item1);
+        add(item2);
         nameChoice.setVisible(false);
         nameSelected.setVisible(false);
         yesFlee.setVisible(false);
@@ -1698,6 +1716,18 @@ public class PlayingUI extends JPanel {
     public static void setDragonFields (Dragon dragon)
     {
         dragonHitPointsText.setText(String.valueOf(dragon.hitPoints));
+    }
+
+    public static void updateItemButton(String text){
+        //System.out.println(text);
+        if(item1state == false){
+            item1state = true;
+            item1.setText(text);
+        }
+        else if(item2state == false && text.equals(item1.getText()) == false){
+            item2state = true;
+            item2.setText(text);
+        }
     }
 
     public static void getDice (List<Map.Entry<Boolean, Integer>> dice) {

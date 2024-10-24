@@ -230,6 +230,8 @@ public class MarketPlaceUI extends JPanel{
                     notEnoughGoldError.setVisible(false);
                     successfulPurchaseMessage.setVisible(false);
                     MarketPlaceUI.game.buyItem(MarketPlaceUI.game.getOs(), username, selectedRow, typeDragon);
+                    String item = (String) marketTable.getValueAt(marketTable.getSelectedRow(), 0);
+                    MarketPlaceUI.game.setItemButtons(MarketPlaceUI.game.getOs(), item);
                 }
             }
         });
@@ -343,6 +345,7 @@ public class MarketPlaceUI extends JPanel{
     public static void setUsername (Hero hero) {
         username = hero.heroName;
     }
+
 
     private void readImages() {
         try {
