@@ -165,6 +165,16 @@ public class Game implements Runnable, Serializable {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
     }
 
+    public void jab (ObjectOutputStream os, int heroClass, int level)
+    {
+
+    }
+
+    public void treatWounds (ObjectOutputStream os, int heroClass)
+    {
+
+    }
+
     public void readyToMoveOn (ObjectOutputStream os, String username)
     {
         sendCommand(os, new CommandFromClient(CommandFromClient.READY_NEXT, username, PlayingUI.getAccessCode()));

@@ -16,6 +16,7 @@ public class SpecialSkillsUI extends JPanel {
     private Font customBoldFont;
     private static JPanel mainPanel;
     private static CardLayout cardLayout;
+    public static Game game;
     private BufferedImage background;
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
     public static List<Map.Entry<Boolean, Integer>> dice = new ArrayList<>();
@@ -26,9 +27,10 @@ public class SpecialSkillsUI extends JPanel {
     public static int heroClass;
     private static int dragonLevel;
 
-    public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel) {
+    public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
         this.mainPanel = mainPanel;
+        this.game = game;
         readImages();
         loadFonts();
         setLayout(null);
@@ -238,6 +240,7 @@ public class SpecialSkillsUI extends JPanel {
         jab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
             }
         });
 
