@@ -17,13 +17,14 @@ public class SpecialSkillsUI extends JPanel {
     private static JPanel mainPanel;
     private static CardLayout cardLayout;
     private BufferedImage background;
-    public static int heroClass;
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
     public static List<Map.Entry<Boolean, Integer>> dice = new ArrayList<>();
     private Color greenBackground = new Color(147, 195, 123);
     private Color greenBorder = new Color(72, 129, 34);
     private Color redBackground = new Color(228, 99, 98);
     private Color redBorder = new Color(139, 0, 0);
+    public static int heroClass;
+    private static int dragonLevel;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel) {
         this.cardLayout = cardLayout;
@@ -290,6 +291,11 @@ public class SpecialSkillsUI extends JPanel {
 
     public List<Map.Entry<Boolean, Integer>> getDice(){
         return dice;
+    }
+
+    public static void setDragonLevel (int level)
+    {
+        dragonLevel = level;
     }
 }
 

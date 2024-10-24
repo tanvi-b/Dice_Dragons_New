@@ -16,6 +16,8 @@ import java.util.*;
 import java.util.List;
 import java.util.Timer;
 
+//todo: reset game, general skills
+
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
@@ -453,6 +455,7 @@ public class PlayingUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 if (turn.getText().substring(6).equals(username)) {
                     SpecialSkillsUI.getDice(diceRolled);
+                    SpecialSkillsUI.setDragonLevel(level);
                     cardLayout.show(mainPanel, "SpecialSkillsScreen");
                 }
             }
@@ -1398,35 +1401,40 @@ public class PlayingUI extends JPanel {
             }
         });
 
+        //warrior
         skillButtons.add(warriorStrike);
         skillButtons.add(slash);
         skillButtons.add(smashingBlow);
         skillButtons.add(savageAttack);
         skillButtons.add(parry);
         skillButtons.add(warriorCriticalHit);
+        //wizard
         skillButtons.add(wizardStrike);
         skillButtons.add(magicBolt);
         skillButtons.add(firebolt);
         skillButtons.add(lightningStorm);
         skillButtons.add(wizardShield);
         skillButtons.add(wizardCriticalHit);
+        //cleric
         skillButtons.add(holyStrike);
         skillButtons.add(blessing);
         skillButtons.add(smite);
         skillButtons.add(healingHands);
         skillButtons.add(holyStorm);
         skillButtons.add(clericShield);
+        //ranger
         skillButtons.add(wildStrike);
         skillButtons.add(accurateShot);
         skillButtons.add(dualShot);
         skillButtons.add(crossfire);
         skillButtons.add(pinDown);
         skillButtons.add(rangerCriticalHit);
+        //rogue
         skillButtons.add(rogueStrike);
         skillButtons.add(stab);
-        skillButtons.add(suddenDeath);
         skillButtons.add(flankingStrike);
         skillButtons.add(sneakAttack);
+        skillButtons.add(suddenDeath);
         skillButtons.add(rogueCriticalHit);
         for (int i = 0; i< skillButtons.size(); i++) {
             add(skillButtons.get(i));

@@ -147,7 +147,14 @@ public class Game implements Runnable, Serializable {
                 else if (cfs.getCommand()==CommandFromServer.EVERYONE_READY_NEXT){
                     MarketPlaceUI.readyToMoveOn();
                 }
-
+                else if (cfs.getCommand()==CommandFromServer.JAB_USED)
+                {
+                    PlayingUI.setDragonFields((Dragon) cfs.getPlayer());
+                }
+                else if (cfs.getCommand() == CommandFromServer.TREAT_WOUNDS_USED) {
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();

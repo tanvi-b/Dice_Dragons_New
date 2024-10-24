@@ -32,6 +32,8 @@ public class CommandFromServer implements Serializable {
     public static final int NOT_ENOUGH_GOLD = 24;
     public static final int TOO_MANY_ITEMS = 25;
     public static final int EVERYONE_READY_NEXT = 27;
+    public static final int JAB_USED = 28;
+    public static final int TREAT_WOUNDS_USED = 29;
 
     public CommandFromServer(int command, Object data, Object player) {
         this.command = command;
