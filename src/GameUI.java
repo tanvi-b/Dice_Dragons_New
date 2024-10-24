@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.Serializable;
 
-//dragon face is on dice side 5
-
 public class GameUI extends JFrame implements Serializable {
-    //might need to make the JPanels attributes to get access in other classes?
     Game game;
     public JPanel mainPanel;
     public CardLayout cardLayout;
@@ -41,23 +38,24 @@ public class GameUI extends JFrame implements Serializable {
         JPanel playerRules = new PlayerRulesUI(cardLayout, mainPanel);
         mainPanel.add(playerRules, "PlayerRulesScreen");
 
+        JPanel specialSkillsPanel = new SpecialSkillsUI(cardLayout, mainPanel);
+        mainPanel.add(specialSkillsPanel, "SpecialSkillsScreen");
+
+        JPanel marketPlacePanel = new MarketPlaceUI(cardLayout, mainPanel, game);
+        mainPanel.add(marketPlacePanel, "MarketPlaceScreen");
+
         JPanel defeatedPanel = new DefeatedUI(cardLayout, mainPanel);
         mainPanel.add(defeatedPanel, "DefeatedScreen");
 
         JPanel wonPanel = new WonUI(cardLayout, mainPanel);
         mainPanel.add(wonPanel, "WonScreen");
 
-        JPanel successfulHuntPanel = new SuccessfulHuntUI(cardLayout, mainPanel);
-        mainPanel.add(successfulHuntPanel, "SuccessfulHuntScreen");
-
-        JPanel specialSkillsPanel = new SpecialSkillsUI(cardLayout, mainPanel);
-        mainPanel.add(specialSkillsPanel, "SpecialSkillsScreen");
-
         //JPanel customHeroPanel = new CustomHeroUI(cardLayout, mainPanel);
         //mainPanel.add(customHeroPanel, "CustomHeroScreen");
 
         add(mainPanel, BorderLayout.CENTER);
         cardLayout.show(mainPanel, "IntroScreen");
+        //cardLayout.show(mainPanel, "MarketPlaceScreen");
 
         setVisible(true);
         setSize(1200, 1000);

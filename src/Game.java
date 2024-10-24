@@ -1,9 +1,6 @@
 import javax.swing.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Game implements Runnable, Serializable {
 
@@ -38,7 +35,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -53,7 +49,6 @@ public class Game implements Runnable, Serializable {
                     LobbyUI.refreshLobby(((Game) cfs.getData()).getHeroes(), ((Game) cfs.getData()).getMaxPlayers());
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setStartingTurn();
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setFields((Hero) cfs.getPlayer());
                     PlayingUI.setUsername((Hero) cfs.getPlayer());
                     PlayingUI.setAccessCode(((Game) cfs.getData()).getAccessCode());
@@ -100,7 +95,6 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.updateBooleansForSkillButtons((ArrayList<Boolean>) cfs.getData());
                 }
                 else if (cfs.getCommand() == CommandFromServer.ATTACK_DRAGON) {
-                    PlayingUI.setDragons(((Game) cfs.getData()).getDragons());
                     PlayingUI.setDragonFields((Dragon) cfs.getPlayer());
                 }
                 else if (cfs.getCommand() == CommandFromServer.INCREASE_ARMOR_CLASS) {
@@ -123,6 +117,36 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
+                else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
+                    MarketPlaceUI.goToMarketPlace();
+                    MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
+                    MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
+                    MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
+                }
+                else if(cfs.getCommand() == CommandFromServer.NOT_ENOUGH_GOLD){
+                    MarketPlaceUI.notEnoughGold();
+                }
+                else if(cfs.getCommand() == CommandFromServer.TOO_MANY_ITEMS){
+                    MarketPlaceUI.tooManyItems();
+                }
+                else if(cfs.getCommand() == CommandFromServer.SUCCESSFUL_PURCHASE){
+                    MarketPlaceUI.successfulPurchase();
+                    MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
+                }
+                else if(cfs.getCommand() == CommandFromServer.FLEE){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.makeFleeOptionsVisible();
+                }
+                else if(cfs.getCommand() == CommandFromServer.NO_FLEE){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.makeFleeOptionsUnvisible();
+                }
+                else if(cfs.getCommand() == CommandFromServer.EVERYONE_FLEE){
+                    PlayingUI.sendEndingMessage();
+                }
+                else if (cfs.getCommand()==CommandFromServer.EVERYONE_READY_NEXT){
+                    MarketPlaceUI.readyToMoveOn();
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -131,6 +155,35 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void readyToMoveOn (ObjectOutputStream os, String username)
+    {
+        sendCommand(os, new CommandFromClient(CommandFromClient.READY_NEXT, username, PlayingUI.getAccessCode()));
+    }
+
+    public void buyItem (ObjectOutputStream os, String username, int row, int level)
+    {
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(Integer.valueOf(PlayingUI.getAccessCode()));
+        data.add(level);
+        data.add(row);
+        sendCommand(os, new CommandFromClient(CommandFromClient.BUY_ITEM, username, data));
+    }
+
+    public void flee (ObjectOutputStream os, String username){
+        sendCommand(os, new CommandFromClient(CommandFromClient.FLEE, username, PlayingUI.getAccessCode()));
+    }
+
+    public void noFlee (ObjectOutputStream os, String username){
+        sendCommand(os, new CommandFromClient(CommandFromClient.NO_FLEE, username, PlayingUI.getAccessCode()));
+    }
+
+    public void joinMarketPlace(ObjectOutputStream os, int gameLevel){
+        ArrayList<Integer> data = new ArrayList<>();
+        data.add(Integer.valueOf(PlayingUI.getAccessCode()));
+        data.add(gameLevel);
+        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_MARKET, null, data));
     }
 
     public void dragonAttack (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice)
@@ -145,6 +198,7 @@ public class Game implements Runnable, Serializable {
         data.add(gameLevel);
         sendCommand(os, new CommandFromClient(CommandFromClient.DRAGON_ATTACK_FINAL, dice, data));
     }
+
 
     public void checkDragonDice (ObjectOutputStream os, List<Map.Entry<Boolean, Integer>> dice, String name, int gameLevel)
     {

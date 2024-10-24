@@ -6,6 +6,7 @@ public class Hero extends Player {
     int level;
     int armorClass;
     boolean flee;
+    boolean readyForNextDragon;
     int classType; //warrior = 0, wizard = 1, cleric = 2, ranger = 3, rogue = 4
     String heroName;
     ArrayList<Token> tokens;
@@ -19,6 +20,7 @@ public class Hero extends Player {
         this.os = os;
         this.level = 1;
         this.flee = false;
+        this.readyForNextDragon = false;
     }
 
     public String toString() {
