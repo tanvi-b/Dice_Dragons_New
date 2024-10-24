@@ -1529,6 +1529,21 @@ public class PlayingUI extends JPanel {
         }
     }
 
+    public static void generalSkillUsed()
+    {
+        turnsPlayed++;
+        hasPlayed=true;
+        String text = username + " has activated a general skill!";
+        PlayingUI.game.checkDragonDice(PlayingUI.game.getOs(), diceRolled, username, level);
+        PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
+        if (instance != null)
+            instance.repaint();
+        if (turnTracker == gameHeroes.size()-1 && turnsPlayed == 3) {
+            diceRolled.replaceAll(entry -> new AbstractMap.SimpleEntry<>(false, entry.getValue()));
+            dragonCounterAttack();
+        }
+    }
+
     public static void dragonCounterAttack() {
         Timer timer = new Timer();
         PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Now it's time for the dragon counter attack!");
