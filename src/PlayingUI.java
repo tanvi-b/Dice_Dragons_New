@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Timer;
 
-//todo: reset game, general skills
+//todo: reset game (make jab used & treat wounds used false), general skills
 
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;

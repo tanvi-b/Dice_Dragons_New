@@ -28,6 +28,7 @@ public class SpecialSkillsUI extends JPanel {
     public static int heroClass;
     private static int dragonLevel;
     private static Skill jabSkill, treatWoundsSkill;
+    private static boolean jabUsed, treatWoundsUsed;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -244,10 +245,11 @@ public class SpecialSkillsUI extends JPanel {
         jab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //more validation left
                 boolean canUse = jabSkill.checkDiceCombo(dice);
-                if (canUse)
+                if (canUse && !jabUsed) {
                     SpecialSkillsUI.game.jab(SpecialSkillsUI.game.getOs(), dragonLevel);
+                    jabUsed = true;
+                }
             }
         });
 
@@ -260,6 +262,11 @@ public class SpecialSkillsUI extends JPanel {
         treatWounds.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                boolean canUse = treatWoundsSkill.checkDiceCombo(dice);
+                if (canUse && !treatWoundsUsed) {
+                    //SpecialSkillsUI.game.treatWounds(SpecialSkillsUI.game.getOs(), );
+                    treatWoundsUsed = true;
+                }
             }
         });
 
