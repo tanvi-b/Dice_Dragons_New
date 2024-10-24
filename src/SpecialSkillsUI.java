@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class SpecialSkillsUI extends JPanel {
     private Color redBorder = new Color(139, 0, 0);
     public static int heroClass;
     private static int dragonLevel;
+    private static Skill jabSkill, treatWoundsSkill;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -34,6 +36,8 @@ public class SpecialSkillsUI extends JPanel {
         readImages();
         loadFonts();
         setLayout(null);
+        jabSkill = new Skill("Jab", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(7, 7, 7)), 2, 0);
+        treatWoundsSkill = new Skill("Treat Wounds", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(7, 7, 7)), 2, 0);
     }
 
     public void paintComponent(Graphics g) {
@@ -240,7 +244,10 @@ public class SpecialSkillsUI extends JPanel {
         jab.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //more validation left
+                boolean canUse = jabSkill.checkDiceCombo(dice);
+                if (canUse)
+                    SpecialSkillsUI.game.jab(SpecialSkillsUI.game.getOs(), dragonLevel);
             }
         });
 

@@ -286,7 +286,6 @@ public class ServerListener implements Runnable {
                 if (cfc.getCommand()==CommandFromClient.DRAGON_ATTACK)
                 {
                     Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
-
                     Random random = new Random();
                     List<Map.Entry<Boolean, Integer>> originalDiceList = (List<Map.Entry<Boolean, Integer>>) cfc.getData();
                     List<Map.Entry<Boolean, Integer>> updatedDiceList = new ArrayList<>();
@@ -447,6 +446,25 @@ public class ServerListener implements Runnable {
                         for(Hero hero: game.getHeroes())
                             sendCommand(new CommandFromServer(CommandFromServer.EVERYONE_READY_NEXT, null, null), hero.getOs());
                     }
+                }
+                if (cfc.getCommand()==CommandFromClient.JAB)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    List<Dragon> dragons = game.getDragons();
+                    int level = (Integer) cfc.getData();
+                    Dragon dragon = game.dragons.get(level-1);
+                    int newHitPoints = dragon.hitPoints - 2;
+                    if (newHitPoints <= 0) {
+                        dragon.setHitPoints(0);
+                        dragon.alive=false;
+                        //send command for dead dragon
+                    } else {
+                        dragon.hitPoints = newHitPoints;
+                    }
+                    dragons.set(level - 1, dragon);
+                    game.setDragons((ArrayList<Dragon>) dragons);
+                    for(Hero hero: game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.JAB_USED, null, dragon), hero.getOs());
                 }
             }
         } catch (Exception e) {
