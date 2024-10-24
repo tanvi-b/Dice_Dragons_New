@@ -264,6 +264,9 @@ public class MarketPlaceUI extends JPanel{
         done.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                tooManyItemsError.setVisible(false);
+                notEnoughGoldError.setVisible(false);
+                successfulPurchaseMessage.setVisible(false);
                 MarketPlaceUI.game.readyToMoveOn(MarketPlaceUI.game.getOs(), username);
             }
         });

@@ -521,16 +521,18 @@ public class PlayingUI extends JPanel {
         item1 = new JButton("");
         item1.setBounds(260, 580, 75, 20);
         item1.setFont(customFont.deriveFont(7.5f));
+        item1.setBorderPainted(false);
         item1.setOpaque(false);
-        item1.setFocusPainted(false);
         item1.setContentAreaFilled(false);
+        item1.setFocusPainted(false);
 
         item2 = new JButton("");
         item2.setBounds(350, 580, 75, 20);
         item2.setFont(customFont.deriveFont(7.5f));
+        item2.setBorderPainted(false);
         item2.setOpaque(false);
-        item2.setFocusPainted(false);
         item2.setContentAreaFilled(false);
+        item2.setFocusPainted(false);
 
         BasicArrowButton next = new BasicArrowButton(BasicArrowButton.EAST);
         next.addActionListener(new ActionListener() {
@@ -1719,7 +1721,6 @@ public class PlayingUI extends JPanel {
     }
 
     public static void updateItemButton(String text){
-        //System.out.println(text);
         if(item1state == false){
             item1state = true;
             item1.setText(text);

@@ -421,8 +421,7 @@ public class ServerListener implements Runnable {
                         sendCommand(new CommandFromServer(CommandFromServer.NOT_ENOUGH_GOLD, null, null), playingHero.getOs());
                     else
                     {
-                        for (int i = 0; i<item.quantity; i++)
-                            playingHero.items.add(item);
+                        playingHero.items.add(item);
                         playingHero.gold-=item.gold;
                         sendCommand(new CommandFromServer(CommandFromServer.SUCCESSFUL_PURCHASE, null, playingHero), playingHero.getOs());
                     }

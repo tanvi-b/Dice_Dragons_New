@@ -55,7 +55,6 @@ public class GameUI extends JFrame implements Serializable {
 
         add(mainPanel, BorderLayout.CENTER);
         cardLayout.show(mainPanel, "IntroScreen");
-        //cardLayout.show(mainPanel, "MarketPlaceScreen");
 
         setVisible(true);
         setSize(1200, 1000);
