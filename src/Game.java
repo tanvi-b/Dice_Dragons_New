@@ -14,6 +14,7 @@ public class Game implements Runnable, Serializable {
     ArrayList<Dragon> dragons;
     List<Map.Entry<Boolean, Integer>> diceRolled;
     ArrayList<String> messages;
+    public static boolean treatWoundsState = false;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -174,7 +175,7 @@ public class Game implements Runnable, Serializable {
 
     public void treatWounds (ObjectOutputStream os, int heroClass)
     {
-
+        sendCommand(os, new CommandFromClient(CommandFromClient.TREAT_WOUNDS, heroClass, PlayingUI.getAccessCode()));
     }
 
     public void readyToMoveOn (ObjectOutputStream os, String username)

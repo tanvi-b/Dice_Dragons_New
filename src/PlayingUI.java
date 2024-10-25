@@ -51,6 +51,7 @@ public class PlayingUI extends JPanel {
     private static JButton yesFlee, noFlee;
     private static boolean item1state, item2state;
     private static JButton item1, item2;
+    private static boolean treatWoundsUsed = false;
 
     public PlayingUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         instance = this;
@@ -456,6 +457,7 @@ public class PlayingUI extends JPanel {
                 if (turn.getText().substring(6).equals(username)) {
                     SpecialSkillsUI.getDice(diceRolled);
                     SpecialSkillsUI.setDragonLevel(level);
+                    SpecialSkillsUI.setHeroes(gameHeroes);
                     cardLayout.show(mainPanel, "SpecialSkillsScreen");
                 }
             }
@@ -1674,10 +1676,17 @@ public class PlayingUI extends JPanel {
 
     public static void setHitPointsNowText (Hero hero)
     {
-        if (hero.heroName.equals(username)) {
+         if (hero.heroName.equals(username)) {
             hitPointsNowText.setText(String.valueOf(hero.hitPoints));
         }
     }
+
+    public static void updateHPTreatWounds (Hero hero)
+    {
+        hero.setHitPoints(hero.getHitPoints()+2);
+    }
+
+
 
     public static void setStartingTurn()
     {

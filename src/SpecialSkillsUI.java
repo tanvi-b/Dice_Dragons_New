@@ -29,6 +29,10 @@ public class SpecialSkillsUI extends JPanel {
     private static int dragonLevel;
     private static Skill jabSkill, treatWoundsSkill;
     private static boolean jabUsed, treatWoundsUsed;
+    private static JComboBox<String> nameChoice = new JComboBox<>();
+    private static JButton nameSelected = new JButton("OK");
+    private static ArrayList<Hero> heroes = new ArrayList<>();
+    private static boolean clicked = false;
 
     public SpecialSkillsUI(CardLayout cardLayout, JPanel mainPanel, Game game) {
         this.cardLayout = cardLayout;
@@ -39,6 +43,11 @@ public class SpecialSkillsUI extends JPanel {
         setLayout(null);
         jabSkill = new Skill("Jab", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(7, 7, 7)), 2, 0);
         treatWoundsSkill = new Skill("Treat Wounds", new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4)), new ArrayList<>(Arrays.asList(7, 7, 7)), 2, 0);
+        addComponents();
+        add(nameSelected);
+        add(nameChoice);
+        nameChoice.setVisible(false);
+        nameSelected.setVisible(false);
     }
 
     public void paintComponent(Graphics g) {
@@ -126,6 +135,28 @@ public class SpecialSkillsUI extends JPanel {
         title.setBounds(300, 30, 600, 50);
         title.setBorder(BorderFactory.createLineBorder(Color.black));
 
+        nameChoice.setSize(200, 50);
+        nameChoice.setLocation(750, 260);
+
+        nameSelected.setFont(customFont.deriveFont(9f));
+        nameSelected.setBounds(975, 260, 45, 50);
+        nameSelected.setOpaque(true);
+        nameSelected.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                nameChoice.setVisible(false);
+                nameSelected.setVisible(false);
+                clicked = true;
+            }
+        });
+
+        if(clicked == true){
+            for(int i =0; i<heroes.size(); i++){
+                if(nameChoice.getSelectedIndex() == i){
+                    SpecialSkillsUI.game.treatWounds(SpecialSkillsUI.game.getOs(),heroes.get(i).getClassType());
+                }
+            }
+            clicked = false;
+        }
         JButton blessing = new JButton("Blessing");
         blessing.setFont(customFont.deriveFont(20f));
         blessing.setBounds(150, 110, 130, 50);
@@ -264,15 +295,22 @@ public class SpecialSkillsUI extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 boolean canUse = treatWoundsSkill.checkDiceCombo(dice);
                 if (canUse && !treatWoundsUsed) {
-                    //SpecialSkillsUI.game.treatWounds(SpecialSkillsUI.game.getOs(), );
-                    treatWoundsUsed = true;
+                nameChoice.removeAllItems();
+                for (Hero hero : heroes){
+                    nameChoice.addItem(hero.heroName);
                 }
+                treatWoundsUsed = true;
+                nameChoice.setVisible(true);
+                nameSelected.setVisible(true);
+                nameChoice.setSelectedIndex(-1);
+
             }
+        }
         });
 
         JButton back = new JButton("Back");
         back.setFont(customFont.deriveFont(20f));
-        back.setBounds(30, 900, 130, 50);
+        back.setBounds(30, 200, 130, 50);
         back.setOpaque(true);
         back.addActionListener(new ActionListener() {
             @Override
@@ -302,8 +340,19 @@ public class SpecialSkillsUI extends JPanel {
         return heroClass;
     }
 
+    public static void setHeroes(ArrayList<Hero> info){
+        heroes = info;
+    }
+    public static ArrayList<Hero> getHeroes(){
+        return heroes;
+    }
+
     public static void getDice(List<Map.Entry<Boolean, Integer>> d){
         dice = d;
+    }
+
+    private static void evaluate(){
+
     }
 
     public List<Map.Entry<Boolean, Integer>> getDice(){
