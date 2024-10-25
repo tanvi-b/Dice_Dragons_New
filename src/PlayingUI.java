@@ -1599,7 +1599,6 @@ public class PlayingUI extends JPanel {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    System.out.println("playing ui" + level);
                     PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
                     cardLayout.show(mainPanel, "MarketPlaceScreen");
                     timer.cancel();

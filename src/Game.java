@@ -118,9 +118,7 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
-                    //MarketPlaceUI.setInvisibleLevelText((Integer) cfs.getData());
                     MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
-                    System.out.println("game" + (Integer) cfs.getData());
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
                     MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
                 }

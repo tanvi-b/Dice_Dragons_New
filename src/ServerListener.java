@@ -364,8 +364,6 @@ public class ServerListener implements Runnable {
                     for (int i = 0; i < remainingXp; i++)
                         heroes.get(i).exp++;
 
-                    System.out.println("server" + data.get(1));
-
                     for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
                 }

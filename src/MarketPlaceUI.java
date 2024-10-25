@@ -46,10 +46,6 @@ public class MarketPlaceUI extends JPanel{
     }
 
     private void addComponents() {
-//        invisibleLevel = new JLabel("1");
-//        invisibleLevel.setFont(customFont.deriveFont(20));
-//        invisibleLevel.setBounds(0, 0, 100, 20);
-
         JLabel title = new JLabel("Market Place");
         title.setForeground(Color.black);
         title.setFont(customFont.deriveFont(55f));
@@ -223,9 +219,7 @@ public class MarketPlaceUI extends JPanel{
 
     public static void setTableData()
     {
-        System.out.println("type dragon: " + typeDragon);
         data.setRowCount(0);
-
         if(typeDragon == 1) {
             typeMarket.setText("Bearwood Market");
             data.addRow(new Object[]{"Small Healing Potion", "Instant", "Heals +4 HP", "1 Gold", "2"});
@@ -350,7 +344,6 @@ public class MarketPlaceUI extends JPanel{
     }
 
     public static void setTypeDragon (int level) {
-        System.out.println("market place ui" + level);
         typeDragon = level;
         setTableData();
     }
