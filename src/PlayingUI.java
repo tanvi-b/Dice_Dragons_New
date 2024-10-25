@@ -1486,6 +1486,20 @@ public class PlayingUI extends JPanel {
         return true;
     }
 
+    public static void reset()
+    {
+        dragonHitPointsText.setText("");
+        level++;
+        turnTracker = 0;
+        timesRolled = 1;
+        turnsShouldHavePlayed = 1;
+        turnsPlayed = 0;
+        hasPlayed = false;
+        for (int i  = 0; i< booleanForButtons.size(); i++)
+            booleanForButtons.set(i, true);
+        setStartingTurn();
+    }
+
     public static void useSkill (Skill skill)
     {
         //attacking dragon HP
@@ -1575,7 +1589,25 @@ public class PlayingUI extends JPanel {
         }, 9000);
 
         //commented so marketing ui testing is possible
-//        if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
+//        if (Integer.parseInt(dragonHitPointsText.getText())<=0 && level==8)
+//        {
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Congratulations, you have defeated all the dragons!");
+//                }
+//            }, 12000);
+//
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+        //might hv to send command
+//                    cardLayout.show(mainPanel, "WonScreen");
+//                    timer.cancel();
+//                }
+//            }, 15000);
+//        }
+//       else if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -1602,6 +1634,7 @@ public class PlayingUI extends JPanel {
 //            timer.schedule(new TimerTask() {
 //                @Override
 //                public void run() {
+        //might hv to send command
 //                    cardLayout.show(mainPanel, "DefeatedScreen");
 //                    timer.cancel();
 //                }
@@ -1680,14 +1713,6 @@ public class PlayingUI extends JPanel {
             hitPointsNowText.setText(String.valueOf(hero.hitPoints));
         }
     }
-
-    public static void updateHPTreatWounds (Hero hero)
-    {
-        hero.setHitPoints(hero.getHitPoints()+2);
-    }
-
-
-
     public static void setStartingTurn()
     {
         setTurnText(0);
@@ -1750,6 +1775,10 @@ public class PlayingUI extends JPanel {
     public static void setDragonFields (Dragon dragon)
     {
         dragonHitPointsText.setText(String.valueOf(dragon.hitPoints));
+        if (level==2)
+                dragonHitPointsText.setBounds(1090, 620, 25, 25);
+        else
+            dragonHitPointsText.setBounds(1055, 620, 25, 25);
     }
 
     public static void updateItemButton(String text){

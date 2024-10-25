@@ -14,7 +14,6 @@ public class Game implements Runnable, Serializable {
     ArrayList<Dragon> dragons;
     List<Map.Entry<Boolean, Integer>> diceRolled;
     ArrayList<String> messages;
-    public static boolean treatWoundsState = false;
 
     public Game(ObjectOutputStream os, ObjectInputStream is)
     {
@@ -119,10 +118,10 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
-                    MarketPlaceUI.goToMarketPlace();
                     MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
                     MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
+                    MarketPlaceUI.switchToMarketUI();
                 }
                 else if(cfs.getCommand() == CommandFromServer.NOT_ENOUGH_GOLD){
                     MarketPlaceUI.notEnoughGold();
@@ -146,6 +145,9 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.sendEndingMessage();
                 }
                 else if (cfs.getCommand()==CommandFromServer.EVERYONE_READY_NEXT){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.repaintScreen();
                     MarketPlaceUI.readyToMoveOn();
                 }
                 else if (cfs.getCommand()==CommandFromServer.JAB_USED)

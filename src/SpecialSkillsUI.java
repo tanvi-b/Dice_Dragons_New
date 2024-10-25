@@ -358,6 +358,11 @@ public class SpecialSkillsUI extends JPanel {
     public List<Map.Entry<Boolean, Integer>> getDice(){
         return dice;
     }
+    public static void reset()
+    {
+        jabUsed = false;
+        treatWoundsUsed = false;
+    }
 
     public static void setDragonLevel (int level)
     {
