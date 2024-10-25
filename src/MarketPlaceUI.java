@@ -328,6 +328,11 @@ public class MarketPlaceUI extends JPanel{
         countdownTimer.start();
     }
 
+    public static void switchToMarketUI ()
+    {
+        cardLayout.show(mainPanel, "MarketPlaceScreen");
+    }
+
     public static void tooManyItems ()
     {
         tooManyItemsError.setVisible(true);

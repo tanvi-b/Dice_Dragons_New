@@ -121,6 +121,7 @@ public class Game implements Runnable, Serializable {
                     MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
                     MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
+                    MarketPlaceUI.switchToMarketUI();
                 }
                 else if(cfs.getCommand() == CommandFromServer.NOT_ENOUGH_GOLD){
                     MarketPlaceUI.notEnoughGold();

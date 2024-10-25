@@ -1486,7 +1486,6 @@ public class PlayingUI extends JPanel {
 
     public static void reset()
     {
-        //not going to correct marketplace
         dragonHitPointsText.setText("");
         level++;
         turnTracker = 0;
@@ -1588,7 +1587,25 @@ public class PlayingUI extends JPanel {
         }, 9000);
 
         //commented so marketing ui testing is possible
-//        if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
+//        if (Integer.parseInt(dragonHitPointsText.getText())<=0 && level==8)
+//        {
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+//                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Congratulations, you have defeated all the dragons!");
+//                }
+//            }, 12000);
+//
+//            timer.schedule(new TimerTask() {
+//                @Override
+//                public void run() {
+        //might hv to send command
+//                    cardLayout.show(mainPanel, "WonScreen");
+//                    timer.cancel();
+//                }
+//            }, 15000);
+//        }
+//       else if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -1600,7 +1617,6 @@ public class PlayingUI extends JPanel {
                 @Override
                 public void run() {
                     PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
-                    cardLayout.show(mainPanel, "MarketPlaceScreen");
                     timer.cancel();
                 }
             }, 15000);
@@ -1616,6 +1632,7 @@ public class PlayingUI extends JPanel {
 //            timer.schedule(new TimerTask() {
 //                @Override
 //                public void run() {
+        //might hv to send command
 //                    cardLayout.show(mainPanel, "DefeatedScreen");
 //                    timer.cancel();
 //                }
@@ -1757,6 +1774,10 @@ public class PlayingUI extends JPanel {
     public static void setDragonFields (Dragon dragon)
     {
         dragonHitPointsText.setText(String.valueOf(dragon.hitPoints));
+        if (level==2)
+                dragonHitPointsText.setBounds(1090, 620, 25, 25);
+        else
+            dragonHitPointsText.setBounds(1055, 620, 25, 25);
     }
 
     public static void updateItemButton(String text){
