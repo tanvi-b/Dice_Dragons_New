@@ -1484,6 +1484,21 @@ public class PlayingUI extends JPanel {
         return true;
     }
 
+    public static void reset()
+    {
+        //not going to correct marketplace
+        dragonHitPointsText.setText("");
+        level++;
+        turnTracker = 0;
+        timesRolled = 1;
+        turnsShouldHavePlayed = 1;
+        turnsPlayed = 0;
+        hasPlayed = false;
+        for (int i  = 0; i< booleanForButtons.size(); i++)
+            booleanForButtons.set(i, true);
+        setStartingTurn();
+    }
+
     public static void useSkill (Skill skill)
     {
         //attacking dragon HP
@@ -1584,7 +1599,9 @@ public class PlayingUI extends JPanel {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    System.out.println("playing ui" + level);
                     PlayingUI.game.joinMarketPlace(PlayingUI.game.getOs(), level);
+                    cardLayout.show(mainPanel, "MarketPlaceScreen");
                     timer.cancel();
                 }
             }, 15000);

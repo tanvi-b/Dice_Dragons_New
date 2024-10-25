@@ -17,6 +17,7 @@ public class SpecialSkillsUI extends JPanel {
     private Font customBoldFont;
     private static JPanel mainPanel;
     private static CardLayout cardLayout;
+
     public static Game game;
     private BufferedImage background;
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
@@ -292,6 +293,12 @@ public class SpecialSkillsUI extends JPanel {
         add(jab);
         add(treatWounds);
         add(back);
+    }
+
+    public static void reset()
+    {
+        jabUsed = false;
+        treatWoundsUsed = false;
     }
 
     public static void setHeroClass(Hero hero) {

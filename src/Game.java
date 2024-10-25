@@ -118,8 +118,9 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
                 else if(cfs.getCommand() == CommandFromServer.GO_TO_MARKET){
-                    MarketPlaceUI.goToMarketPlace();
+                    //MarketPlaceUI.setInvisibleLevelText((Integer) cfs.getData());
                     MarketPlaceUI.setTypeDragon((Integer) cfs.getData());
+                    System.out.println("game" + (Integer) cfs.getData());
                     MarketPlaceUI.setGoldAndXpText((Hero) cfs.getPlayer());
                     MarketPlaceUI.setUsername((Hero) cfs.getPlayer());
                 }
@@ -145,6 +146,9 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.sendEndingMessage();
                 }
                 else if (cfs.getCommand()==CommandFromServer.EVERYONE_READY_NEXT){
+                    PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    PlayingUI.setFields((Hero) cfs.getPlayer());
+                    PlayingUI.repaintScreen();
                     MarketPlaceUI.readyToMoveOn();
                 }
                 else if (cfs.getCommand()==CommandFromServer.JAB_USED)

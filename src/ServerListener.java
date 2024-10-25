@@ -364,6 +364,8 @@ public class ServerListener implements Runnable {
                     for (int i = 0; i < remainingXp; i++)
                         heroes.get(i).exp++;
 
+                    System.out.println("server" + data.get(1));
+
                     for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.GO_TO_MARKET, data.get(1), hero), hero.getOs());
                 }
@@ -443,8 +445,10 @@ public class ServerListener implements Runnable {
                     }
 
                     if (everyoneReady) {
-                        for(Hero hero: game.getHeroes())
-                            sendCommand(new CommandFromServer(CommandFromServer.EVERYONE_READY_NEXT, null, null), hero.getOs());
+                        for(Hero hero: game.getHeroes()) {
+                            setHeroTokens(hero);
+                            sendCommand(new CommandFromServer(CommandFromServer.EVERYONE_READY_NEXT, game, hero), hero.getOs());
+                        }
                     }
                 }
                 if (cfc.getCommand()==CommandFromClient.JAB)
@@ -574,6 +578,45 @@ public class ServerListener implements Runnable {
         //no market items
 
         return gameDragons;
+    }
+
+    private void setHeroTokens (Hero hero)
+    {
+        switch (hero.classType) {
+            case 0: //warrior
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -35, 235),
+                        new Token(0, -35, 285), new Token(0, -35, 335))));
+                hero.setHitPoints(23);
+                hero.setArmorClass(0);
+                break;
+            case 1:  //wizard
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -60, 210),
+                        new Token(0, -60, 260), new Token(0, -60, 310))));
+                hero.setHitPoints(22);
+                hero.setArmorClass(0);
+                break;
+            case 2:  //cleric
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, 17, 265),
+                        new Token(0, 17, 315), new Token(0, 17, 365),
+                        new Token(1, -105, 295), new Token(1, -105, 345),
+                        new Token(1, -105, 395), new Token(1, -105, 445))));
+                hero.setHitPoints(24);
+                hero.setArmorClass(0);
+                break;
+            case 3:  //ranger
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -25, 250),
+                        new Token(0, -25, 300), new Token(0, -25, 350))));
+                hero.setHitPoints(21);
+                hero.setArmorClass(1);
+                break;
+            case 4:  //rogue
+                hero.setTokens(new ArrayList<Token>(Arrays.asList(new Token(0, -30, 300),
+                        new Token(0, -30, 350), new Token(0, -30, 400))));
+                hero.setHitPoints(19);
+                hero.setArmorClass(1);
+                break;
+        }
+        hero.level+=1;
     }
 
     private void setHeroValues(Hero hero) {
