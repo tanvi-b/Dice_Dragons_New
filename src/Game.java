@@ -107,6 +107,9 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.USED_DRAGON_DICE) {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
+                    if(treatWoundsState == true){
+                        PlayingUI.updateHPTreatWounds((Hero) cfs.getPlayer());
+                    }
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
                 else if (cfs.getCommand() == CommandFromServer.DRAGON_ATTACK) {
@@ -157,7 +160,7 @@ public class Game implements Runnable, Serializable {
                 }
                 else if (cfs.getCommand() == CommandFromServer.TREAT_WOUNDS_USED) {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
-                    PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
+                    treatWoundsState = true;
                     PlayingUI.generalSkillUsed();
                 }
             }
@@ -175,9 +178,9 @@ public class Game implements Runnable, Serializable {
         sendCommand(os, new CommandFromClient(CommandFromClient.JAB, level, PlayingUI.getAccessCode()));
     }
 
-    public void treatWounds (ObjectOutputStream os, int heroClass)
+     public void treatWounds (ObjectOutputStream os, Hero hero)
     {
-
+        sendCommand(os, new CommandFromClient(CommandFromClient.TREAT_WOUNDS, hero, PlayingUI.getAccessCode()));
     }
 
     public void readyToMoveOn (ObjectOutputStream os, String username)
