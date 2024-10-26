@@ -16,14 +16,12 @@ import java.util.*;
 import java.util.List;
 import java.util.Timer;
 
-//todo: reset game (make jab used & treat wounds used false), general skills
-
 public class PlayingUI extends JPanel {
     private static PlayingUI instance;
     public static Game game;
     private static CardLayout cardLayout;
     private static JPanel mainPanel;
-    private static ArrayList<Hero> gameHeroes = new ArrayList<>(); //use this to access hero info
+    private static ArrayList<Hero> gameHeroes = new ArrayList<>();
     private static ArrayList<Integer> heroSheets = new ArrayList<>();
     private ArrayList<BufferedImage> dragonSheets = new ArrayList<>();
     private ArrayList<BufferedImage> diceFaces = new ArrayList<>();
@@ -236,7 +234,6 @@ public class PlayingUI extends JPanel {
                 String text = username + " has agreed to flee and quit the game.";
                 PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
                 PlayingUI.game.flee(PlayingUI.game.getOs(), username);
-                //might be better to broadcast message after flee command
             }
         });
 
@@ -250,7 +247,6 @@ public class PlayingUI extends JPanel {
                 String text = username + " does not want to flee.";
                 PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), text);
                 PlayingUI.game.noFlee(PlayingUI.game.getOs(), username);
-                //might be better to broadcast message after flee command
             }
         });
 
@@ -649,7 +645,7 @@ public class PlayingUI extends JPanel {
                 new Timer().schedule(new TimerTask() {
                     @Override
                     public void run() {
-                        System.exit(0);
+                        cardLayout.show(mainPanel, "DefeatedScreen");
                     }
                 }, 2000);
             }
@@ -1674,7 +1670,7 @@ public class PlayingUI extends JPanel {
             dragonSheets.add(ImageIO.read(new File("images/blue dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/undead dragon.png")));
             dragonSheets.add(ImageIO.read(new File("images/black dragon.png")));
-            //move later
+
             dragonTokens.add(ImageIO.read(new File("images/tokenYellow.png")));
             poisonTokens.add(ImageIO.read(new File("images/tokenGreen.png")));
             pinnedTokens.add(ImageIO.read(new File("images/tokenRed.png")));

@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class WonUI extends JPanel {
-    private CardLayout cardLayout;
-    private JPanel mainPanel;
+    private static CardLayout cardLayout;
+    private static JPanel mainPanel;
     private Font customFont;
     private Font customBoldFont;
     private BufferedImage background;
@@ -34,11 +34,20 @@ public class WonUI extends JPanel {
 
     private void addComponents()
     {
-        JButton homeScreen = new JButton ("Home Screen");
-        homeScreen.setFont(customFont.deriveFont(20f));
-        //homeScreen.setBounds(1045, 5, 130, 40);
-        homeScreen.setBorder(BorderFactory.createLineBorder(Color.black));
-        homeScreen.setOpaque(true);
+        JLabel successfulHunt = new JLabel ("YOUR HUNTS HAVE BEEN SUCCESSFUL");
+        successfulHunt.setFont(customBoldFont.deriveFont(40f));
+        successfulHunt.setForeground(new Color(145, 0, 0));
+        successfulHunt.setBounds(300, 10, 700, 50);
+        successfulHunt.setOpaque(false);
+
+        JButton homeScreen = new JButton ("New Game");
+        homeScreen.setForeground(Color.white);
+        homeScreen.setFont(customFont.deriveFont(50f));
+        homeScreen.setBounds(330, 175, 300, 100);
+        homeScreen.setBorderPainted(false);
+        homeScreen.setOpaque(false);
+        homeScreen.setContentAreaFilled(false);
+        homeScreen.setFocusPainted(false);
         homeScreen.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 cardLayout.show(mainPanel, "IntroScreen");
@@ -46,16 +55,20 @@ public class WonUI extends JPanel {
         });
 
         JButton exit = new JButton ("Exit");
-        exit.setFont(customFont.deriveFont(20f));
-        //exit.setBounds(1045, 5, 130, 40);
-        exit.setBorder(BorderFactory.createLineBorder(Color.black));
-        exit.setOpaque(true);
+        exit.setForeground(Color.white);
+        exit.setFont(customFont.deriveFont(50f));
+        exit.setBounds(765, 175, 300, 100);
+        exit.setBorderPainted(false);
+        exit.setOpaque(false);
+        exit.setContentAreaFilled(false);
+        exit.setFocusPainted(false);
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                //force quit program
+                System.exit(0);
             }
         });
 
+        add(successfulHunt);
         add(homeScreen);
         add(exit);
     }
@@ -73,7 +86,7 @@ public class WonUI extends JPanel {
     private void readImages()
     {
         try {
-            background = ImageIO.read(new File("images/backgroundImage.png"));
+            background = ImageIO.read(new File("images/wonTesting.png"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
