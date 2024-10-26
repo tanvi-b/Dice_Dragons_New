@@ -153,10 +153,13 @@ public class SpecialSkillsUI extends JPanel {
             for(int i =0; i<heroes.size(); i++){
                 if(nameChoice.getSelectedIndex() == i){
                     SpecialSkillsUI.game.treatWounds(SpecialSkillsUI.game.getOs(),heroes.get(i).getClassType());
+                    PlayingUI.generalSkillUsed();
+                    cardLayout.show(mainPanel, "PlayingScreen");
                 }
             }
             clicked = false;
         }
+
         JButton blessing = new JButton("Blessing");
         blessing.setFont(customFont.deriveFont(20f));
         blessing.setBounds(150, 110, 130, 50);
@@ -279,7 +282,9 @@ public class SpecialSkillsUI extends JPanel {
                 boolean canUse = jabSkill.checkDiceCombo(dice);
                 if (canUse && !jabUsed) {
                     SpecialSkillsUI.game.jab(SpecialSkillsUI.game.getOs(), dragonLevel);
+                    PlayingUI.generalSkillUsed();
                     jabUsed = true;
+                    cardLayout.show(mainPanel, "PlayingScreen");
                 }
             }
         });
