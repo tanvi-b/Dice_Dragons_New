@@ -1763,7 +1763,7 @@ public class PlayingUI extends JPanel {
             hitPointsText.setText(String.valueOf(21));
         }
         else {
-            armorClassText.setText(String.valueOf(0));
+            armorClassText.setText(String.valueOf(1));
             hitPointsText.setText(String.valueOf(19));
         }
         heroClass = hero.classType;
