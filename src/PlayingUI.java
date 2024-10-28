@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Timer;
 
 public class PlayingUI extends JPanel {
+    //todo: rogue hit points weirdly adding, chat not resetting
     private static PlayingUI instance;
     public static Game game;
     private static CardLayout cardLayout;

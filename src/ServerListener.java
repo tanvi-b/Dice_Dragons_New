@@ -269,8 +269,10 @@ public class ServerListener implements Runnable {
                         if (hero.heroName.equals(playerName))
                             playingHero = hero;
                     }
-                    dragonAttackPoints -= playingHero.armorClass;
-                    playingHero.hitPoints -= dragonAttackPoints;
+                    if (dragonAttackPoints>0) {
+                        dragonAttackPoints -= playingHero.armorClass;
+                        playingHero.hitPoints -= dragonAttackPoints;
+                    }
                     ArrayList<Hero> updatedHeroes = game.getHeroes();
                     for (int i = 0; i < updatedHeroes.size(); i++) {
                         if (updatedHeroes.get(i).getHeroName().equals(playerName)) {

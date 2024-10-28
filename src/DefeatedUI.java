@@ -34,36 +34,36 @@ public class DefeatedUI extends JPanel {
 
     private void addComponents()
     {
-        JButton homeScreen = new JButton ("New Game");
-        homeScreen.setForeground(Color.white);
-        homeScreen.setFont(customFont.deriveFont(50f));
-        homeScreen.setBounds(100, 225, 300, 100);
-        homeScreen.setBorderPainted(false);
-        homeScreen.setOpaque(false);
-        homeScreen.setContentAreaFilled(false);
-        homeScreen.setFocusPainted(false);
-        homeScreen.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(mainPanel, "IntroScreen");
-            }
-        });
-
-        JButton exit = new JButton ("Exit");
-        exit.setForeground(Color.white);
-        exit.setFont(customFont.deriveFont(50f));
-        exit.setBounds(800, 225, 300, 100);
-        exit.setBorderPainted(false);
-        exit.setOpaque(false);
-        exit.setContentAreaFilled(false);
-        exit.setFocusPainted(false);
-        exit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
-
-        add(homeScreen);
-        add(exit);
+//        JButton homeScreen = new JButton ("New Game");
+//        homeScreen.setForeground(Color.white);
+//        homeScreen.setFont(customFont.deriveFont(50f));
+//        homeScreen.setBounds(100, 225, 300, 100);
+//        homeScreen.setBorderPainted(false);
+//        homeScreen.setOpaque(false);
+//        homeScreen.setContentAreaFilled(false);
+//        homeScreen.setFocusPainted(false);
+//        homeScreen.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                cardLayout.show(mainPanel, "IntroScreen");
+//            }
+//        });
+//
+//        JButton exit = new JButton ("Exit");
+//        exit.setForeground(Color.white);
+//        exit.setFont(customFont.deriveFont(50f));
+//        exit.setBounds(800, 225, 300, 100);
+//        exit.setBorderPainted(false);
+//        exit.setOpaque(false);
+//        exit.setContentAreaFilled(false);
+//        exit.setFocusPainted(false);
+//        exit.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                System.exit(0);
+//            }
+//        });
+//
+//        add(homeScreen);
+//        add(exit);
     }
 
     private void loadFonts()
