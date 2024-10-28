@@ -34,12 +34,6 @@ public class DefeatedUI extends JPanel {
 
     private void addComponents()
     {
-        JLabel failedHunt = new JLabel ("YOUR HUNT HAS FAILED");
-        failedHunt.setFont(customBoldFont.deriveFont(40f));
-        failedHunt.setForeground(new Color(145, 0, 0));
-        failedHunt.setBounds(390, 10, 500, 50);
-        failedHunt.setOpaque(false);
-
         JButton homeScreen = new JButton ("New Game");
         homeScreen.setForeground(Color.white);
         homeScreen.setFont(customFont.deriveFont(50f));
@@ -68,7 +62,6 @@ public class DefeatedUI extends JPanel {
             }
         });
 
-        add(failedHunt);
         add(homeScreen);
         add(exit);
     }

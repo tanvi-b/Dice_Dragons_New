@@ -1585,25 +1585,39 @@ public class PlayingUI extends JPanel {
         }, 9000);
 
         //commented so marketing ui testing is possible
-//        if (Integer.parseInt(dragonHitPointsText.getText())<=0 && level==8)
-//        {
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Congratulations, you have defeated all the dragons!");
-//                }
-//            }, 12000);
-//
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-        //might hv to send command
-//                    cardLayout.show(mainPanel, "WonScreen");
-//                    timer.cancel();
-//                }
-//            }, 15000);
-//        }
-//       else if (Integer.parseInt(dragonHitPointsText.getText())<=0) {
+        if (dragonHitPointsText.getText().equals("") || Integer.parseInt(dragonHitPointsText.getText())>0) {
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Unfortunately, you were not able to defeat the dragon.");
+                }
+            }, 12000);
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.goToDefeated(PlayingUI.game.getOs());
+                    timer.cancel();
+                }
+            }, 15000);
+        }
+        else if (Integer.parseInt(dragonHitPointsText.getText())<=0 && level==8){
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Congratulations, you have defeated all the dragons!");
+                }
+            }, 12000);
+
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    PlayingUI.game.goToWin(PlayingUI.game.getOs());
+                    timer.cancel();
+                }
+            }, 15000);
+        }
+        else {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -1618,24 +1632,17 @@ public class PlayingUI extends JPanel {
                     timer.cancel();
                 }
             }, 15000);
-        //}
-//        else {
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-//                    PlayingUI.game.gameMessageText(PlayingUI.game.getOs(), "Unfortunately, you were not able to defeat the dragon.");
-//                }
-//            }, 12000);
-//
-//            timer.schedule(new TimerTask() {
-//                @Override
-//                public void run() {
-        //might hv to send command
-//                    cardLayout.show(mainPanel, "DefeatedScreen");
-//                    timer.cancel();
-//                }
-//            }, 15000);
-//        }
+        }
+    }
+
+    public static void switchToDefeated()
+    {
+        cardLayout.show(mainPanel, "DefeatedScreen");
+    }
+
+    public static void switchToWin()
+    {
+        cardLayout.show(mainPanel, "WonScreen");
     }
 
     public static void updateBooleansForSkillButtons (ArrayList<Boolean> booleans) {

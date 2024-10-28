@@ -28,6 +28,8 @@ public class CommandFromClient implements Serializable
     public static final int READY_NEXT = 18;
     public static final int JAB = 19;
     public static final int TREAT_WOUNDS = 20;
+    public static final int GO_TO_DEFEATED = 21;
+    public static final int GO_TO_WIN = 22;
 
     public CommandFromClient(int command, Object data, Object player) {
         this.command = command;

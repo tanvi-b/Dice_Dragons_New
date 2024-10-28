@@ -489,6 +489,18 @@ public class ServerListener implements Runnable {
                     for (Hero hero : game.getHeroes())
                         sendCommand(new CommandFromServer(CommandFromServer.TREAT_WOUNDS_USED, game, hero), hero.getOs());
                 }
+                if (cfc.getCommand()==CommandFromClient.GO_TO_DEFEATED)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.GO_TO_DEFEATED, null, null), hero.getOs());
+                }
+                if (cfc.getCommand()==CommandFromClient.GO_TO_WIN)
+                {
+                    Game game = currentGames.get(String.valueOf(cfc.getPlayer()));
+                    for (Hero hero : game.getHeroes())
+                        sendCommand(new CommandFromServer(CommandFromServer.GO_TO_WIN, null, null), hero.getOs());
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

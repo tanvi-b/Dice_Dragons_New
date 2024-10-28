@@ -158,6 +158,14 @@ public class Game implements Runnable, Serializable {
                     PlayingUI.addHeroes(((Game) cfs.getData()).getHeroes());
                     PlayingUI.setHitPointsNowText((Hero) cfs.getPlayer());
                 }
+                else if (cfs.getCommand()==CommandFromServer.GO_TO_DEFEATED)
+                {
+                    PlayingUI.switchToDefeated();
+                }
+                else if (cfs.getCommand()==CommandFromServer.GO_TO_WIN)
+                {
+                    PlayingUI.switchToWin();
+                }
             }
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -166,6 +174,16 @@ public class Game implements Runnable, Serializable {
 
     public String toString() {
         return "Game {Access Code: " + accessCode + ", Heroes: " + heroes + ", Players: " + maxPlayers + "}";
+    }
+
+    public void goToDefeated(ObjectOutputStream os)
+    {
+        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_DEFEATED, null, PlayingUI.getAccessCode()));
+    }
+
+    public void goToWin(ObjectOutputStream os)
+    {
+        sendCommand(os, new CommandFromClient(CommandFromClient.GO_TO_WIN, null, PlayingUI.getAccessCode()));
     }
 
     public void jab (ObjectOutputStream os, int level)
